@@ -111,7 +111,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     // MARK: - Selectors
     
     @objc private func placeObject() {
-        let modelName = "Skull"
+        let modelName = "Chest" //Skull, Chest better hitbox
         
         let entity = try! Entity.load(named: modelName)
         let geomChildrens = entity.findEntity(named: "Geom")
@@ -132,7 +132,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         let modelEntity = ModelEntity()
         modelEntity.addChild(entity)
         
-        let anchorEntity = AnchorEntity(plane: .horizontal)
+        let anchorEntity = AnchorEntity() //.horizontal kene ide?
         anchorEntity.addChild(modelEntity)
 
         arView.installGestures([.all],for: modelEntity)

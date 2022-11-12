@@ -20,13 +20,17 @@
 		B77FCACE2911D3C800E45438 /* PelvicGirdle.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC42911D3C800E45438 /* PelvicGirdle.usdz */; };
 		B77FCACF2911D3C800E45438 /* Hand.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC52911D3C800E45438 /* Hand.usdz */; };
 		B77FCAD02911D3C800E45438 /* Foot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC62911D3C800E45438 /* Foot.usdz */; };
-		B77FCAD12911D3C800E45438 /* Skull.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC72911D3C800E45438 /* Skull.usdz */; };
 		B77FCAD22911D3C800E45438 /* ShoulderGirdle.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC82911D3C800E45438 /* ShoulderGirdle.usdz */; };
 		B77FCAD32911D3C800E45438 /* Leg.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC92911D3C800E45438 /* Leg.usdz */; };
 		B77FCAD42911D3C800E45438 /* VertebralColumn.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCACA2911D3C800E45438 /* VertebralColumn.usdz */; };
 		B77FCAD52911D3C800E45438 /* Arm.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCACB2911D3C800E45438 /* Arm.usdz */; };
-		B77FCAD62911D3C800E45438 /* Chest.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCACC2911D3C800E45438 /* Chest.usdz */; };
-		B77FCAD72911D3C800E45438 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCACD2911D3C800E45438 /* Laryngeal.usdz */; };
+		B7D05E24291FD51900439680 /* Skull.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E23291FD51900439680 /* Skull.usdz */; };
+		B7D05E26291FDA9400439680 /* Chest.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E25291FDA9400439680 /* Chest.usdz */; };
+		B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E27291FDA9E00439680 /* Laryngeal.usdz */; };
+		B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */; };
+		B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */; };
+		B7F64F00291FFCCF00652A9E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFF291FFCCF00652A9E /* MainViewController.swift */; };
+		B7F64F0229204C3D00652A9E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64F0129204C3D00652A9E /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,13 +47,17 @@
 		B77FCAC42911D3C800E45438 /* PelvicGirdle.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = PelvicGirdle.usdz; sourceTree = "<group>"; };
 		B77FCAC52911D3C800E45438 /* Hand.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Hand.usdz; sourceTree = "<group>"; };
 		B77FCAC62911D3C800E45438 /* Foot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Foot.usdz; sourceTree = "<group>"; };
-		B77FCAC72911D3C800E45438 /* Skull.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Skull.usdz; sourceTree = "<group>"; };
 		B77FCAC82911D3C800E45438 /* ShoulderGirdle.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = ShoulderGirdle.usdz; sourceTree = "<group>"; };
 		B77FCAC92911D3C800E45438 /* Leg.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Leg.usdz; sourceTree = "<group>"; };
 		B77FCACA2911D3C800E45438 /* VertebralColumn.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = VertebralColumn.usdz; sourceTree = "<group>"; };
 		B77FCACB2911D3C800E45438 /* Arm.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Arm.usdz; sourceTree = "<group>"; };
-		B77FCACC2911D3C800E45438 /* Chest.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Chest.usdz; sourceTree = "<group>"; };
-		B77FCACD2911D3C800E45438 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
+		B7D05E23291FD51900439680 /* Skull.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Skull.usdz; sourceTree = "<group>"; };
+		B7D05E25291FDA9400439680 /* Chest.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Chest.usdz; sourceTree = "<group>"; };
+		B7D05E27291FDA9E00439680 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
+		B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		B7F64EFF291FFCCF00652A9E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		B7F64F0129204C3D00652A9E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,12 +95,14 @@
 			isa = PBXGroup;
 			children = (
 				B7302F1B2911D1EA0018272C /* USDZFiles */,
-				B7302F1A2911CF710018272C /* Resources */,
+				B7302F1A2911CF710018272C /* Utils */,
 				B7302F192911CF260018272C /* Models */,
 				B7302F182911CF220018272C /* Views */,
 				B7302F172911CF1D0018272C /* Controllers */,
 				B7302F0B2911CEBD0018272C /* Assets.xcassets */,
 				B7302F0D2911CEBD0018272C /* LaunchScreen.storyboard */,
+				B7302F022911CEBC0018272C /* AppDelegate.swift */,
+				B7302F042911CEBC0018272C /* SceneDelegate.swift */,
 				B7302F102911CEBD0018272C /* Info.plist */,
 			);
 			path = Thesis;
@@ -101,7 +111,9 @@
 		B7302F172911CF1D0018272C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B7F64EF6291FF85900652A9E /* Onboarding */,
 				B7302F062911CEBC0018272C /* ARViewController.swift */,
+				B7F64EFF291FFCCF00652A9E /* MainViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -121,13 +133,12 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		B7302F1A2911CF710018272C /* Resources */ = {
+		B7302F1A2911CF710018272C /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				B7302F022911CEBC0018272C /* AppDelegate.swift */,
-				B7302F042911CEBC0018272C /* SceneDelegate.swift */,
+				B7F64F0129204C3D00652A9E /* Constants.swift */,
 			);
-			path = Resources;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		B7302F1B2911D1EA0018272C /* USDZFiles */ = {
@@ -157,18 +168,27 @@
 		B7302F212911D2560018272C /* Skeletial */ = {
 			isa = PBXGroup;
 			children = (
+				B7D05E27291FDA9E00439680 /* Laryngeal.usdz */,
+				B7D05E25291FDA9400439680 /* Chest.usdz */,
+				B7D05E23291FD51900439680 /* Skull.usdz */,
 				B77FCACB2911D3C800E45438 /* Arm.usdz */,
-				B77FCACC2911D3C800E45438 /* Chest.usdz */,
 				B77FCAC62911D3C800E45438 /* Foot.usdz */,
 				B77FCAC52911D3C800E45438 /* Hand.usdz */,
-				B77FCACD2911D3C800E45438 /* Laryngeal.usdz */,
 				B77FCAC92911D3C800E45438 /* Leg.usdz */,
 				B77FCAC42911D3C800E45438 /* PelvicGirdle.usdz */,
 				B77FCAC82911D3C800E45438 /* ShoulderGirdle.usdz */,
-				B77FCAC72911D3C800E45438 /* Skull.usdz */,
 				B77FCACA2911D3C800E45438 /* VertebralColumn.usdz */,
 			);
 			path = Skeletial;
+			sourceTree = "<group>";
+		};
+		B7F64EF6291FF85900652A9E /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */,
+				B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,19 +258,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				B77FCAD52911D3C800E45438 /* Arm.usdz in Resources */,
+				B7D05E24291FD51900439680 /* Skull.usdz in Resources */,
 				B77B697F2911DD9F004FDA40 /* Design.png in Resources */,
 				B77B69802911DD9F004FDA40 /* Design.fig in Resources */,
 				B77FCAD42911D3C800E45438 /* VertebralColumn.usdz in Resources */,
 				B77FCACF2911D3C800E45438 /* Hand.usdz in Resources */,
 				B77FCAD22911D3C800E45438 /* ShoulderGirdle.usdz in Resources */,
 				B7302F0F2911CEBD0018272C /* LaunchScreen.storyboard in Resources */,
-				B77FCAD62911D3C800E45438 /* Chest.usdz in Resources */,
 				B7302F0C2911CEBD0018272C /* Assets.xcassets in Resources */,
 				B77FCAD32911D3C800E45438 /* Leg.usdz in Resources */,
+				B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */,
+				B7D05E26291FDA9400439680 /* Chest.usdz in Resources */,
 				B77FCAD02911D3C800E45438 /* Foot.usdz in Resources */,
-				B77FCAD72911D3C800E45438 /* Laryngeal.usdz in Resources */,
 				B77FCACE2911D3C800E45438 /* PelvicGirdle.usdz in Resources */,
-				B77FCAD12911D3C800E45438 /* Skull.usdz in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,8 +283,12 @@
 			files = (
 				B7302F072911CEBC0018272C /* ARViewController.swift in Sources */,
 				B7136B702911D64200C6D54E /* InformationUIView.swift in Sources */,
+				B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */,
 				B7302F032911CEBC0018272C /* AppDelegate.swift in Sources */,
+				B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */,
 				B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */,
+				B7F64F00291FFCCF00652A9E /* MainViewController.swift in Sources */,
+				B7F64F0229204C3D00652A9E /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
