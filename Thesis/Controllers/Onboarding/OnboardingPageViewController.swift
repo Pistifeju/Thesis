@@ -23,21 +23,23 @@ class OnboardingPageViewController: UIPageViewController {
     private lazy var skipButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.systemBlue, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
         button.setTitle("Skip", for: .normal)
+        button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        button.tintColor = Colors.buttonGrey
         button.addTarget(self, action: #selector(skipTapped(_:)), for: .touchUpInside)
-        button.setTitleColor(UIColor.black, for: .normal)
         
         return button
     }()
     
-    private lazy var nextButton: UIButton = {
+    private lazy var continueButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.setTitle("Next", for: .normal)
-        button.addTarget(self, action: #selector(nextTapped(_:)), for: .touchUpInside)
-        button.setTitleColor(UIColor.black, for: .normal)
+        button.backgroundColor = Colors.buttonGrey
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.setTitle("CONTINUE", for: .normal)
+        button.addTarget(self, action: #selector(continueTapped(_:)), for: .touchUpInside)
+        button.layer.cornerRadius = 16
         
         return button
     }()
@@ -55,10 +57,6 @@ class OnboardingPageViewController: UIPageViewController {
     
     private let initialPage = 0
 
-    var skipButtonTopAnchor: NSLayoutConstraint?
-    var nextButtonTopAnchor: NSLayoutConstraint?
-    var pageControlBottomAnchor: NSLayoutConstraint?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -72,22 +70,21 @@ class OnboardingPageViewController: UIPageViewController {
         
         pageControl.addTarget(self, action: #selector(pageControlTapped(_:)), for: .valueChanged)
         
-        let page1 = OnboardingViewController(imageName: "logo",
-                                             titleText: "Welcome",
-                                             subtitleText: "To the Swift Arcade. Your place for learning Swift.")
-        let page2 = OnboardingViewController(imageName: "swift",
-                                             titleText: "Learn",
-                                             subtitleText: "Start your career in iOS development.")
-        let page3 = OnboardingViewController(imageName: "level-up",
-                                             titleText: "Have fun",
-                                             subtitleText: "Level Up and have fun building mobile apps.")
+        let page1 = OnboardingViewController(imageName: "onboarding1",
+                                             titleText: "Welcome to AR Anatomy",
+                                             subtitleText: "A unique application for learning anatomy with AR.")
+        let page2 = OnboardingViewController(imageName: "onboarding2",
+                                             titleText: "Explore",
+                                             subtitleText: "Explore the human body through your phone.")
+        let page3 = OnboardingViewController(imageName: "onboarding3",
+                                             titleText: "Take Tests",
+                                             subtitleText: "Tests are designed to consolidate the material covered, which allows you to test your knowledge.")
         
-        let page4 = MainViewController()
+        // TODO: Page3 onboarding image
         
         pages.append(page1)
         pages.append(page2)
         pages.append(page3)
-        pages.append(page4)
         
         pageControl.numberOfPages = pages.count
         
@@ -96,29 +93,35 @@ class OnboardingPageViewController: UIPageViewController {
     
     private func configureUI() {
         view.addSubview(pageControl)
-        view.addSubview(nextButton)
+        view.addSubview(continueButton)
         view.addSubview(skipButton)
         
         NSLayoutConstraint.activate([
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: continueButton.bottomAnchor, multiplier: 4),
+            continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            continueButton.heightAnchor.constraint(equalToConstant: view.frame.height / 14),
+            continueButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: continueButton.trailingAnchor, multiplier: 2),
+            
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pageControl.bottomAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.bottomAnchor, multiplier: 2),
-            pageControl.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: pageControl.trailingAnchor, multiplier: 2),
+            continueButton.topAnchor.constraint(equalToSystemSpacingBelow: pageControl.bottomAnchor, multiplier: 2),
             
             skipButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            skipButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-
-            nextButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: nextButton.trailingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: skipButton.trailingAnchor, multiplier: 2),
         ])
+    }
+    
+    fileprivate func didOnboard() {
+        dismiss(animated: true)
         
-        skipButtonTopAnchor = skipButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2)
-        nextButtonTopAnchor = nextButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2)
-        pageControlBottomAnchor = view.bottomAnchor.constraint(equalToSystemSpacingBelow: pageControl.bottomAnchor, multiplier: 2)
-
-        skipButtonTopAnchor?.isActive = true
-        nextButtonTopAnchor?.isActive = true
-        pageControlBottomAnchor?.isActive = true
+        UserDefaults.standard.set(true, forKey: "hasOnboarded")
+        
+        let controller = MainViewController()
+        let nav = UINavigationController(rootViewController: controller)
+        nav.modalTransitionStyle = .coverVertical
+        nav.modalPresentationStyle = .fullScreen
+        
+        self.present(nav, animated: false)
     }
 }
 
@@ -144,7 +147,8 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
         if currentIndex < pages.count - 1 {
             return pages[currentIndex + 1]  // go next
         } else {
-            return pages.first              // wrap first
+            didOnboard()
+            return nil
         }
     }
 }
@@ -159,34 +163,6 @@ extension OnboardingPageViewController: UIPageViewControllerDelegate {
         guard let currentIndex = pages.firstIndex(of: viewControllers[0]) else { return }
         
         pageControl.currentPage = currentIndex
-        animateControlsIfNeeded()
-    }
-    
-    private func animateControlsIfNeeded() {
-        let lastPage = pageControl.currentPage == pages.count - 1
-        
-        if lastPage {
-            //hideControls()
-            UIView.animate(withDuration: 0.2) {
-                self.hideControls()
-            }
-        } else {
-            UIView.animate(withDuration: 0.2) {
-                self.showControls()
-            }
-        }
-    }
-    
-    private func hideControls() {
-        pageControl.alpha = 0
-        skipButton.alpha = 0
-        nextButton.alpha = 0
-    }
-
-    private func showControls() {
-        pageControl.alpha = 1
-        skipButton.alpha = 1
-        nextButton.alpha = 1
     }
 }
 
@@ -196,21 +172,15 @@ extension OnboardingPageViewController {
 
     @objc func pageControlTapped(_ sender: UIPageControl) {
         setViewControllers([pages[sender.currentPage]], direction: .forward, animated: true, completion: nil)
-        animateControlsIfNeeded()
-    }
-
-    @objc func skipTapped(_ sender: UIButton) {
-        let lastPageIndex = pages.count - 1
-        pageControl.currentPage = lastPageIndex
-        
-        goToSpecificPage(index: lastPageIndex, ofViewControllers: pages)
-        animateControlsIfNeeded()
     }
     
-    @objc func nextTapped(_ sender: UIButton) {
+    @objc func skipTapped(_ sender: UIButton) {
+        didOnboard()
+    }
+    
+    @objc func continueTapped(_ sender: UIButton) {
         pageControl.currentPage += 1
         goToNextPage()
-        animateControlsIfNeeded()
     }
 }
 

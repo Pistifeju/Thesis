@@ -12,6 +12,15 @@ class MainViewController: UIViewController {
     
     // MARK: - Properties
     
+    private let label: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "MainViewController"
+        label.font = .systemFont(ofSize: 22)
+        
+        return label
+    }()
+    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -23,7 +32,13 @@ class MainViewController: UIViewController {
     // MARK: - Helpers
     
     private func configureUI() {
-        view.backgroundColor = .red
+        view.backgroundColor = .white
+        view.addSubview(label)
+        
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            label.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+        ])
     }
     
     // MARK: - Selectors
