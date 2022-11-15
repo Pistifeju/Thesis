@@ -17,10 +17,39 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+        
         //window?.rootViewController = UINavigationController(rootViewController: ARViewController())
         
+        let skeletalSystem: [ARModel] = [
+            ARModel(name: "Laryngeal", informationText: "This is the Laryngeal."),
+            ARModel(name: "Chest", informationText: "This is the Chest."),
+            ARModel(name: "Skull", informationText: "This is the Skull."),
+            ARModel(name: "Arm", informationText: "This is the Arm."),
+            ARModel(name: "Foot", informationText: "This is the Foot."),
+            ARModel(name: "Hand", informationText: "This is the Hand."),
+            ARModel(name: "Leg", informationText: "This is the Leg."),
+            ARModel(name: "PelvicGirdle", informationText: "This is the PelvicGirdle."),
+            ARModel(name: "ShoulderGirdle", informationText: "This is the ShoulderGirdle."),
+            ARModel(name: "VertebralColumn", informationText: "This is the VertebralColumn."),
+        ]
+        
+        let visceralSystem: [ARModel] = [
+            // TODO
+        ]
+        
+        let muscularSystem: [ARModel] = [
+            // TODO
+        ]
+        
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(skeletalSystem), forKey:Systems.skeletalSystem.rawValue)
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(visceralSystem), forKey:Systems.visceralSystem.rawValue)
+        UserDefaults.standard.set(try? PropertyListEncoder().encode(muscularSystem), forKey:Systems.muscularSystem.rawValue)
+
+        
         if UserDefaults.standard.bool(forKey: "hasOnboarded") {
-            window?.rootViewController = MainViewController()
+            let layout = UICollectionViewFlowLayout()
+            let nav = UINavigationController(rootViewController: MainViewController(collectionViewLayout: layout))
+            window?.rootViewController = nav
         } else {
             window?.rootViewController = OnboardingPageViewController()
         }

@@ -90,6 +90,11 @@ class OnboardingViewController: UIViewController {
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: subtitleLabel.trailingAnchor, multiplier: 4),
         ])
         
+        NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+        ])
+        
         view.backgroundColor = .white
     }
     

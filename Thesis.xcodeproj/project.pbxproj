@@ -31,6 +31,8 @@
 		B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */; };
 		B7F64F00291FFCCF00652A9E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFF291FFCCF00652A9E /* MainViewController.swift */; };
 		B7F64F0229204C3D00652A9E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64F0129204C3D00652A9E /* Constants.swift */; };
+		B7FDB44A2923A4BD00B8A17D /* ARModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB4492923A4BD00B8A17D /* ARModel.swift */; };
+		B7FDB44C2923B55000B8A17D /* MainViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -58,6 +60,8 @@
 		B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		B7F64EFF291FFCCF00652A9E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B7F64F0129204C3D00652A9E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B7FDB4492923A4BD00B8A17D /* ARModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARModel.swift; sourceTree = "<group>"; };
+		B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -122,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				B7136B6F2911D64200C6D54E /* InformationUIView.swift */,
+				B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -129,6 +134,7 @@
 		B7302F192911CF260018272C /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B7FDB4492923A4BD00B8A17D /* ARModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -287,7 +293,9 @@
 				B7302F032911CEBC0018272C /* AppDelegate.swift in Sources */,
 				B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */,
 				B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */,
+				B7FDB44A2923A4BD00B8A17D /* ARModel.swift in Sources */,
 				B7F64F00291FFCCF00652A9E /* MainViewController.swift in Sources */,
+				B7FDB44C2923B55000B8A17D /* MainViewCollectionViewCell.swift in Sources */,
 				B7F64F0229204C3D00652A9E /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
