@@ -32,6 +32,7 @@ class OnboardingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .headline)
+        label.textColor = Colors.buttonGrey
         
         return label
     }()
@@ -41,6 +42,7 @@ class OnboardingViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textAlignment = .center
+        label.textColor = Colors.buttonGrey
         
         return label
     }()

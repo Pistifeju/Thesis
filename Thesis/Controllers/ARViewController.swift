@@ -14,6 +14,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Properties
     
+    public var modelName = ""
     private let modelInformationView = ModelInformationView(frame: .zero)
     
     private var lastHitObject: ModelEntity = ModelEntity()
@@ -34,7 +35,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         arview.translatesAutoresizingMaskIntoConstraints = false
         arview.isUserInteractionEnabled = true
         arview.addCoaching()
-        arview.debugOptions = [.showPhysics]
+        arview.debugOptions = [.none]
         
         return arview
     }()
@@ -111,7 +112,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     // MARK: - Selectors
     
     @objc private func placeObject() {
-        let modelName = "Chest" //Skull, Chest better hitbox
+        let modelName = self.modelName //Skull, Chest better hitbox
         
         let entity = try! Entity.load(named: modelName)
         let geomChildrens = entity.findEntity(named: "Geom")
@@ -132,7 +133,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         let modelEntity = ModelEntity()
         modelEntity.addChild(entity)
         
-        let anchorEntity = AnchorEntity() //.horizontal kene ide?
+        let anchorEntity = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: .zero))
         anchorEntity.addChild(modelEntity)
 
         arView.installGestures([.all],for: modelEntity)

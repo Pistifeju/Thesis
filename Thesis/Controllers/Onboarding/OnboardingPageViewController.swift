@@ -20,18 +20,6 @@ class OnboardingPageViewController: UIPageViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var skipButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.setTitle("Skip", for: .normal)
-        button.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
-        button.tintColor = Colors.buttonGrey
-        button.addTarget(self, action: #selector(skipTapped(_:)), for: .touchUpInside)
-        
-        return button
-    }()
-    
     private lazy var continueButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +44,7 @@ class OnboardingPageViewController: UIPageViewController {
     }()
     
     private let initialPage = 0
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -92,9 +80,14 @@ class OnboardingPageViewController: UIPageViewController {
     }
     
     private func configureUI() {
+        navigationController?.navigationBar.tintColor = .white
+        
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip", style: .plain, target: self, action: #selector(skipTapped))
+        navigationItem.rightBarButtonItem?.tintColor = .black
+        
         view.addSubview(pageControl)
         view.addSubview(continueButton)
-        view.addSubview(skipButton)
         
         NSLayoutConstraint.activate([
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: continueButton.bottomAnchor, multiplier: 4),
@@ -105,9 +98,6 @@ class OnboardingPageViewController: UIPageViewController {
             
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             continueButton.topAnchor.constraint(equalToSystemSpacingBelow: pageControl.bottomAnchor, multiplier: 2),
-            
-            skipButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: skipButton.trailingAnchor, multiplier: 2),
         ])
     }
     
@@ -116,12 +106,13 @@ class OnboardingPageViewController: UIPageViewController {
         
         UserDefaults.standard.set(true, forKey: "hasOnboarded")
         
-        let controller = MainViewController()
+        let layout = UICollectionViewFlowLayout()
+        let controller = MainViewController(collectionViewLayout: layout)
         let nav = UINavigationController(rootViewController: controller)
         nav.modalTransitionStyle = .coverVertical
         nav.modalPresentationStyle = .fullScreen
         
-        self.present(nav, animated: false)
+        self.present(nav, animated: true)
     }
 }
 
@@ -143,7 +134,8 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
-
+    
+        
         if currentIndex < pages.count - 1 {
             return pages[currentIndex + 1]  // go next
         } else {
@@ -174,7 +166,7 @@ extension OnboardingPageViewController {
         setViewControllers([pages[sender.currentPage]], direction: .forward, animated: true, completion: nil)
     }
     
-    @objc func skipTapped(_ sender: UIButton) {
+    @objc func skipTapped() {
         didOnboard()
     }
     

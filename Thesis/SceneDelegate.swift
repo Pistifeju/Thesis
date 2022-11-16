@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,43 +21,66 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         //window?.rootViewController = UINavigationController(rootViewController: ARViewController())
         
-        let skeletalSystem: [ARModel] = [
-            ARModel(name: "Laryngeal", informationText: "This is the Laryngeal."),
-            ARModel(name: "Chest", informationText: "This is the Chest."),
-            ARModel(name: "Skull", informationText: "This is the Skull."),
-            ARModel(name: "Arm", informationText: "This is the Arm."),
-            ARModel(name: "Foot", informationText: "This is the Foot."),
-            ARModel(name: "Hand", informationText: "This is the Hand."),
-            ARModel(name: "Leg", informationText: "This is the Leg."),
-            ARModel(name: "PelvicGirdle", informationText: "This is the PelvicGirdle."),
-            ARModel(name: "ShoulderGirdle", informationText: "This is the ShoulderGirdle."),
-            ARModel(name: "VertebralColumn", informationText: "This is the VertebralColumn."),
-        ]
-        
-        let visceralSystem: [ARModel] = [
-            // TODO
-        ]
-        
-        let muscularSystem: [ARModel] = [
-            // TODO
-        ]
-        
-        UserDefaults.standard.set(try? PropertyListEncoder().encode(skeletalSystem), forKey:Systems.skeletalSystem.rawValue)
-        UserDefaults.standard.set(try? PropertyListEncoder().encode(visceralSystem), forKey:Systems.visceralSystem.rawValue)
-        UserDefaults.standard.set(try? PropertyListEncoder().encode(muscularSystem), forKey:Systems.muscularSystem.rawValue)
-
-        
         if UserDefaults.standard.bool(forKey: "hasOnboarded") {
+            loadData()
             let layout = UICollectionViewFlowLayout()
-            let nav = UINavigationController(rootViewController: MainViewController(collectionViewLayout: layout))
+            let vc = MainViewController(collectionViewLayout: layout)
+            let nav = UINavigationController(rootViewController: vc)
             window?.rootViewController = nav
         } else {
-            window?.rootViewController = OnboardingPageViewController()
+            let nav = UINavigationController(rootViewController: OnboardingPageViewController())
+            window?.rootViewController = nav
+            loadData()
         }
         
         window?.makeKeyAndVisible()
     }
 
+    func deleteData() {
+        let appDel:AppDelegate = (UIApplication.shared.delegate as! AppDelegate)
+        let context:NSManagedObjectContext = appDel.persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ARModel")
+        fetchRequest.returnsObjectsAsFaults = false
+        do {
+            let results = try context.fetch(fetchRequest)
+            for managedObject in results {
+                if let managedObjectData: NSManagedObject = managedObject as? NSManagedObject {
+                    context.delete(managedObjectData)
+                }
+            }
+        } catch let error as NSError {
+            print("Deleted all my data in myEntity error : \(error) \(error.userInfo)")
+        }
+    }
+    
+    func loadData() {
+        deleteData()
+        let skeletalSystem: [[String]] = [
+            ["Laryngeal", "This is the Laryngeal."],
+            ["Chest", "This is the Chest."],
+            ["Skull", "This is the Skull."],
+            ["Arm", "This is the Arm."],
+            ["Foot", "This is the Foot."],
+            ["Hand", "This is the Hand."],
+            ["Leg", "This is the Leg."],
+            ["PelvicGirdle", "This is the PelvicGirdle."],
+            ["ShoulderGirdle", "This is the ShoulderGirdle."],
+            ["VertebralColumn", "This is the VertebralColumn."],
+        ]
+        
+        let visceralSystem: [[String]] = [
+            // TODO
+        ]
+        
+        let muscularSystem: [[String]] = [
+            // TODO
+        ]
+        
+        skeletalSystem.forEach { system in
+            DatabaseManager().createItem(name: system[0], informationText: system[1], category: "skeletalSystem")
+        }
+    }
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.

@@ -81,7 +81,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    public func configureCell(withCategory categoryName: String, withSystems system: Array<ARModel>) {
+    public func configureCell(withCategory categoryName: String, withSystems system: [ARModel]) {
         self.categoryName = categoryName
         self.cellImageView.image = UIImage(named: categoryName)
         self.cellImageView.layer.opacity = 0.7
@@ -104,6 +104,5 @@ class MainViewCollectionViewCell: UICollectionViewCell {
             print("Default")
         }
     }
-    
     // MARK: - Selectors
 }

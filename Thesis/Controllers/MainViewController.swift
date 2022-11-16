@@ -14,8 +14,8 @@ class MainViewController: UICollectionViewController {
     
     // MARK: - Properties
     
-    private var systems: [Array<ARModel>] = []
-    private var systemsName: [String] = []
+    private var systems: [ARModel] = []
+    private var systemsName: [String] = ["skeletalSystem", "visceralSystem", "muscularSystem"]
     
     // MARK: - Lifecycle
     
@@ -23,68 +23,74 @@ class MainViewController: UICollectionViewController {
         super.viewDidLoad()
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
+        self.systems = DatabaseManager().getAllItems()!
+        
         configureUI()
         configure()
-//
     }
     
     // MARK: - Helpers
     
     private func configureUI() {
-        title = "Systems"
-        navigationItem.largeTitleDisplayMode = .never
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
+        navigationItem.title = "Categories"
         navigationController?.navigationBar.isTranslucent = true
-        navigationController?.isNavigationBarHidden = false
+        navigationController?.navigationBar.isHidden = false
+        
         view.backgroundColor = .white
+        collectionView.backgroundColor = .white
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
+        let cellSize = CGSize(width:view.frame.width - 50, height:view.frame.width / 2)
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical //.horizontal
+        layout.itemSize = cellSize
+        layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
+        layout.minimumLineSpacing = 20.0
+        layout.minimumInteritemSpacing = 1.0
+        collectionView.setCollectionViewLayout(layout, animated: true)
+        
+        collectionView.reloadData()
     }
     
     public func configure() {
-        Systems.allCases.forEach {
-            let key = $0.rawValue
-            if let data = UserDefaults.standard.value(forKey: key) as? Data {
-                let system = try! PropertyListDecoder().decode(Array<ARModel>.self, from: data)
-                self.systems.append(system)
-                self.systemsName.append(key)
-            }
-        }
     }
     
     // MARK: - Selectors
 }
 
+
 // MARK: - UICollectionViewDataSource
 
 extension MainViewController {
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return systemsName.count
-    }
-    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MainViewCollectionViewCell
-        cell.configureCell(withCategory: systemsName[indexPath.row], withSystems: systems[indexPath.row])
-        
+        cell.configureCell(withCategory: systemsName[indexPath.row], withSystems: systems)
         return cell
     }
     
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return systemsName.count
+    }
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
 
-extension MainViewController: UICollectionViewDelegateFlowLayout {
-    
+extension MainViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let cell = collectionView.cellForItem(at: indexPath) as! MainViewCollectionViewCell
+        
+        let vc = CategoryViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        vc.title = cell.categoryName
+        vc.systems = cell.system
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalTransitionStyle = .coverVertical
+        nav.modalPresentationStyle = .fullScreen
+        
+        self.present(nav, animated: true)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let width = view.frame.width - 50
-        let height = view.frame.height / 4
-        
-        return CGSize(width: width, height: height)
-    }
+    
 }
