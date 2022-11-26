@@ -68,13 +68,14 @@ class OnboardingPageViewController: UIPageViewController {
                                              titleText: "Take Tests",
                                              subtitleText: "Tests are designed to consolidate the material covered, which allows you to test your knowledge.")
         
-        // TODO: Page3 onboarding image
+        // TODO: - Page3 onboarding image
         
         pages.append(page1)
         pages.append(page2)
         pages.append(page3)
         
         pageControl.numberOfPages = pages.count
+
         
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
     }
@@ -121,25 +122,24 @@ class OnboardingPageViewController: UIPageViewController {
 extension OnboardingPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
-        
+                
         if currentIndex == 0 {
-            return pages.last               // wrap last
+            return nil              // wrap last
         } else {
             return pages[currentIndex - 1]  // go previous
         }
     }
         
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
-    
-        
+       
         if currentIndex < pages.count - 1 {
             return pages[currentIndex + 1]  // go next
         } else {
-            didOnboard()
+            if(pageControl.currentPage == pages.count - 1) {
+                didOnboard()
+            } 
             return nil
         }
     }
@@ -171,8 +171,12 @@ extension OnboardingPageViewController {
     }
     
     @objc func continueTapped(_ sender: UIButton) {
-        pageControl.currentPage += 1
-        goToNextPage()
+        if(pageControl.currentPage == pages.count - 1) {
+            didOnboard()
+        } else {
+            pageControl.currentPage += 1
+            goToNextPage()
+        }
     }
 }
 

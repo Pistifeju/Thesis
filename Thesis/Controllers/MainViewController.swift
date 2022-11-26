@@ -79,8 +79,19 @@ extension MainViewController {
 
 extension MainViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
         let cell = collectionView.cellForItem(at: indexPath) as! MainViewCollectionViewCell
+    
+        UIView.animate(withDuration: 0.2,
+                       animations: {
+            //Fade-out
+            cell.alpha = 0.5
+        }) { (completed) in
+            UIView.animate(withDuration: 0.2,
+                           animations: {
+                //Fade-out
+                cell.alpha = 1
+            })
+        }
         
         let vc = CategoryViewController(collectionViewLayout: UICollectionViewFlowLayout())
         vc.title = cell.categoryName

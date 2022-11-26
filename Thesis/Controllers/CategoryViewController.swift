@@ -23,7 +23,6 @@ class CategoryViewController: UICollectionViewController {
         
         collectionView.register(CategoryViewCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
        
-        
         configureUI()
     }
     
@@ -73,10 +72,26 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let cell = collectionView.cellForItem(at: indexPath) as! CategoryViewCollectionViewCell
+        
+        
+        UIView.animate(withDuration: 0.2,
+                       animations: {
+            //Fade-out
+            cell.alpha = 0.5
+        }) { (completed) in
+            UIView.animate(withDuration: 0.2,
+                           animations: {
+                //Fade-out
+                cell.alpha = 1
+            })
+        }
+        
+        collectionView.showLoader(true)
+        
         let modelName = cell.modelName.text
         let vc = ARViewController()
+        vc.delegate = self
         vc.modelName = modelName!
-        print(modelName!)
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -94,5 +109,11 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
         let height = width
         
         return CGSize(width: width, height: height)
+    }
+}
+
+extension CategoryViewController: ARViewControllerDelegate {
+    func didLoad() {
+        collectionView.showLoader(false)
     }
 }

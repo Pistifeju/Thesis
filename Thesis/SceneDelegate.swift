@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+    
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -21,6 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         //window?.rootViewController = UINavigationController(rootViewController: ARViewController())
         
+        
+        
         if UserDefaults.standard.bool(forKey: "hasOnboarded") {
             loadData()
             let layout = UICollectionViewFlowLayout()
@@ -28,11 +30,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let nav = UINavigationController(rootViewController: vc)
             window?.rootViewController = nav
         } else {
-            let nav = UINavigationController(rootViewController: OnboardingPageViewController())
-            window?.rootViewController = nav
-            loadData()
+            
         }
-        
+        let nav = UINavigationController(rootViewController: OnboardingPageViewController())
+        window?.rootViewController = nav
+        loadData()
         window?.makeKeyAndVisible()
     }
 

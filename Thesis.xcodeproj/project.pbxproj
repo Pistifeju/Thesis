@@ -24,6 +24,8 @@
 		B77FCAD32911D3C800E45438 /* Leg.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC92911D3C800E45438 /* Leg.usdz */; };
 		B77FCAD42911D3C800E45438 /* VertebralColumn.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCACA2911D3C800E45438 /* VertebralColumn.usdz */; };
 		B77FCAD52911D3C800E45438 /* Arm.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCACB2911D3C800E45438 /* Arm.usdz */; };
+		B7AACAD32924711C008A850B /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = B7AACAD22924711C008A850B /* JGProgressHUD */; };
+		B7AACAD529247125008A850B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AACAD429247125008A850B /* Extensions.swift */; };
 		B7D05E24291FD51900439680 /* Skull.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E23291FD51900439680 /* Skull.usdz */; };
 		B7D05E26291FDA9400439680 /* Chest.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E25291FDA9400439680 /* Chest.usdz */; };
 		B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E27291FDA9E00439680 /* Laryngeal.usdz */; };
@@ -58,6 +60,7 @@
 		B77FCAC92911D3C800E45438 /* Leg.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Leg.usdz; sourceTree = "<group>"; };
 		B77FCACA2911D3C800E45438 /* VertebralColumn.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = VertebralColumn.usdz; sourceTree = "<group>"; };
 		B77FCACB2911D3C800E45438 /* Arm.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Arm.usdz; sourceTree = "<group>"; };
+		B7AACAD429247125008A850B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B7D05E23291FD51900439680 /* Skull.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Skull.usdz; sourceTree = "<group>"; };
 		B7D05E25291FDA9400439680 /* Chest.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Chest.usdz; sourceTree = "<group>"; };
 		B7D05E27291FDA9E00439680 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
@@ -80,6 +83,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B7136B6E2911D52A00C6D54E /* LoremSwiftum in Frameworks */,
+				B7AACAD32924711C008A850B /* JGProgressHUD in Frameworks */,
 				B7136B6B2911D4FB00C6D54E /* FocusEntity in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -158,6 +162,7 @@
 			children = (
 				B7F64F0129204C3D00652A9E /* Constants.swift */,
 				B7FDB4872924402500B8A17D /* DatabaseManager.swift */,
+				B7AACAD429247125008A850B /* Extensions.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -231,6 +236,7 @@
 			packageProductDependencies = (
 				B7136B6A2911D4FB00C6D54E /* FocusEntity */,
 				B7136B6D2911D52A00C6D54E /* LoremSwiftum */,
+				B7AACAD22924711C008A850B /* JGProgressHUD */,
 			);
 			productName = Thesis;
 			productReference = B7302EFF2911CEBC0018272C /* Thesis.app */;
@@ -263,6 +269,7 @@
 			packageReferences = (
 				B7136B692911D4FB00C6D54E /* XCRemoteSwiftPackageReference "FocusEntity" */,
 				B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum" */,
+				B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
 			);
 			productRefGroup = B7302F002911CEBC0018272C /* Products */;
 			projectDirPath = "";
@@ -313,6 +320,7 @@
 				B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */,
 				B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */,
 				B7FDB48529243E5F00B8A17D /* ARModel+CoreDataClass.swift in Sources */,
+				B7AACAD529247125008A850B /* Extensions.swift in Sources */,
 				B7F64F00291FFCCF00652A9E /* MainViewController.swift in Sources */,
 				B7FDB44C2923B55000B8A17D /* MainViewCollectionViewCell.swift in Sources */,
 				B7FDB47E29243C6000B8A17D /* ModelDatabase.xcdatamodeld in Sources */,
@@ -550,6 +558,14 @@
 				kind = branch;
 			};
 		};
+		B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -562,6 +578,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum" */;
 			productName = LoremSwiftum;
+		};
+		B7AACAD22924711C008A850B /* JGProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
+			productName = JGProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */
 

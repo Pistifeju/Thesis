@@ -10,9 +10,15 @@ import ARKit
 import FocusEntity
 import LoremSwiftum
 
+protocol ARViewControllerDelegate: AnyObject {
+    func didLoad()
+}
+
 class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Properties
+        
+    weak var delegate: ARViewControllerDelegate?
     
     public var modelName = ""
     private let modelInformationView = ModelInformationView(frame: .zero)
@@ -29,6 +35,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         return button
     }()
+    
+    
     
     private lazy var arView: ARView = {
         let arview = ARView()
@@ -49,7 +57,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         configureUI()
         setupARView()
-
+        delegate?.didLoad()
     }
     
     // MARK: - Helpers
