@@ -24,6 +24,7 @@ class MainViewController: UICollectionViewController {
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
         self.systems = DatabaseManager().getAllItems()!
+        print(self.systems)
         
         configureUI()
         configure()

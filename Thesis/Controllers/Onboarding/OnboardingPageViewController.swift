@@ -139,7 +139,7 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
         } else {
             if(pageControl.currentPage == pages.count - 1) {
                 didOnboard()
-            } 
+            }
             return nil
         }
     }

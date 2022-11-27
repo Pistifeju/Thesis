@@ -24,18 +24,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         
         if UserDefaults.standard.bool(forKey: "hasOnboarded") {
-            loadData()
             let layout = UICollectionViewFlowLayout()
             let vc = MainViewController(collectionViewLayout: layout)
             let nav = UINavigationController(rootViewController: vc)
             window?.rootViewController = nav
+            window?.makeKeyAndVisible()
         } else {
-            
+            loadData()
+            let nav = UINavigationController(rootViewController: OnboardingPageViewController())
+            window?.rootViewController = nav
+            window?.makeKeyAndVisible()
         }
-        let nav = UINavigationController(rootViewController: OnboardingPageViewController())
-        window?.rootViewController = nav
-        loadData()
-        window?.makeKeyAndVisible()
     }
 
     func deleteData() {
