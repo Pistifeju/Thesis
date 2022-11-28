@@ -38,7 +38,6 @@ class CategoryViewCollectionViewCell: UICollectionViewCell {
     private func configureUI() {
         addSubview(modelName)
         
-        
         backgroundColor = Colors.mainControllerCells
         layer.cornerRadius = 8
         

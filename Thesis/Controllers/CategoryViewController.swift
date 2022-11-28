@@ -14,7 +14,7 @@ class CategoryViewController: UICollectionViewController {
     
     // MARK: - Properties
     
-    public var systems = [ARModel]()
+    public var systems: [AnatomyModel] = []
     
     // MARK: - Lifecycle
     
@@ -59,7 +59,7 @@ extension CategoryViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CategoryViewCollectionViewCell
-        cell.modelName.text = systems[indexPath.row].name
+        let index = skeletalSystems[indexPath.row]
         
         return cell
     }
@@ -84,13 +84,27 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
             })
         }
         
-        collectionView.showLoader(true)
+        //collectionView.showLoader(true)
+        
+        
+//        let vc = ARViewController()
+//        vc.delegate = self
+//        vc.modelName = modelName!
+//        navigationController?.pushViewController(vc, animated: true)
         
         let modelName = cell.modelName.text
-        let vc = ARViewController()
-        vc.delegate = self
-        vc.modelName = modelName!
-        navigationController?.pushViewController(vc, animated: true)
+        let index = skeletalSystems[indexPath.row]
+//        let selectedSystem = systems[index]!
+        
+//        let vc = QuizViewController()
+//        vc.questions = selectedSystem["questions"]
+//        vc.title = "\(modelName!) Quiz"
+//        let nav = UINavigationController(rootViewController: vc)
+//        nav.modalPresentationStyle = .fullScreen
+//        present(nav, animated: true)
+//        
+//        
+//        print(selectedSystem)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

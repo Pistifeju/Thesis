@@ -14,7 +14,7 @@ class MainViewController: UICollectionViewController {
     
     // MARK: - Properties
     
-    private var systems: [ARModel] = []
+    private var systems: [AnatomyModel] = []
     private var systemsName: [String] = ["skeletalSystem", "visceralSystem", "muscularSystem"]
     
     // MARK: - Lifecycle
@@ -23,8 +23,7 @@ class MainViewController: UICollectionViewController {
         super.viewDidLoad()
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         
-        self.systems = DatabaseManager().getAllItems()!
-        print(self.systems)
+        self.systems = AnatomyModelArray
         
         configureUI()
         configure()

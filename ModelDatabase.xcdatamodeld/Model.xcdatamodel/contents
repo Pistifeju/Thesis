@@ -4,5 +4,7 @@
         <attribute name="category" optional="YES" attributeType="String"/>
         <attribute name="informationText" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="questions" optional="YES" attributeType="Transformable"/>
     </entity>
+    <entity name="Question" representedClassName="Question" syncable="YES" codeGenerationType="class"/>
 </model>

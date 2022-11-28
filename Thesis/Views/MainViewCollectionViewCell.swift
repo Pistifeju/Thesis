@@ -14,7 +14,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
     
     public var categoryName = ""
     public var sectionCount = 0
-    public var system: [ARModel] = []
+    public var system: [AnatomyModel] = []
     
     private lazy var cellImageView: UIImageView = {
         let imageView = UIImageView()
@@ -36,7 +36,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
     
     private let sectionLabel: UILabel = {
         let label = UILabel()
-        label.textColor = Colors.buttonGrey
+        label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -81,7 +81,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    public func configureCell(withCategory categoryName: String, withSystems system: [ARModel]) {
+    public func configureCell(withCategory categoryName: String, withSystems system: [AnatomyModel]) {
         self.categoryName = categoryName
         self.cellImageView.image = UIImage(named: categoryName)
         self.cellImageView.layer.opacity = 0.7

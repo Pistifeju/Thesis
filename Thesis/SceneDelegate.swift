@@ -21,8 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         //window?.rootViewController = UINavigationController(rootViewController: ARViewController())
         
-        
-        
         if UserDefaults.standard.bool(forKey: "hasOnboarded") {
             let layout = UICollectionViewFlowLayout()
             let vc = MainViewController(collectionViewLayout: layout)
@@ -69,6 +67,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             ["VertebralColumn", "This is the VertebralColumn."],
         ]
         
+        let skeletalQuestions: [Question] = [
+            Question(question: "Hany fogad van?", answerIndex: 0, answers: ["1", "2", "3", "nullaaaa"]),
+            Question(question: "be szartal?", answerIndex: 3, answers: ["nem tom", "esku nem", "nem", "be"]),
+            Question(question:  "miert fosos a gatyad", answerIndex: 0, answers: ["mert be szartam", "nem is az", "sabaton", "miiii"]),
+            Question(question: "miert fogsz bukni falmaszasbol", answerIndex: 1, answers: ["nem mondom el", "mert nem jarok orara", "temi anyja miatt", "meguntam"]),
+        ]
+        
         let visceralSystem: [[String]] = [
             // TODO
         ]
@@ -77,8 +82,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // TODO
         ]
         
-        skeletalSystem.forEach { system in
-            DatabaseManager().createItem(name: system[0], informationText: system[1], category: "skeletalSystem")
+        skeletalSystems.forEach { system in
+            let anatomyModel = AnatomyModel(name: system, informationText: "skeletalSystem", category: "skeletal", questions: skeletalQuestions)
+            AnatomyModelArray.append(anatomyModel)
         }
     }
     

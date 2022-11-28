@@ -23,7 +23,7 @@ class OnboardingViewController: UIViewController {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = Colors.buttonGrey
+        imageView.tintColor = .black
         
         return imageView
     }()
@@ -32,7 +32,7 @@ class OnboardingViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .preferredFont(forTextStyle: .headline)
-        label.textColor = Colors.buttonGrey
+        label.textColor = .black
         
         return label
     }()
@@ -42,7 +42,7 @@ class OnboardingViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0
         label.textAlignment = .center
-        label.textColor = Colors.buttonGrey
+        label.textColor = .black
         
         return label
     }()

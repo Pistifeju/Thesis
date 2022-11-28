@@ -8,9 +8,12 @@
 import Foundation
 import UIKit
 
+let skeletalSystems = ["Laryngeal", "Chest", "Skull", "Arm", "Foot", "Hand", "Leg", "PelvicGirdle", "ShoulderGirdle", "VertebralColumn"]
+var AnatomyModelArray: [AnatomyModel] = []
+
 struct Colors {
-    static let buttonGrey = UIColor(red: 55 / 255, green: 61 / 255, blue: 64 / 255, alpha: 1)
-    static let mainControllerCells = UIColor(red: 255 / 255, green: 212 / 255, blue: 212 / 255, alpha: 1)
+    static let buttonBlue = UIColor(red: 162 / 255, green: 210 / 255, blue: 255 / 255, alpha: 1)
+    static let mainControllerCells = UIColor(red: 162 / 255, green: 210 / 255, blue: 255 / 255, alpha: 1)
 }
 
 enum Systems: String, CaseIterable{
