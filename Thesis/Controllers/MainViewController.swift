@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 private let reuseIdentifier = "systemCell"
 
@@ -22,11 +23,13 @@ class MainViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
-        self.systems = AnatomyModelArray
+                
+        let realm = try! Realm()
+        print(Realm.Configuration.defaultConfiguration.fileURL)
+
+        self.systems = Array(realm.objects(AnatomyModel.self).filter("category = 'skeletal'"))
         
         configureUI()
-        configure()
     }
     
     // MARK: - Helpers
@@ -53,9 +56,7 @@ class MainViewController: UICollectionViewController {
         
         collectionView.reloadData()
     }
-    
-    public func configure() {
-    }
+
     
     // MARK: - Selectors
 }

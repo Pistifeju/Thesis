@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+
 class MainViewCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties

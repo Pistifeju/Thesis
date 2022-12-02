@@ -12,6 +12,8 @@ class CategoryViewCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Properties
     
+    public var anatomyModel: AnatomyModel = AnatomyModel()
+    
     public var modelName: UILabel = {
         let label = UILabel()
         label.textColor = UIColor.black

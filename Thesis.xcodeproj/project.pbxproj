@@ -40,9 +40,13 @@
 		B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB4872924402500B8A17D /* DatabaseManager.swift */; };
 		B7FDB48A29244ADB00B8A17D /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB48929244ADB00B8A17D /* CategoryViewController.swift */; };
 		B7FDB48C29244B9E00B8A17D /* CategoryViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB48B29244B9E00B8A17D /* CategoryViewCollectionViewCell.swift */; };
+		FCB4F5A3CDC4FB5966833400 /* Pods_Thesis.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F089672C8C06FEC9296484 /* Pods_Thesis.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3321F09ECA26FDE6D6B1AED5 /* Pods-Thesis.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thesis.release.xcconfig"; path = "Target Support Files/Pods-Thesis/Pods-Thesis.release.xcconfig"; sourceTree = "<group>"; };
+		71F089672C8C06FEC9296484 /* Pods_Thesis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Thesis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B067CE6E966AE50BDCBF3ADB /* Pods-Thesis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thesis.debug.xcconfig"; path = "Target Support Files/Pods-Thesis/Pods-Thesis.debug.xcconfig"; sourceTree = "<group>"; };
 		B7136B6F2911D64200C6D54E /* InformationUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationUIView.swift; sourceTree = "<group>"; };
 		B71CFFD32934DD0D005870E2 /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 		B71CFFD629351CC0005870E2 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
@@ -85,12 +89,31 @@
 				B7136B6E2911D52A00C6D54E /* LoremSwiftum in Frameworks */,
 				B7AACAD32924711C008A850B /* JGProgressHUD in Frameworks */,
 				B7136B6B2911D4FB00C6D54E /* FocusEntity in Frameworks */,
+				FCB4F5A3CDC4FB5966833400 /* Pods_Thesis.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0F1241F11490A3EA94FEF860 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B067CE6E966AE50BDCBF3ADB /* Pods-Thesis.debug.xcconfig */,
+				3321F09ECA26FDE6D6B1AED5 /* Pods-Thesis.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		7B368FAC294A69B6A02A6368 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				71F089672C8C06FEC9296484 /* Pods_Thesis.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B71CFFD22934DCD6005870E2 /* ARControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -115,6 +138,8 @@
 				B77B697D2911DD9F004FDA40 /* Design.png */,
 				B7302F012911CEBC0018272C /* Thesis */,
 				B7302F002911CEBC0018272C /* Products */,
+				0F1241F11490A3EA94FEF860 /* Pods */,
+				7B368FAC294A69B6A02A6368 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -232,9 +257,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B7302F132911CEBD0018272C /* Build configuration list for PBXNativeTarget "Thesis" */;
 			buildPhases = (
+				CFEC964CAA6D28D9700065A6 /* [CP] Check Pods Manifest.lock */,
 				B7302EFB2911CEBC0018272C /* Sources */,
 				B7302EFC2911CEBC0018272C /* Frameworks */,
 				B7302EFD2911CEBC0018272C /* Resources */,
+				B168F61D6C92CCB537D1473B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -276,8 +303,8 @@
 			mainGroup = B7302EF62911CEBC0018272C;
 			packageReferences = (
 				B7136B692911D4FB00C6D54E /* XCRemoteSwiftPackageReference "FocusEntity" */,
-				B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum" */,
-				B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
+				B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum.git" */,
+				B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD.git" */,
 			);
 			productRefGroup = B7302F002911CEBC0018272C /* Products */;
 			projectDirPath = "";
@@ -311,6 +338,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B168F61D6C92CCB537D1473B /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Thesis/Pods-Thesis-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Thesis/Pods-Thesis-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Thesis/Pods-Thesis-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CFEC964CAA6D28D9700065A6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Thesis-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B7302EFB2911CEBC0018272C /* Sources */ = {
@@ -466,6 +535,7 @@
 		};
 		B7302F142911CEBD0018272C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B067CE6E966AE50BDCBF3ADB /* Pods-Thesis.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -497,6 +567,7 @@
 		};
 		B7302F152911CEBD0018272C /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3321F09ECA26FDE6D6B1AED5 /* Pods-Thesis.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -558,7 +629,7 @@
 				kind = branch;
 			};
 		};
-		B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum" */ = {
+		B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/lukaskubanek/LoremSwiftum.git";
 			requirement = {
@@ -566,7 +637,7 @@
 				kind = branch;
 			};
 		};
-		B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
+		B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD.git";
 			requirement = {
@@ -584,12 +655,12 @@
 		};
 		B7136B6D2911D52A00C6D54E /* LoremSwiftum */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum" */;
+			package = B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum.git" */;
 			productName = LoremSwiftum;
 		};
 		B7AACAD22924711C008A850B /* JGProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD" */;
+			package = B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD.git" */;
 			productName = JGProgressHUD;
 		};
 /* End XCSwiftPackageProductDependency section */

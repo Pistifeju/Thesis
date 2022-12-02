@@ -6,17 +6,27 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct AnatomyModel {
-    var name: String
-    var informationText: String
-    var questions: [Question]
-    var category: String
+@objcMembers class AnatomyModel: Object {
+    dynamic var name: String?
+    dynamic var informationText: String?
+    dynamic var questions: List<Question> = List<Question>()
+    dynamic var category: String?
     
-    init(name: String, informationText: String, category: String, questions: [Question]) {
+    convenience init(name: String, informationText: String, category: String, questions: List<Question>) {
+        self.init()
         self.name = name
-        self.informationText = "This is the " + informationText
-        self.questions = questions
+        self.informationText = informationText
         self.category = category
+        self.questions = questions
     }
+}
+
+// MARK: - CRUD methods
+
+extension AnatomyModel {
+
+  
+  
 }

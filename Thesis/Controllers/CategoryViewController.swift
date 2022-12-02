@@ -59,7 +59,9 @@ extension CategoryViewController {
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CategoryViewCollectionViewCell
-        let index = skeletalSystems[indexPath.row]
+        let index = systems[indexPath.row]
+        cell.modelName.text = index.name
+        cell.anatomyModel = index
         
         return cell
     }
@@ -92,19 +94,12 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
 //        vc.modelName = modelName!
 //        navigationController?.pushViewController(vc, animated: true)
         
-        let modelName = cell.modelName.text
-        let index = skeletalSystems[indexPath.row]
-//        let selectedSystem = systems[index]!
-        
-//        let vc = QuizViewController()
-//        vc.questions = selectedSystem["questions"]
-//        vc.title = "\(modelName!) Quiz"
-//        let nav = UINavigationController(rootViewController: vc)
-//        nav.modalPresentationStyle = .fullScreen
-//        present(nav, animated: true)
-//        
-//        
-//        print(selectedSystem)
+        let vc = QuizViewController()
+        vc.questions = Array(cell.anatomyModel.questions)
+        vc.title = "\(cell.modelName.text!) Quiz"
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

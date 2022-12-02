@@ -6,9 +6,17 @@
 //
 
 import Foundation
+import RealmSwift
 
-struct Question {
-    var question: String
-    var answerIndex: Int
-    var answers: [String]
+@objcMembers class Question: Object {
+    dynamic var question: String = ""
+    dynamic var answerIndex: Int = 0
+    dynamic var answers: List<String> = List<String>()
+    
+    convenience init(question: String, answerIndex: Int, answers: List<String> ) {
+        self.init()
+        self.question = question
+        self.answerIndex = answerIndex
+        self.answers = answers
+    }
 }

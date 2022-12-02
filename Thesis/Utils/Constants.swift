@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 let skeletalSystems = ["Laryngeal", "Chest", "Skull", "Arm", "Foot", "Hand", "Leg", "PelvicGirdle", "ShoulderGirdle", "VertebralColumn"]
-var AnatomyModelArray: [AnatomyModel] = []
 
 struct Colors {
     static let buttonBlue = UIColor(red: 162 / 255, green: 210 / 255, blue: 255 / 255, alpha: 1)

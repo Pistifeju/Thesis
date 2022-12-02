@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -28,63 +28,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.rootViewController = nav
             window?.makeKeyAndVisible()
         } else {
-            loadData()
+            DatabaseManager.loadData()
             let nav = UINavigationController(rootViewController: OnboardingPageViewController())
             window?.rootViewController = nav
             window?.makeKeyAndVisible()
-        }
-    }
-
-    func deleteData() {
-        let appDel:AppDelegate = (UIApplication.shared.delegate as! AppDelegate)
-        let context:NSManagedObjectContext = appDel.persistentContainer.viewContext
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ARModel")
-        fetchRequest.returnsObjectsAsFaults = false
-        do {
-            let results = try context.fetch(fetchRequest)
-            for managedObject in results {
-                if let managedObjectData: NSManagedObject = managedObject as? NSManagedObject {
-                    context.delete(managedObjectData)
-                }
-            }
-        } catch let error as NSError {
-            print("Deleted all my data in myEntity error : \(error) \(error.userInfo)")
-        }
-    }
-    
-    func loadData() {
-        deleteData()
-        let skeletalSystem: [[String]] = [
-            ["Laryngeal", "This is the Laryngeal."],
-            ["Chest", "This is the Chest."],
-            ["Skull", "This is the Skull."],
-            ["Arm", "This is the Arm."],
-            ["Foot", "This is the Foot."],
-            ["Hand", "This is the Hand."],
-            ["Leg", "This is the Leg."],
-            ["PelvicGirdle", "This is the PelvicGirdle."],
-            ["ShoulderGirdle", "This is the ShoulderGirdle."],
-            ["VertebralColumn", "This is the VertebralColumn."],
-        ]
-        
-        let skeletalQuestions: [Question] = [
-            Question(question: "Hany fogad van?", answerIndex: 0, answers: ["1", "2", "3", "nullaaaa"]),
-            Question(question: "be szartal?", answerIndex: 3, answers: ["nem tom", "esku nem", "nem", "be"]),
-            Question(question:  "miert fosos a gatyad", answerIndex: 0, answers: ["mert be szartam", "nem is az", "sabaton", "miiii"]),
-            Question(question: "miert fogsz bukni falmaszasbol", answerIndex: 1, answers: ["nem mondom el", "mert nem jarok orara", "temi anyja miatt", "meguntam"]),
-        ]
-        
-        let visceralSystem: [[String]] = [
-            // TODO
-        ]
-        
-        let muscularSystem: [[String]] = [
-            // TODO
-        ]
-        
-        skeletalSystems.forEach { system in
-            let anatomyModel = AnatomyModel(name: system, informationText: "skeletalSystem", category: "skeletal", questions: skeletalQuestions)
-            AnatomyModelArray.append(anatomyModel)
         }
     }
     
