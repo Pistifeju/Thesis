@@ -75,7 +75,6 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
         collectionView.deselectItem(at: indexPath, animated: true)
         let cell = collectionView.cellForItem(at: indexPath) as! CategoryViewCollectionViewCell
         
-        
         UIView.animate(withDuration: 0.2,
                        animations: {
             cell.alpha = 0.5

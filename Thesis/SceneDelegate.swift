@@ -27,6 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let nav = UINavigationController(rootViewController: vc)
             window?.rootViewController = nav
             window?.makeKeyAndVisible()
+            DatabaseManager.loadData()
         } else {
             DatabaseManager.loadData()
             let nav = UINavigationController(rootViewController: OnboardingPageViewController())
