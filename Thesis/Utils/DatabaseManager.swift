@@ -35,17 +35,17 @@ final class DatabaseManager {
         ]
         
         let answers: [[String]] = [
-            ["1", "2", "3", "nullaaaa"],
-            ["nem tom", "esku nem", "nem", "be"],
-            ["mert be szartam", "nem is az", "sabaton", "miiii"],
-            ["nem mondom el", "mert nem jarok orara", "temi anyja miatt", "meguntam"],
+            ["igen", "nem tudom", "nem", "ki tudja"],
+            ["0", "20", "4", "sok"],
+            ["van", "nincs", "nem mondom el", "ki tudja?"],
+            ["Errol en semmit sem tudok sajnos.", "nincs annyi ido amennyi alatt el lehetne donteni", "feladom.", "hello there"],
         ]
         
         let skeletalQuestions: [Question] = [
-            Question(question: "Hany fogad van?", answerIndex: 0, answers: List<String>()),
-            Question(question: "be szartal?", answerIndex: 3, answers: List<String>()),
-            Question(question: "miert fosos a gatyad", answerIndex: 0, answers: List<String>()),
-            Question(question: "miert fogsz bukni falmaszasbol", answerIndex: 1, answers: List<String>()),
+            Question(question: "Ez egy teszt kerdes?", answerIndex: 0, answers: List<String>()),
+            Question(question: "Hany teszt kerdes lesz ebben a kerdessorban?", answerIndex: 2, answers: List<String>()),
+            Question(question: "Mutasd meg, hogy a kovetkezo problema NL-beli: input egy G (iranyitatlan) graf, van-e benne 10-elemu lefogo csucshalmaz?", answerIndex: 0, answers: List<String>()),
+            Question(question: "Az A eldöntési problémáról azt tudjuk, hogy logaritmikus tárban visszavezehető egy olyan B eldöntési problémára, mely eldönthető n^5 időben determinisztikusan. Mit tudunk ekkor, A milyen (tár és/vagy idő)korlátban dönthető el biztosan?", answerIndex: 1, answers: List<String>()),
         ]
         
         for i in 0...skeletalQuestions.count-1 {

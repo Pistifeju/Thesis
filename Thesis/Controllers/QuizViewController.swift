@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RealmSwift
 
 class QuizViewController: UIViewController {
     
@@ -137,25 +138,32 @@ class QuizViewController: UIViewController {
             backButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             backButton.widthAnchor.constraint(equalToConstant: view.frame.size.width / 4),
             backButton.heightAnchor.constraint(equalToConstant: view.frame.size.width / 9),
-
+                        
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: nextButton.bottomAnchor, multiplier: 2),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: nextButton.trailingAnchor, multiplier: 4),
             nextButton.widthAnchor.constraint(equalToConstant: view.frame.size.width / 4),
             nextButton.heightAnchor.constraint(equalToConstant: view.frame.size.width / 9),
 
             collectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            collectionView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             collectionView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: collectionView.trailingAnchor, multiplier: 4),
             collectionView.topAnchor.constraint(equalToSystemSpacingBelow: progressView.bottomAnchor, multiplier: 2),
+            collectionView.bottomAnchor.constraint(equalToSystemSpacingBelow: nextButton.topAnchor, multiplier: -2),
         ])
     }
     
     // MARK: - Selectors
     
     @objc private func didPressExit() {
+        let realm = try! Realm()
         let alert = UIAlertController(title: "Do you want to exit?", message: "Your answers will not be saved.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
+            guard let strongSelf = self else { return }
+            for question in strongSelf.questions {
+                try! realm.write {
+                    question.selectedIndex = -1
+                }
+            }
             self?.dismiss(animated: true)
         }))
         alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { [weak self] action in
@@ -175,8 +183,12 @@ class QuizViewController: UIViewController {
     @objc private func didTapSubmit() {
         let alert = UIAlertController(title: "Do you want to submit your answers?", message: progressView.progress != 1.0 ? "There are unanswered questions." : "", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
-            //Check if there are unanswered questions.
-            self?.dismiss(animated: true)
+            guard let strongSelf = self else {
+                return
+            }
+            let vc = EndOfQuizController()
+            vc.questions = strongSelf.questions
+            strongSelf.navigationController?.pushViewController(vc, animated: true)
         }))
         alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { [weak self] action in
             

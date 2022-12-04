@@ -35,6 +35,7 @@ class QuestionView: UICollectionViewCell {
     private lazy var answerButton1: CustomAnswerButton = {
         let button = CustomAnswerButton(answerLabel: "")
         button.addTarget(self, action: #selector(didTapAnswerButton), for: .touchUpInside)
+        button.titleLabel?.numberOfLines = 0
         button.tag = 0
         
         return button
@@ -43,6 +44,7 @@ class QuestionView: UICollectionViewCell {
     private lazy var answerButton2: CustomAnswerButton = {
         let button = CustomAnswerButton(answerLabel: "")
         button.addTarget(self, action: #selector(didTapAnswerButton), for: .touchUpInside)
+        button.titleLabel?.numberOfLines = 0
         button.tag = 1
         
         return button
@@ -51,6 +53,7 @@ class QuestionView: UICollectionViewCell {
     private lazy var answerButton3: CustomAnswerButton = {
         let button = CustomAnswerButton(answerLabel: "")
         button.addTarget(self, action: #selector(didTapAnswerButton), for: .touchUpInside)
+        button.titleLabel?.numberOfLines = 0
         button.tag = 2
         
         return button
@@ -59,6 +62,7 @@ class QuestionView: UICollectionViewCell {
     private lazy var answerButton4: CustomAnswerButton = {
         let button = CustomAnswerButton(answerLabel: "")
         button.addTarget(self, action: #selector(didTapAnswerButton), for: .touchUpInside)
+        button.titleLabel?.numberOfLines = 0
         button.tag = 3
         
         return button
@@ -69,6 +73,10 @@ class QuestionView: UICollectionViewCell {
         label.textColor = .black
         label.font = UIFont.preferredFont(forTextStyle: .headline)
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        label.allowsDefaultTighteningForTruncation = true
+        label.adjustsFontSizeToFitWidth = true
         
         return label
     }()
@@ -113,11 +121,12 @@ class QuestionView: UICollectionViewCell {
         NSLayoutConstraint.activate([
             questionLabel.topAnchor.constraint(equalToSystemSpacingBelow: topAnchor, multiplier: 1),
             questionLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 0),
+            trailingAnchor.constraint(equalToSystemSpacingAfter: questionLabel.trailingAnchor, multiplier: 0),
             
             stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: leadingAnchor, multiplier: 0),
             trailingAnchor.constraint(equalToSystemSpacingAfter: stackView.trailingAnchor, multiplier: 0),
 
-            stackView.topAnchor.constraint(equalToSystemSpacingBelow: questionLabel.bottomAnchor, multiplier: 4),
+            stackView.topAnchor.constraint(equalToSystemSpacingBelow: questionLabel.bottomAnchor, multiplier: 2),
             bottomAnchor.constraint(equalToSystemSpacingBelow: stackView.bottomAnchor, multiplier: 2),
         ])
     }
