@@ -88,17 +88,16 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
         //collectionView.showLoader(true)
         
         
-//        let vc = ARViewController()
-//        vc.delegate = self
-//        vc.modelName = modelName!
-//        navigationController?.pushViewController(vc, animated: true)
+        let vc = ARViewController(with: cell.anatomyModel)
+        vc.delegate = self
+        navigationController?.pushViewController(vc, animated: true)
         
-        let vc = QuizViewController()
-        vc.questions = Array(cell.anatomyModel.questions)
-        vc.title = "\(cell.modelName.text!) Quiz"
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .fullScreen
-        present(nav, animated: true)
+//        let vc = QuizViewController()
+//        vc.questions = Array(cell.anatomyModel.questions)
+//        vc.title = "\(cell.modelName.text!) Quiz"
+//        let nav = UINavigationController(rootViewController: vc)
+//        nav.modalPresentationStyle = .fullScreen
+//        present(nav, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

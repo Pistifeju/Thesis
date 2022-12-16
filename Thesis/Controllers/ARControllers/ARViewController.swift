@@ -20,7 +20,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
     weak var delegate: ARViewControllerDelegate?
     
-    public var modelName = ""
+    public var model: AnatomyModel
     private let modelInformationView = ModelInformationView(frame: .zero)
     
     private var lastHitObject: ModelEntity = ModelEntity()
@@ -36,8 +36,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         return button
     }()
     
-    
-    
     private lazy var arView: ARView = {
         let arview = ARView()
         arview.translatesAutoresizingMaskIntoConstraints = false
@@ -50,10 +48,20 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Lifecycle
     
+    init(with model: AnatomyModel) {
+        self.model = model
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         modelInformationView.delegate = self
+        focusSquare.isEnabled = true
         
         configureUI()
         setupARView()
@@ -92,17 +100,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             modelInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
         modelInformationView.isHidden = true
-        changePlaceButtonVisibility()
-    }
-    
-    private func changePlaceButtonVisibility() {
-        if modelInformationView.isHidden {
-            placeButton.isHidden = false
-            focusSquare.isEnabled = true
-        } else {
-            placeButton.isHidden = true
-            focusSquare.isEnabled = false
-        }
     }
     
     private func setupARView() {
@@ -120,7 +117,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     // MARK: - Selectors
     
     @objc private func placeObject() {
-        let modelName = self.modelName //Skull, Chest better hitbox
+        let modelName = self.model.name ?? "" //Skull, Chest better hitbox
         
         let entity = try! Entity.load(named: modelName)
         let geomChildrens = entity.findEntity(named: "Geom")
@@ -149,6 +146,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         arView.scene.addAnchor(anchorEntity)
         
         focusSquare.isEnabled = false
+        placeButton.isHidden = true
     }
     
     
@@ -159,7 +157,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         guard let hitTest: CollisionCastHit = result.first, hitTest.entity.name != "Ground Plane"
         else {
             modelInformationView.isHidden = true
-            changePlaceButtonVisibility()
             lastHitObject.model?.materials = lastHitObjectMaterial
             return
         }
@@ -175,7 +172,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
 
         
         modelInformationView.isHidden = false
-        changePlaceButtonVisibility()
         modelInformationView.configure(nameLabel: entity.name, textViewString: LoremSwiftum.Lorem.tweet)
     }
 }
@@ -183,7 +179,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
 extension ARViewController: ModelInformationViewDelegate {
     func didTapExit() {
         modelInformationView.isHidden = true
-        changePlaceButtonVisibility()
         lastHitObject.model?.materials = lastHitObjectMaterial
     }
 }
