@@ -42,6 +42,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         let tf = UITextField()
         tf.backgroundColor = .white
         tf.tintColor = .black
+        tf.textColor = .black
         tf.layer.cornerRadius = 10
         tf.autocorrectionType = .no
         tf.autocapitalizationType = .none
@@ -49,6 +50,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         tf.leftViewMode = .always
         tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
         tf.isHidden = true
+        tf.clearsOnBeginEditing = true
         
         return tf
     }()
@@ -87,11 +89,13 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         modelInformationView.delegate = self
         focusSquare.isEnabled = true
+        view.keyboardLayoutGuide.followsUndockedKeyboard = true
         
         configureUI()
         setupARView()
         delegate?.didLoad()
     }
+
     
     // MARK: - Helpers
     
@@ -126,8 +130,14 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             modelInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
         
+        let textFieldOnKeyboard = view.keyboardLayoutGuide.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 10)
+        view.keyboardLayoutGuide.setConstraints([textFieldOnKeyboard], activeWhenAwayFrom: .top)
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
-
+        NSLayoutConstraint.activate([
+            nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nameTextField.heightAnchor.constraint(equalToConstant: 52),
+            nameTextField.widthAnchor.constraint(equalToConstant: view.frame.size.width / 2),
+        ])
         modelInformationView.isHidden = true
     }
     
@@ -141,6 +151,67 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         arView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:))))
     }
     
+    private func colorModelEntities() {
+        let selectedMaterial = SimpleMaterial(color: .link, isMetallic: false) //Blue
+        let wrongNameMaterial = SimpleMaterial(color: .red, isMetallic: false) //Red
+        let correctNameMaterial = SimpleMaterial(color: .green, isMetallic: false) //Green
+        
+        for entity in modelEntities {
+            
+            let keyExists = modelEntitiesMaterials[entity.name] != nil
+            
+            if keyExists {
+                entity.model!.materials[0] = UnlitMaterial(color: .link)
+                entity.model!.materials[0] = modelEntitiesMaterials[entity.name]!
+            }
+            
+            if(entitiesState[entity.name] == .selected) {
+                //Color blue the selected item
+                entity.model?.materials[0] = selectedMaterial
+            }
+        }
+    }
+    
+    private func selectEntity(withSelectedEntity: ModelEntity?) {
+        modelInformationView.isHidden = false
+        nameTextField.isHidden = false
+        nameTextField.becomeFirstResponder()
+        nameTextField.text = ""
+        
+        //If we didnt hit any modelEntity
+        guard let selectedEntity = withSelectedEntity else {
+            //Unselect the selected entity if there is one.
+            for entity in modelEntities {
+                if(entitiesState[entity.name] == .selected) {
+                    entitiesState[entity.name] = .unselected
+                }
+            }
+            modelInformationView.isHidden = true
+            nameTextField.isHidden = true
+            nameTextField.resignFirstResponder()
+            colorModelEntities()
+            return
+        }
+                
+        if(entitiesState[selectedEntity.name] == .selected) {
+            // If its already selected, just unselect
+            entitiesState[selectedEntity.name] = .unselected
+            modelInformationView.isHidden = true
+            nameTextField.isHidden = true
+            nameTextField.resignFirstResponder()
+        } else {
+            //First unselect the previously selected entity.
+            for entity in modelEntities {
+                if(entitiesState[entity.name] == .selected) {
+                    entitiesState[entity.name] = .unselected
+                }
+            }
+            //Select the entity.
+            entitiesState[selectedEntity.name] = .selected
+        }
+        colorModelEntities()
+    }
+
     // MARK: - Selectors
     
     @objc private func placeObject() {
@@ -181,60 +252,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         placeButton.isHidden = true
     }
     
-    private func selectEntity(withSelectedEntity: ModelEntity?) {
-        modelInformationView.isHidden = false
-        //If we didnt hit any modelEntity
-        guard let selectedEntity = withSelectedEntity else {
-            //Unselect the selected entity if there is one.
-            for entity in modelEntities {
-                if(entitiesState[entity.name] == .selected) {
-                    entitiesState[entity.name] = .unselected
-                }
-            }
-            modelInformationView.isHidden = true
-            colorModelEntities()
-            return
-        }
-                
-        if(entitiesState[selectedEntity.name] == .selected) {
-            // If its already selected, just unselect
-            entitiesState[selectedEntity.name] = .unselected
-            modelInformationView.isHidden = true
-        } else {
-            //First unselect the previously selected entity.
-            for entity in modelEntities {
-                if(entitiesState[entity.name] == .selected) {
-                    entitiesState[entity.name] = .unselected
-                }
-            }
-            //Select the entity.
-            entitiesState[selectedEntity.name] = .selected
-        }
-        
-        colorModelEntities()
-    }
-    
-    private func colorModelEntities() {
-        let selectedMaterial = SimpleMaterial(color: .link, isMetallic: false) //Blue
-        let wrongNameMaterial = SimpleMaterial(color: .red, isMetallic: false) //Red
-        let correctNameMaterial = SimpleMaterial(color: .green, isMetallic: false) //Green
-        
-        for entity in modelEntities {
-            
-            let keyExists = modelEntitiesMaterials[entity.name] != nil
-            
-            if keyExists {
-                entity.model!.materials[0] = UnlitMaterial(color: .link)
-                entity.model!.materials[0] = modelEntitiesMaterials[entity.name]!
-            }
-            
-            if(entitiesState[entity.name] == .selected) {
-                //Color blue the selected item
-                entity.model?.materials[0] = selectedMaterial
-            }
-        }
-    }
-
     @objc private func handleTap(sender: UITapGestureRecognizer) {
         let tapLocation: CGPoint = sender.location(in: arView)
         let result: [CollisionCastHit] = arView.hitTest(tapLocation)
