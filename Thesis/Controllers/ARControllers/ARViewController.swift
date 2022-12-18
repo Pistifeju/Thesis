@@ -14,6 +14,13 @@ protocol ARViewControllerDelegate: AnyObject {
     func didLoad()
 }
 
+enum EntityState {
+    case unselected
+    case selected
+    case correctName
+    case wrongName
+}
+
 class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Properties
@@ -23,10 +30,28 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     public var model: AnatomyModel
     private let modelInformationView = ModelInformationView(frame: .zero)
     
-    private var lastHitObject: ModelEntity = ModelEntity()
-    private var lastHitObjectMaterial: [Material] = [Material]()
-    private var placedDown = false
+    private var entitiesState: [String: EntityState] = [String: EntityState]()
+    private var modelEntities: [ModelEntity] = [ModelEntity]()
+    private var modelEntitiesMaterials: [String: Material] = [String: Material]()
+    
+    private var selectedEntity: ModelEntity = ModelEntity()
+    
     private lazy var focusSquare: FocusEntity = FocusEntity(on: self.arView, focus: .classic)
+    
+    private let nameTextField: UITextField = {
+        let tf = UITextField()
+        tf.backgroundColor = .white
+        tf.tintColor = .black
+        tf.layer.cornerRadius = 10
+        tf.autocorrectionType = .no
+        tf.autocapitalizationType = .none
+        tf.returnKeyType = .done
+        tf.leftViewMode = .always
+        tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+        tf.isHidden = true
+        
+        return tf
+    }()
     
     private lazy var placeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -74,6 +99,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         view.addSubview(arView)
         view.addSubview(placeButton)
         view.addSubview(modelInformationView)
+        view.addSubview(nameTextField)
         
         arView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -99,6 +125,9 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             modelInformationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             modelInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
+        
+        nameTextField.translatesAutoresizingMaskIntoConstraints = false
+
         modelInformationView.isHidden = true
     }
     
@@ -111,8 +140,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         arView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:))))
     }
-
-    
     
     // MARK: - Selectors
     
@@ -120,6 +147,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         let modelName = self.model.name ?? "" //Skull, Chest better hitbox
         
         let entity = try! Entity.load(named: modelName)
+        
         let geomChildrens = entity.findEntity(named: "Geom")
         let nameChildrens = entity.findEntity(named: modelName)
         
@@ -127,11 +155,15 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             for children in geomChildrens.children {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
+                entitiesState[childModelEntity.name] = EntityState.unselected
+                modelEntities.append(childModelEntity)
             }
         } else {
             for children in nameChildrens!.children {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
+                entitiesState[childModelEntity.name] = EntityState.unselected
+                modelEntities.append(childModelEntity)
             }
         }
 
@@ -149,7 +181,60 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         placeButton.isHidden = true
     }
     
+    private func selectEntity(withSelectedEntity: ModelEntity?) {
+        modelInformationView.isHidden = false
+        //If we didnt hit any modelEntity
+        guard let selectedEntity = withSelectedEntity else {
+            //Unselect the selected entity if there is one.
+            for entity in modelEntities {
+                if(entitiesState[entity.name] == .selected) {
+                    entitiesState[entity.name] = .unselected
+                }
+            }
+            modelInformationView.isHidden = true
+            colorModelEntities()
+            return
+        }
+                
+        if(entitiesState[selectedEntity.name] == .selected) {
+            // If its already selected, just unselect
+            entitiesState[selectedEntity.name] = .unselected
+            modelInformationView.isHidden = true
+        } else {
+            //First unselect the previously selected entity.
+            for entity in modelEntities {
+                if(entitiesState[entity.name] == .selected) {
+                    entitiesState[entity.name] = .unselected
+                }
+            }
+            //Select the entity.
+            entitiesState[selectedEntity.name] = .selected
+        }
+        
+        colorModelEntities()
+    }
     
+    private func colorModelEntities() {
+        let selectedMaterial = SimpleMaterial(color: .link, isMetallic: false) //Blue
+        let wrongNameMaterial = SimpleMaterial(color: .red, isMetallic: false) //Red
+        let correctNameMaterial = SimpleMaterial(color: .green, isMetallic: false) //Green
+        
+        for entity in modelEntities {
+            
+            let keyExists = modelEntitiesMaterials[entity.name] != nil
+            
+            if keyExists {
+                entity.model!.materials[0] = UnlitMaterial(color: .link)
+                entity.model!.materials[0] = modelEntitiesMaterials[entity.name]!
+            }
+            
+            if(entitiesState[entity.name] == .selected) {
+                //Color blue the selected item
+                entity.model?.materials[0] = selectedMaterial
+            }
+        }
+    }
+
     @objc private func handleTap(sender: UITapGestureRecognizer) {
         let tapLocation: CGPoint = sender.location(in: arView)
         let result: [CollisionCastHit] = arView.hitTest(tapLocation)
@@ -157,29 +242,29 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         guard let hitTest: CollisionCastHit = result.first, hitTest.entity.name != "Ground Plane"
         else {
             modelInformationView.isHidden = true
-            lastHitObject.model?.materials = lastHitObjectMaterial
+            selectEntity(withSelectedEntity: nil)
             return
         }
-
+        
         let entity: ModelEntity = hitTest.entity as! ModelEntity
         
-        lastHitObject.model?.materials = lastHitObjectMaterial
-        lastHitObject = entity
-        lastHitObjectMaterial = entity.model!.materials
+        let keyExists = modelEntitiesMaterials[entity.name] != nil
         
-        let material = SimpleMaterial(color: .link, isMetallic: false)
-        entity.model?.materials = [material]
-
+        if !keyExists {
+            modelEntitiesMaterials[entity.name] = entity.model!.materials[0]
+        }
         
-        modelInformationView.isHidden = false
+        selectEntity(withSelectedEntity: entity)
+        
         modelInformationView.configure(nameLabel: entity.name, textViewString: LoremSwiftum.Lorem.tweet)
+        modelInformationView.isHidden = true
     }
 }
 
 extension ARViewController: ModelInformationViewDelegate {
     func didTapExit() {
         modelInformationView.isHidden = true
-        lastHitObject.model?.materials = lastHitObjectMaterial
+        selectEntity(withSelectedEntity: nil)
     }
 }
 
@@ -213,6 +298,5 @@ extension ARView: ARCoachingOverlayViewDelegate {
       // Example callback for the delegate object
     public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
         coachingOverlayView.activatesAutomatically = false
-
     }
 }
