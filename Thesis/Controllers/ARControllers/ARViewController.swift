@@ -19,6 +19,8 @@ enum EntityState {
     case selected
     case correctName
     case wrongName
+    case wrongAndSelected
+    case correctAndSelected
 }
 
 class ARViewController: UIViewController, FocusEntityDelegate {
@@ -38,7 +40,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     private lazy var focusSquare: FocusEntity = FocusEntity(on: self.arView, focus: .classic)
     
-    private let nameTextField: UITextField = {
+    private lazy var nameTextField: UITextField = {
         let tf = UITextField()
         tf.backgroundColor = .white
         tf.tintColor = .black
@@ -47,8 +49,10 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         tf.autocorrectionType = .no
         tf.autocapitalizationType = .none
         tf.returnKeyType = .done
+        
         tf.leftViewMode = .always
         tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
+        
         tf.isHidden = true
         tf.clearsOnBeginEditing = true
         
@@ -90,6 +94,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         modelInformationView.delegate = self
         focusSquare.isEnabled = true
         view.keyboardLayoutGuide.followsUndockedKeyboard = true
+        nameTextField.delegate = self
         
         configureUI()
         setupARView()
@@ -157,17 +162,23 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         let correctNameMaterial = SimpleMaterial(color: .green, isMetallic: false) //Green
         
         for entity in modelEntities {
-            
-            let keyExists = modelEntitiesMaterials[entity.name] != nil
-            
-            if keyExists {
+
+            switch entitiesState[entity.name] {
+            case .selected:
+                entity.model!.materials[0] = selectedMaterial
+            case .unselected:
                 entity.model!.materials[0] = UnlitMaterial(color: .link)
                 entity.model!.materials[0] = modelEntitiesMaterials[entity.name]!
-            }
-            
-            if(entitiesState[entity.name] == .selected) {
-                //Color blue the selected item
-                entity.model?.materials[0] = selectedMaterial
+            case .correctName:
+                entity.model!.materials[0] = correctNameMaterial
+            case .wrongName:
+                entity.model!.materials[0] = wrongNameMaterial
+            case .wrongAndSelected:
+                entity.model!.materials[0] = selectedMaterial
+            case .correctAndSelected:
+                entity.model!.materials[0] = selectedMaterial
+            case .none:
+                break
             }
         }
     }
@@ -178,8 +189,20 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         nameTextField.becomeFirstResponder()
         nameTextField.text = ""
         
+        
+        
         //If we didnt hit any modelEntity
         guard let selectedEntity = withSelectedEntity else {
+            
+            for entity in modelEntities {
+                if entitiesState[entity.name] == .wrongAndSelected {
+                    entitiesState[entity.name] = .wrongName
+                }
+                if entitiesState[entity.name] == .correctAndSelected {
+                    entitiesState[entity.name] = .correctName
+                }
+            }
+            
             //Unselect the selected entity if there is one.
             for entity in modelEntities {
                 if(entitiesState[entity.name] == .selected) {
@@ -192,22 +215,47 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             colorModelEntities()
             return
         }
-                
+        
         if(entitiesState[selectedEntity.name] == .selected) {
             // If its already selected, just unselect
             entitiesState[selectedEntity.name] = .unselected
             modelInformationView.isHidden = true
             nameTextField.isHidden = true
             nameTextField.resignFirstResponder()
+        } else if (entitiesState[selectedEntity.name] == .wrongAndSelected){
+            entitiesState[selectedEntity.name] = .wrongName
+            modelInformationView.isHidden = true
+            nameTextField.isHidden = true
+            nameTextField.resignFirstResponder()
+        } else if (entitiesState[selectedEntity.name] == .correctAndSelected){
+            entitiesState[selectedEntity.name] = .correctName
+            modelInformationView.isHidden = true
+            nameTextField.isHidden = true
+            nameTextField.resignFirstResponder()
         } else {
-            //First unselect the previously selected entity.
+            
+            for entity in modelEntities {
+                if entitiesState[entity.name] == .wrongAndSelected {
+                    entitiesState[entity.name] = .wrongName
+                }
+                if entitiesState[entity.name] == .correctAndSelected {
+                    entitiesState[entity.name] = .correctName
+                }
+            }
+            
             for entity in modelEntities {
                 if(entitiesState[entity.name] == .selected) {
                     entitiesState[entity.name] = .unselected
                 }
             }
-            //Select the entity.
-            entitiesState[selectedEntity.name] = .selected
+            if(entitiesState[selectedEntity.name] == .wrongName) {
+                entitiesState[selectedEntity.name] = .wrongAndSelected
+            } else if (entitiesState[selectedEntity.name] == .correctName) {
+                entitiesState[selectedEntity.name] = .correctAndSelected
+            } else {
+                //First unselect the previously selected entity.
+                entitiesState[selectedEntity.name] = .selected
+            }
         }
         colorModelEntities()
     }
@@ -227,6 +275,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
                 entitiesState[childModelEntity.name] = EntityState.unselected
+                modelEntitiesMaterials[childModelEntity.name] = childModelEntity.model!.materials[0]
                 modelEntities.append(childModelEntity)
             }
         } else {
@@ -234,6 +283,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
                 entitiesState[childModelEntity.name] = EntityState.unselected
+                modelEntitiesMaterials[childModelEntity.name] = childModelEntity.model!.materials[0]
                 modelEntities.append(childModelEntity)
             }
         }
@@ -264,17 +314,36 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         }
         
         let entity: ModelEntity = hitTest.entity as! ModelEntity
-        
-        let keyExists = modelEntitiesMaterials[entity.name] != nil
-        
-        if !keyExists {
-            modelEntitiesMaterials[entity.name] = entity.model!.materials[0]
-        }
-        
+        self.selectedEntity = entity
+        print("BEFORE:")
+        print(entitiesState[entity.name])
         selectEntity(withSelectedEntity: entity)
         
         modelInformationView.configure(nameLabel: entity.name, textViewString: LoremSwiftum.Lorem.tweet)
         modelInformationView.isHidden = true
+        print("AFTER:")
+        print(entitiesState[entity.name])
+    }
+}
+
+extension ARViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        //Check if the textField.text is equeals to the name of the modelEntity
+        let text = textField.text ?? ""
+        if text == "" {
+            //Unselect here
+            selectEntity(withSelectedEntity: selectedEntity)
+        } else if self.selectedEntity.name.lowercased() == textField.text?.lowercased() {
+            entitiesState[selectedEntity.name] = .correctName
+        } else {
+            entitiesState[selectedEntity.name] = .wrongName
+        }
+        colorModelEntities()
+        nameTextField.resignFirstResponder()
+        nameTextField.isHidden = true
+        print(textField.text)
+        textField.text = ""
+        return true
     }
 }
 
