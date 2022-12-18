@@ -25,7 +25,7 @@ class MainViewController: UICollectionViewController {
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
                 
         let realm = try! Realm()
-        print(Realm.Configuration.defaultConfiguration.fileURL)
+        //print(Realm.Configuration.defaultConfiguration.fileURL)
 
         self.systems = Array(realm.objects(AnatomyModel.self).filter("category = 'skeletal'"))
         

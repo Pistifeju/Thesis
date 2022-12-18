@@ -97,6 +97,11 @@ class QuizViewController: UIViewController {
     
     // MARK: - Lifecycle
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false 
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -166,7 +171,7 @@ class QuizViewController: UIViewController {
             }
             self?.dismiss(animated: true)
         }))
-        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { [weak self] action in
+        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { _ in
             
         }))
         self.present(alert, animated: true, completion: nil)
@@ -190,7 +195,7 @@ class QuizViewController: UIViewController {
             vc.questions = strongSelf.questions
             strongSelf.navigationController?.pushViewController(vc, animated: true)
         }))
-        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { [weak self] action in
+        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { _ in
             
         }))
         self.present(alert, animated: true, completion: nil)

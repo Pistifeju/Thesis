@@ -19,7 +19,6 @@ final class DatabaseManager {
     
     static func loadData() {
         deleteAll()
-        let skeletalModels: [AnatomyModel] = []
         
         let skeletalSystem: [[String]] = [
             ["Laryngeal", "This is the Laryngeal."],
