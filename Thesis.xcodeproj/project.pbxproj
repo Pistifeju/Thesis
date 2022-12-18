@@ -32,6 +32,8 @@
 		B77FCAD52911D3C800E45438 /* Arm.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCACB2911D3C800E45438 /* Arm.usdz */; };
 		B7AACAD32924711C008A850B /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = B7AACAD22924711C008A850B /* JGProgressHUD */; };
 		B7AACAD529247125008A850B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AACAD429247125008A850B /* Extensions.swift */; };
+		B7BC4248294FAB89005D90C0 /* failed.json in Resources */ = {isa = PBXBuildFile; fileRef = B7BC4246294FAB89005D90C0 /* failed.json */; };
+		B7BC424B294FAFBA005D90C0 /* checkmark.json in Resources */ = {isa = PBXBuildFile; fileRef = B7BC424A294FAFBA005D90C0 /* checkmark.json */; };
 		B7D05E24291FD51900439680 /* Skull.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E23291FD51900439680 /* Skull.usdz */; };
 		B7D05E26291FDA9400439680 /* Chest.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E25291FDA9400439680 /* Chest.usdz */; };
 		B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E27291FDA9E00439680 /* Laryngeal.usdz */; };
@@ -74,6 +76,8 @@
 		B77FCACA2911D3C800E45438 /* VertebralColumn.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = VertebralColumn.usdz; sourceTree = "<group>"; };
 		B77FCACB2911D3C800E45438 /* Arm.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Arm.usdz; sourceTree = "<group>"; };
 		B7AACAD429247125008A850B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		B7BC4246294FAB89005D90C0 /* failed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = failed.json; sourceTree = "<group>"; };
+		B7BC424A294FAFBA005D90C0 /* checkmark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = checkmark.json; sourceTree = "<group>"; };
 		B7D05E23291FD51900439680 /* Skull.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Skull.usdz; sourceTree = "<group>"; };
 		B7D05E25291FDA9400439680 /* Chest.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Chest.usdz; sourceTree = "<group>"; };
 		B7D05E27291FDA9E00439680 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
@@ -159,6 +163,7 @@
 		B7302F012911CEBC0018272C /* Thesis */ = {
 			isa = PBXGroup;
 			children = (
+				B7BC4245294FAB7E005D90C0 /* Animations */,
 				B7302F1B2911D1EA0018272C /* USDZFiles */,
 				B7302F1A2911CF710018272C /* Utils */,
 				B71CFFD529351CAC005870E2 /* Models */,
@@ -249,6 +254,15 @@
 			path = Skeletial;
 			sourceTree = "<group>";
 		};
+		B7BC4245294FAB7E005D90C0 /* Animations */ = {
+			isa = PBXGroup;
+			children = (
+				B7BC424A294FAFBA005D90C0 /* checkmark.json */,
+				B7BC4246294FAB89005D90C0 /* failed.json */,
+			);
+			path = Animations;
+			sourceTree = "<group>";
+		};
 		B7F64EF6291FF85900652A9E /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -332,6 +346,7 @@
 				B7D05E24291FD51900439680 /* Skull.usdz in Resources */,
 				B77B697F2911DD9F004FDA40 /* Design.png in Resources */,
 				B77B69802911DD9F004FDA40 /* Design.fig in Resources */,
+				B7BC4248294FAB89005D90C0 /* failed.json in Resources */,
 				B77FCAD42911D3C800E45438 /* VertebralColumn.usdz in Resources */,
 				B77FCACF2911D3C800E45438 /* Hand.usdz in Resources */,
 				B77FCAD22911D3C800E45438 /* ShoulderGirdle.usdz in Resources */,
@@ -342,6 +357,7 @@
 				B7D05E26291FDA9400439680 /* Chest.usdz in Resources */,
 				B77FCAD02911D3C800E45438 /* Foot.usdz in Resources */,
 				B77FCACE2911D3C800E45438 /* PelvicGirdle.usdz in Resources */,
+				B7BC424B294FAFBA005D90C0 /* checkmark.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

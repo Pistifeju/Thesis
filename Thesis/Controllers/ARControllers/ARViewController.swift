@@ -9,6 +9,7 @@ import RealityKit
 import ARKit
 import FocusEntity
 import LoremSwiftum
+import Lottie
 
 protocol ARViewControllerDelegate: AnyObject {
     func didLoad()
@@ -28,6 +29,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     // MARK: - Properties
         
     weak var delegate: ARViewControllerDelegate?
+    
+    private let lottieAnimationView = AnimationView()
     
     public var model: AnatomyModel
     private let modelInformationView = ModelInformationView(frame: .zero)
@@ -77,6 +80,27 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         return arview
     }()
     
+    private let resetButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "gobackward"), for: .normal)
+        button.addTarget(self, action: #selector(resetModel), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .white
+        button.isHidden = true
+        
+        return button
+    }()
+    
+    private let exitButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "x.square"), for: .normal)
+        button.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .white
+        
+        return button
+    }()
+    
     // MARK: - Lifecycle
     
     init(with model: AnatomyModel) {
@@ -91,6 +115,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationController?.navigationBar.isHidden = true
+        
         modelInformationView.delegate = self
         focusSquare.isEnabled = true
         view.keyboardLayoutGuide.followsUndockedKeyboard = true
@@ -104,11 +130,26 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Helpers
     
+    private func setupAnimation(with animation: String) {
+        lottieAnimationView.isHidden = false
+        lottieAnimationView.animation = LottieAnimation.named(animation)
+        lottieAnimationView.contentMode = .scaleAspectFit
+        lottieAnimationView.loopMode = .playOnce
+        
+        lottieAnimationView.play { [weak self] finished in
+            guard let strongSelf = self else {return}
+            strongSelf.lottieAnimationView.isHidden = true
+        }
+    }
+    
     private func configureUI() {
         view.addSubview(arView)
         view.addSubview(placeButton)
         view.addSubview(modelInformationView)
         view.addSubview(nameTextField)
+        view.addSubview(lottieAnimationView)
+        view.addSubview(resetButton)
+        view.addSubview(exitButton)
         
         arView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -143,6 +184,29 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             nameTextField.heightAnchor.constraint(equalToConstant: 52),
             nameTextField.widthAnchor.constraint(equalToConstant: view.frame.size.width / 2),
         ])
+        
+        lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            lottieAnimationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            lottieAnimationView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
+            lottieAnimationView.heightAnchor.constraint(equalToConstant: 100),
+            lottieAnimationView.widthAnchor.constraint(equalToConstant: 100),
+        ])
+        
+        NSLayoutConstraint.activate([
+            resetButton.heightAnchor.constraint(equalToConstant: 50),
+            resetButton.widthAnchor.constraint(equalToConstant: 50),
+            resetButton.topAnchor.constraint(equalToSystemSpacingBelow: arView.topAnchor, multiplier: 1),
+            arView.trailingAnchor.constraint(equalToSystemSpacingAfter: resetButton.trailingAnchor, multiplier: 1),
+        ])
+        
+        NSLayoutConstraint.activate([
+            exitButton.heightAnchor.constraint(equalToConstant: 50),
+            exitButton.widthAnchor.constraint(equalToConstant: 50),
+            exitButton.topAnchor.constraint(equalToSystemSpacingBelow: arView.topAnchor, multiplier: 1),
+            exitButton.leadingAnchor.constraint(equalToSystemSpacingAfter: arView.leadingAnchor, multiplier: 1),
+        ])
+        
         modelInformationView.isHidden = true
     }
     
@@ -262,6 +326,29 @@ class ARViewController: UIViewController, FocusEntityDelegate {
 
     // MARK: - Selectors
     
+    @objc private func dismissView() {
+        
+        let alert = UIAlertController(title: "Do you want to exit?", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
+            guard let strongSelf = self else { return }
+            strongSelf.navigationController?.popToRootViewController(animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { [weak self] action in
+            
+        }))
+    }
+    
+    @objc private func resetModel() {
+        let alert = UIAlertController(title: "Do you want to reset your model?", message: "", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
+            guard let strongSelf = self else { return }
+            print("ITt reset")
+        }))
+        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { [weak self] action in
+            
+        }))
+    }
+    
     @objc private func placeObject() {
         let modelName = self.model.name ?? "" //Skull, Chest better hitbox
         
@@ -300,6 +387,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         focusSquare.isEnabled = false
         placeButton.isHidden = true
+        resetButton.isHidden = false
     }
     
     @objc private func handleTap(sender: UITapGestureRecognizer) {
@@ -335,8 +423,10 @@ extension ARViewController: UITextFieldDelegate {
             selectEntity(withSelectedEntity: selectedEntity)
         } else if self.selectedEntity.name.lowercased() == textField.text?.lowercased() {
             entitiesState[selectedEntity.name] = .correctName
+            setupAnimation(with: "checkmark")
         } else {
             entitiesState[selectedEntity.name] = .wrongName
+            setupAnimation(with: "failed")
         }
         colorModelEntities()
         nameTextField.resignFirstResponder()

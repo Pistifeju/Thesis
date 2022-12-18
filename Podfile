@@ -7,6 +7,6 @@ target 'Thesis' do
 
   # Pods for Thesis
   pod 'RealmSwift', '~>10'  
-
+  pod 'lottie-ios'
 
 end
