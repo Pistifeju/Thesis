@@ -18,6 +18,7 @@
 		B7302F072911CEBC0018272C /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7302F062911CEBC0018272C /* ARViewController.swift */; };
 		B7302F0C2911CEBD0018272C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7302F0B2911CEBD0018272C /* Assets.xcassets */; };
 		B7302F0F2911CEBD0018272C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7302F0D2911CEBD0018272C /* LaunchScreen.storyboard */; };
+		B74403C52953C49600BF93D6 /* textures.metal in Sources */ = {isa = PBXBuildFile; fileRef = B74403C42953C49600BF93D6 /* textures.metal */; };
 		B74DF71A293ABBFA001C9643 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF719293ABBFA001C9643 /* QuestionView.swift */; };
 		B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */; };
 		B74DF720293BF0BC001C9643 /* EndOfQuizController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */; };
@@ -63,6 +64,7 @@
 		B7302F0B2911CEBD0018272C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B7302F0E2911CEBD0018272C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B7302F102911CEBD0018272C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B74403C42953C49600BF93D6 /* textures.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = textures.metal; sourceTree = "<group>"; };
 		B74DF719293ABBFA001C9643 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnswerButton.swift; sourceTree = "<group>"; };
 		B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfQuizController.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				B7302F022911CEBC0018272C /* AppDelegate.swift */,
 				B7302F042911CEBC0018272C /* SceneDelegate.swift */,
 				B7302F102911CEBD0018272C /* Info.plist */,
+				B74403C42953C49600BF93D6 /* textures.metal */,
 			);
 			path = Thesis;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				B7FDB48A29244ADB00B8A17D /* CategoryViewController.swift in Sources */,
 				B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */,
 				B7302F032911CEBC0018272C /* AppDelegate.swift in Sources */,
+				B74403C52953C49600BF93D6 /* textures.metal in Sources */,
 				B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */,
 				B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */,
 				B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */,

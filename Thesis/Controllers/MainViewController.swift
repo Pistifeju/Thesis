@@ -57,7 +57,6 @@ class MainViewController: UICollectionViewController {
         collectionView.reloadData()
     }
 
-    
     // MARK: - Selectors
 }
 

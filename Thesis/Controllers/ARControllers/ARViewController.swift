@@ -228,21 +228,66 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     private func setupARView() {
         arView.automaticallyConfigureSession = false
+        
         let configuration = ARWorldTrackingConfiguration()
+        configuration.frameSemantics.insert(.personSegmentationWithDepth)
+        configuration.frameSemantics.insert(.personSegmentation)
+        arView.environment.sceneUnderstanding.options = .collision
         configuration.planeDetection = [.horizontal]
         configuration.environmentTexturing = .automatic
-        arView.session.run(configuration)
+        arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
         arView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:))))
     }
     
     private func colorModelEntities() {
-        let selectedMaterial = SimpleMaterial(color: .link, isMetallic: false) //Blue
-        let wrongNameMaterial = SimpleMaterial(color: .red, isMetallic: false) //Red
-        let correctNameMaterial = SimpleMaterial(color: .green, isMetallic: false) //Green
+//        let selectedMaterial = SimpleMaterial(color: .systemCyan, isMetallic: false) //Blue
+//        let wrongNameMaterial = SimpleMaterial(color: .red, isMetallic: false) //Red
+//        let correctNameMaterial = SimpleMaterial(color: .green, isMetallic: false) //Green
+        
+        // Metal device and library
+        let device = MTLCreateSystemDefaultDevice()
+        
+        guard let defaultLibrary = device!.makeDefaultLibrary()
+        else { return }
+        
+        let modifier = CustomMaterial.GeometryModifier(
+            named: "basicModifier",
+            in: defaultLibrary)
+        
+        //Selected Color
+        let selectedShader = CustomMaterial.SurfaceShader(
+            named: "basicSelectedShader",
+            in: defaultLibrary)
+        
+        var selectedMaterial = try! CustomMaterial(
+            surfaceShader: selectedShader,
+            geometryModifier: modifier,
+            lightingModel: .lit)
+        
+        //Wrong Color
+        let wrongShader = CustomMaterial.SurfaceShader(
+            named: "basicWrongShader",
+            in: defaultLibrary)
+        
+        let wrongNameMaterial = try! CustomMaterial(
+            surfaceShader: wrongShader,
+            geometryModifier: modifier,
+            lightingModel: .lit)
+        
+        //Correct Color
+        let correctShader = CustomMaterial.SurfaceShader(
+            named: "basicCorrectShader",
+            in: defaultLibrary)
+        
+        var correctNameMaterial = try! CustomMaterial(
+            surfaceShader: correctShader,
+            geometryModifier: modifier,
+            lightingModel: .lit)
+        
+//        correctNameMaterial.blending = .transparent(opacity: 0.2)
         
         for entity in modelEntities {
-
             switch entitiesState[entity.name] {
             case .selected:
                 entity.model!.materials[0] = selectedMaterial
@@ -268,7 +313,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         nameTextField.isHidden = false
         nameTextField.becomeFirstResponder()
         nameTextField.text = ""
-        
         
         //If we didnt hit any modelEntity
         guard let selectedEntity = withSelectedEntity else {
