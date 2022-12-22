@@ -18,6 +18,7 @@
 		B7302F072911CEBC0018272C /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7302F062911CEBC0018272C /* ARViewController.swift */; };
 		B7302F0C2911CEBD0018272C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7302F0B2911CEBD0018272C /* Assets.xcassets */; };
 		B7302F0F2911CEBD0018272C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7302F0D2911CEBD0018272C /* LaunchScreen.storyboard */; };
+		B73B6B7F29549DA600195D50 /* AREntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B7E29549DA600195D50 /* AREntity.swift */; };
 		B74403C52953C49600BF93D6 /* textures.metal in Sources */ = {isa = PBXBuildFile; fileRef = B74403C42953C49600BF93D6 /* textures.metal */; };
 		B74DF71A293ABBFA001C9643 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF719293ABBFA001C9643 /* QuestionView.swift */; };
 		B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */; };
@@ -64,6 +65,7 @@
 		B7302F0B2911CEBD0018272C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B7302F0E2911CEBD0018272C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B7302F102911CEBD0018272C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B73B6B7E29549DA600195D50 /* AREntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AREntity.swift; sourceTree = "<group>"; };
 		B74403C42953C49600BF93D6 /* textures.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = textures.metal; sourceTree = "<group>"; };
 		B74DF719293ABBFA001C9643 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnswerButton.swift; sourceTree = "<group>"; };
@@ -138,6 +140,7 @@
 			children = (
 				B71CFFD629351CC0005870E2 /* Question.swift */,
 				B71CFFD8293520F3005870E2 /* AnatomyModel.swift */,
+				B73B6B7E29549DA600195D50 /* AREntity.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -419,6 +422,7 @@
 				B71CFFD9293520F3005870E2 /* AnatomyModel.swift in Sources */,
 				B71CFFD729351CC0005870E2 /* Question.swift in Sources */,
 				B7302F072911CEBC0018272C /* ARViewController.swift in Sources */,
+				B73B6B7F29549DA600195D50 /* AREntity.swift in Sources */,
 				B74DF720293BF0BC001C9643 /* EndOfQuizController.swift in Sources */,
 				B7136B702911D64200C6D54E /* InformationUIView.swift in Sources */,
 				B7FDB48A29244ADB00B8A17D /* CategoryViewController.swift in Sources */,

@@ -8,6 +8,7 @@
 import Foundation
 import RealmSwift
 
+//This represents the AnatomyModel in Realm
 @objcMembers class AnatomyModel: Object {
     dynamic var name: String?
     dynamic var informationText: String?
