@@ -136,8 +136,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         modelInformationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            modelInformationView.widthAnchor.constraint(equalToConstant: view.frame.size.width),
-            modelInformationView.heightAnchor.constraint(equalToConstant: 200),
+            modelInformationView.heightAnchor.constraint(equalToConstant: 125),
             modelInformationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             modelInformationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             modelInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -320,11 +319,15 @@ class ARViewController: UIViewController, FocusEntityDelegate {
 }
 
 extension ARViewController: ModelInformationViewDelegate {
-    func didTapMore() {
+    func didTapFade() {
         
     }
     
-    func didTapExit() {
+    func didTapFadeOthers() {
+        
+    }
+    
+    func didTapClose() {
         modelInformationView.isHidden = true
         selectEntity(withSelectedEntity: nil)
     }

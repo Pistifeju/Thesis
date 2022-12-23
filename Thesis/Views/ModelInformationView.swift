@@ -10,8 +10,9 @@ import LoremSwiftum
 import AVFoundation
 
 protocol ModelInformationViewDelegate: AnyObject {
-    func didTapExit()
-    func didTapMore()
+    func didTapClose()
+    func didTapFade()
+    func didTapFadeOthers()
 }
 
 class ModelInformationView: UIView {
@@ -20,7 +21,7 @@ class ModelInformationView: UIView {
     
     var delegate: ModelInformationViewDelegate?
         
-    private var exitButton: ModelInformationButton = ModelInformationButton(title: "Exit")
+    private var closeButton: ModelInformationButton = ModelInformationButton(title: "Exit")
     private var moreButton: ModelInformationButton = ModelInformationButton(title: "More")
     private var fadeButton: ModelInformationButton = ModelInformationButton(title: "Fade")
     private var fadeOthersButton: ModelInformationButton = ModelInformationButton(title: "Fade\nOthers")
@@ -75,8 +76,12 @@ class ModelInformationView: UIView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         
-        exitButton.addTarget(self, action: #selector(didTapExitButton), for: .touchUpInside)
-        
+        closeButton.addTarget(self, action: #selector(didTapCloseButton), for: .touchUpInside)
+        fadeButton.addTarget(self, action: #selector(didTapFadeButton), for: .touchUpInside)
+        fadeOthersButton.addTarget(self, action: #selector(didTapFadeOthersButton), for: .touchUpInside)
+        moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
+        nameToSpeechButton.addTarget(self, action: #selector(didTapNameToSpeechButton), for: .touchUpInside)
+        notesButton.addTarget(self, action: #selector(didTapNotesButton), for: .touchUpInside)
         
         configureUI()
     }
@@ -96,22 +101,22 @@ class ModelInformationView: UIView {
         fadeOthersButton.titleLabel?.textAlignment = .center
         
         addSubview(nameLabel)
-        addSubview(exitButton)
+        addSubview(closeButton)
         addSubview(nameToSpeechButton)
         addSubview(optionButtons)
         
         NSLayoutConstraint.activate([
-            exitButton.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: 1),
-            self.trailingAnchor.constraint(equalToSystemSpacingAfter: exitButton.trailingAnchor, multiplier: 2),
+            closeButton.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: 1),
+            self.trailingAnchor.constraint(equalToSystemSpacingAfter: closeButton.trailingAnchor, multiplier: 2),
         ])
         
         NSLayoutConstraint.activate([
-            nameLabel.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor),
+            nameLabel.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
             nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
         ])
         
         NSLayoutConstraint.activate([
-            nameToSpeechButton.centerYAnchor.constraint(equalTo: exitButton.centerYAnchor),
+            nameToSpeechButton.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
             nameToSpeechButton.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
         ])
         
@@ -159,12 +164,27 @@ class ModelInformationView: UIView {
     
     // MARK: - Selectors
     
-    @objc private func didTapExitButton() {
-        print("DidTapExitButton")
-        delegate?.didTapExit()
+    @objc private func didTapCloseButton() {
+        delegate?.didTapClose()
     }
     
     @objc private func didTapMoreButton() {
-        delegate?.didTapMore()
+        
+    }
+    
+    @objc private func didTapFadeButton() {
+        
+    }
+    
+    @objc private func didTapFadeOthersButton() {
+        
+    }
+    
+    @objc private func didTapNameToSpeechButton() {
+        
+    }
+    
+    @objc private func didTapNotesButton() {
+        
     }
 }
