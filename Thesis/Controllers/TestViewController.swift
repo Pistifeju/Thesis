@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import LoremSwiftum
 
 class TestViewController: UIViewController {
     
@@ -34,9 +35,9 @@ class TestViewController: UIViewController {
         self.view.backgroundColor = .systemBlue
         view.addSubview(modelInformationView)
         
+        modelInformationView.configure(nameLabel: "Phalanx", textViewString: LoremSwiftum.Lorem.tweet)
         modelInformationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            modelInformationView.heightAnchor.constraint(equalToConstant: 125),
             modelInformationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             modelInformationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             modelInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),

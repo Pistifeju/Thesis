@@ -13,19 +13,25 @@ protocol ModelInformationViewDelegate: AnyObject {
     func didTapClose()
     func didTapFade()
     func didTapFadeOthers()
+    func didTapMore(hide: Bool)
 }
 
 class ModelInformationView: UIView {
 
-    public var height: Float = 50
-    
     var delegate: ModelInformationViewDelegate?
-        
+    
+    private let synth = AVSpeechSynthesizer()
+    private var textViewHeightConstraint: NSLayoutConstraint?
+    
     private var closeButton: ModelInformationButton = ModelInformationButton(title: "Exit")
     private var moreButton: ModelInformationButton = ModelInformationButton(title: "More")
     private var fadeButton: ModelInformationButton = ModelInformationButton(title: "Fade")
     private var fadeOthersButton: ModelInformationButton = ModelInformationButton(title: "Fade\nOthers")
     private var notesButton: ModelInformationButton = ModelInformationButton(title: "Notes")
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: CGFloat(Float(textView.frame.height + 135)))
+    }
     
     private var nameToSpeechButton: UIButton = {
         let button = UIButton(type: .system)
@@ -61,14 +67,17 @@ class ModelInformationView: UIView {
     
     private let textView: UITextView = {
         let textView = UITextView(frame: .zero)
-        textView.textColor = .black
+        textView.textColor = .white
         textView.font = .systemFont(ofSize: 16)
-        textView.text = LoremSwiftum.Lorem.tweet
-        textView.backgroundColor = .white
+        textView.backgroundColor = .clear
         textView.allowsEditingTextAttributes = false
         textView.isSelectable = false
         textView.isEditable = false
-        textView.isUserInteractionEnabled = false
+        textView.isUserInteractionEnabled = true
+        textView.isHidden = true
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.showsHorizontalScrollIndicator = false
+        textView.showsVerticalScrollIndicator = true
         
         return textView
     }()
@@ -94,6 +103,7 @@ class ModelInformationView: UIView {
         backgroundColor?.withAlphaComponent(0.5)
         backgroundColor = .clear
         self.layer.cornerRadius = 24
+        self.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner] // Top right corner, Top left corner respectively
         self.layer.masksToBounds = true
         createBlurEffect()
         
@@ -104,6 +114,7 @@ class ModelInformationView: UIView {
         addSubview(closeButton)
         addSubview(nameToSpeechButton)
         addSubview(optionButtons)
+        addSubview(textView)
         
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: 1),
@@ -125,24 +136,24 @@ class ModelInformationView: UIView {
             optionButtons.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
             self.trailingAnchor.constraint(equalToSystemSpacingAfter: optionButtons.trailingAnchor, multiplier: 2),
         ])
-//
-//        textView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            textView.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-//            textView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-//            textView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8),
-//            textView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 8),
-//        ])
-//
+
+        textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: 0)
+        textViewHeightConstraint?.isActive = true
+        NSLayoutConstraint.activate([
+            textView.topAnchor.constraint(equalToSystemSpacingBelow: nameLabel.bottomAnchor, multiplier: 1),
+            textView.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
+            self.trailingAnchor.constraint(equalToSystemSpacingAfter: textView.trailingAnchor, multiplier: 2),
+            textView.bottomAnchor.constraint(equalToSystemSpacingBelow: optionButtons.topAnchor, multiplier: -2),
+        ])
     }
     
     func configure(nameLabel: String, textViewString: String) {
         self.nameLabel.text = nameLabel
-        self.textView.text = textViewString
+        self.textView.text = textViewString + textViewString + textViewString + textViewString
     }
     
     private func createBlurEffect() {
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.prominent)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 0.8
         blurEffectView.frame = bounds
@@ -169,7 +180,14 @@ class ModelInformationView: UIView {
     }
     
     @objc private func didTapMoreButton() {
-        
+        if(textView.isHidden) {
+            textView.isHidden = false
+            self.textViewHeightConstraint?.constant = 200
+
+        } else {
+            self.textViewHeightConstraint?.constant = 0
+            textView.isHidden = true
+        }
     }
     
     @objc private func didTapFadeButton() {
@@ -181,7 +199,11 @@ class ModelInformationView: UIView {
     }
     
     @objc private func didTapNameToSpeechButton() {
-        
+        guard let text = nameLabel.text else {return}
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+
+        synth.speak(utterance)
     }
     
     @objc private func didTapNotesButton() {
