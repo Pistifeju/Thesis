@@ -18,38 +18,16 @@ protocol ARViewControllerDelegate: AnyObject {
 class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Properties
-        
-    weak var delegate: ARViewControllerDelegate?
     
-    private let lottieAnimationView = AnimationView()
+    weak var delegate: ARViewControllerDelegate?
     
     public var model: AnatomyModel
     private var modelAnchor: AnchorEntity = AnchorEntity()
     private let modelInformationView = ModelInformationView(frame: .zero)
     
     private var entities: [AREntity] = [AREntity]()
-    private var selectedEntity: AREntity = AREntity()
     
     private lazy var focusSquare: FocusEntity = FocusEntity(on: self.arView, focus: .classic)
-    
-    private lazy var nameTextField: UITextField = {
-        let tf = UITextField()
-        tf.backgroundColor = .white
-        tf.tintColor = .black
-        tf.textColor = .black
-        tf.layer.cornerRadius = 10
-        tf.autocorrectionType = .no
-        tf.autocapitalizationType = .none
-        tf.returnKeyType = .done
-        
-        tf.leftViewMode = .always
-        tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-        
-        tf.isHidden = true
-        tf.clearsOnBeginEditing = true
-        
-        return tf
-    }()
     
     private lazy var placeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -115,13 +93,12 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         modelInformationView.delegate = self
         focusSquare.isEnabled = true
         view.keyboardLayoutGuide.followsUndockedKeyboard = true
-        nameTextField.delegate = self
         
         configureUI()
         setupARView()
         delegate?.didLoad()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
@@ -134,24 +111,10 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Helpers
     
-    private func setupAnimation(with animation: String) {
-        lottieAnimationView.isHidden = false
-        lottieAnimationView.animation = LottieAnimation.named(animation)
-        lottieAnimationView.contentMode = .scaleAspectFit
-        lottieAnimationView.loopMode = .playOnce
-        
-        lottieAnimationView.play { [weak self] finished in
-            guard let strongSelf = self else {return}
-            strongSelf.lottieAnimationView.isHidden = true
-        }
-    }
-    
     private func configureUI() {
         view.addSubview(arView)
         view.addSubview(placeButton)
         view.addSubview(modelInformationView)
-        view.addSubview(nameTextField)
-        view.addSubview(lottieAnimationView)
         view.addSubview(resetButton)
         view.addSubview(exitButton)
         
@@ -178,23 +141,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             modelInformationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             modelInformationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             modelInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-        ])
-        
-        let textFieldOnKeyboard = view.keyboardLayoutGuide.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 10)
-        view.keyboardLayoutGuide.setConstraints([textFieldOnKeyboard], activeWhenAwayFrom: .top)
-        nameTextField.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nameTextField.heightAnchor.constraint(equalToConstant: 52),
-            nameTextField.widthAnchor.constraint(equalToConstant: view.frame.size.width / 2),
-        ])
-        
-        lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            lottieAnimationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            lottieAnimationView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            lottieAnimationView.heightAnchor.constraint(equalToConstant: 100),
-            lottieAnimationView.widthAnchor.constraint(equalToConstant: 100),
         ])
         
         NSLayoutConstraint.activate([
@@ -229,7 +175,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     }
     
     private func colorModelEntities() {
-//        correctNameMaterial.blending = .transparent(opacity: 0.2)
+        //        correctNameMaterial.blending = .transparent(opacity: 0.2)
         
         for entity in entities {
             if(entity.state == .unselected) {
@@ -241,79 +187,45 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     private func selectEntity(withSelectedEntity: ModelEntity?) {
         modelInformationView.isHidden = false
-        nameTextField.isHidden = false
-        nameTextField.becomeFirstResponder()
-        nameTextField.text = ""
         
         //If we didnt hit any modelEntity
         guard let entity = withSelectedEntity else {
+            //Unselect the selected entity if there is one.
             
             for index in 0..<entities.count {
-                if entities[index].state == .wrongAndSelected {
-                    entities[index].state = .wrongName
-                }
-                if entities[index].state == .correctAndSelected {
-                    entities[index].state = .correctName
-                }
-                
-                //Unselect the selected entity if there is one.
                 if entities[index].state == .selected {
                     entities[index].state = .unselected
                 }
             }
             
             modelInformationView.isHidden = true
-            nameTextField.isHidden = true
-            nameTextField.resignFirstResponder()
             colorModelEntities()
             return
         }
         
-        //Find the tappedEntity in our entities array.
-        var selectedEntity = AREntity()
-        
+        var selectedPreviouslySelectedModel = false
         for index in 0..<entities.count {
-            if(entity.name == entities[index].entity.name) {
-                selectedEntity = entities[index]
-                
-                switch selectedEntity.state {
-                case .unselected:
-                    selectedEntity.state = .selected
-                case .selected:
-                    selectedEntity.state = .unselected
-                case .correctName:
-                    selectedEntity.state = .correctAndSelected
-                case .wrongName:
-                    selectedEntity.state = .wrongAndSelected
-                case .wrongAndSelected:
-                    selectedEntity.state = .wrongName
-                case .correctAndSelected:
-                    selectedEntity.state = .correctName
-                }
-                
-                entities[index] = selectedEntity
-                
+            if(entity.name == entities[index].entity.name && entities[index].state == .selected) {
+                //This means the user tapped on the same entity which was already selected.
+                entities[index].state = .unselected
+                selectedPreviouslySelectedModel = true
+                modelInformationView.isHidden = true
                 break
             }
         }
-                
-        if([EntityState.unselected, EntityState.wrongName, EntityState.correctName].contains(selectedEntity.state)) {
-            modelInformationView.isHidden = true
-            nameTextField.isHidden = true
-            nameTextField.resignFirstResponder()
-        }
         
-        for index in 0..<entities.count {
-            if(entities[index].entity.name != selectedEntity.entity.name) {
-                if(entities[index].state == .wrongAndSelected) {
-                    entities[index].state = .wrongName
-                } else if(entities[index].state == .correctAndSelected) {
-                    entities[index].state = .correctName
-                } else if(entities[index].state == .selected) {
-                    entities[index].state = .unselected
+        if(selectedPreviouslySelectedModel == false) {
+            for index in 0..<entities.count {
+                entities[index].state = .unselected
+                if(entities[index].entity.name == entity.name) {
+                    entities[index].state = .selected
                 }
             }
         }
+        
+        //Unselect the currently selected entity
+        //Select the selected entity if it is not the already selected entity
+        //Color the modelEntities
         
         colorModelEntities()
     }
@@ -340,7 +252,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             //Reset
             strongSelf.arView.scene.removeAnchor(strongSelf.modelAnchor)
             strongSelf.entities = [AREntity]()
-            strongSelf.selectedEntity = AREntity()
             strongSelf.resetButton.isHidden = true
             strongSelf.placeButton.isHidden = false
             strongSelf.focusSquare.isEnabled = true
@@ -364,13 +275,13 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             for children in geomChildrens.children {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
-                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0]))
+                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0], isHidden: false, isFaded: false))
             }
         } else {
             for children in nameChildrens!.children {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
-                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0]))
+                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0], isHidden: false, isFaded: false))
             }
         }
 
@@ -396,53 +307,23 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         guard let hitTest: CollisionCastHit = result.first, hitTest.entity.name != "Ground Plane"
         else {
-            modelInformationView.isHidden = true
             selectEntity(withSelectedEntity: nil)
             return
         }
         
         let entity: ModelEntity = hitTest.entity as! ModelEntity
         
-        self.selectedEntity = AREntity(entity: entity, state: .selected, originalMaterial: UnlitMaterial(color: .red))
-        
         selectEntity(withSelectedEntity: entity)
         
         modelInformationView.configure(nameLabel: entity.name, textViewString: LoremSwiftum.Lorem.tweet)
-        modelInformationView.isHidden = true
-    }
-}
-
-extension ARViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        //Check if the textField.text is equeals to the name of the modelEntity
-        let text = textField.text ?? ""
-        if text == "" {
-            //Unselect here
-            selectEntity(withSelectedEntity: selectedEntity.entity)
-        } else if self.selectedEntity.entity.name.lowercased() == textField.text?.lowercased() {
-            selectedEntity.state = .correctName
-            setupAnimation(with: "checkmark")
-        } else {
-            selectedEntity.state = .wrongName
-            setupAnimation(with: "failed")
-        }
-        for index in 0..<entities.count {
-            let insiderEntity = entities[index]
-            if insiderEntity.entity.name == selectedEntity.entity.name {
-                selectedEntity.originalMaterial = insiderEntity.originalMaterial
-                entities[index] = selectedEntity
-                break
-            }
-        }
-        colorModelEntities()
-        nameTextField.resignFirstResponder()
-        nameTextField.isHidden = true
-        textField.text = ""
-        return true
     }
 }
 
 extension ARViewController: ModelInformationViewDelegate {
+    func didTapMore() {
+        
+    }
+    
     func didTapExit() {
         modelInformationView.isHidden = true
         selectEntity(withSelectedEntity: nil)

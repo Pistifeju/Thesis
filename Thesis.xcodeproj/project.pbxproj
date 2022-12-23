@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		B7136B6B2911D4FB00C6D54E /* FocusEntity in Frameworks */ = {isa = PBXBuildFile; productRef = B7136B6A2911D4FB00C6D54E /* FocusEntity */; };
 		B7136B6E2911D52A00C6D54E /* LoremSwiftum in Frameworks */ = {isa = PBXBuildFile; productRef = B7136B6D2911D52A00C6D54E /* LoremSwiftum */; };
-		B7136B702911D64200C6D54E /* InformationUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7136B6F2911D64200C6D54E /* InformationUIView.swift */; };
+		B7136B702911D64200C6D54E /* ModelInformationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7136B6F2911D64200C6D54E /* ModelInformationView.swift */; };
 		B71CFFD42934DD0D005870E2 /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CFFD32934DD0D005870E2 /* QuizViewController.swift */; };
 		B71CFFD729351CC0005870E2 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CFFD629351CC0005870E2 /* Question.swift */; };
 		B71CFFD9293520F3005870E2 /* AnatomyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CFFD8293520F3005870E2 /* AnatomyModel.swift */; };
@@ -19,6 +19,8 @@
 		B7302F0C2911CEBD0018272C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7302F0B2911CEBD0018272C /* Assets.xcassets */; };
 		B7302F0F2911CEBD0018272C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7302F0D2911CEBD0018272C /* LaunchScreen.storyboard */; };
 		B73B6B7F29549DA600195D50 /* AREntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B7E29549DA600195D50 /* AREntity.swift */; };
+		B73B6B812956491300195D50 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B802956491300195D50 /* TestViewController.swift */; };
+		B73B6B8329564F3400195D50 /* ModelInformationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B8229564F3400195D50 /* ModelInformationButton.swift */; };
 		B74403C52953C49600BF93D6 /* textures.metal in Sources */ = {isa = PBXBuildFile; fileRef = B74403C42953C49600BF93D6 /* textures.metal */; };
 		B74DF71A293ABBFA001C9643 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF719293ABBFA001C9643 /* QuestionView.swift */; };
 		B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */; };
@@ -54,7 +56,7 @@
 		3321F09ECA26FDE6D6B1AED5 /* Pods-Thesis.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thesis.release.xcconfig"; path = "Target Support Files/Pods-Thesis/Pods-Thesis.release.xcconfig"; sourceTree = "<group>"; };
 		71F089672C8C06FEC9296484 /* Pods_Thesis.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Thesis.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B067CE6E966AE50BDCBF3ADB /* Pods-Thesis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Thesis.debug.xcconfig"; path = "Target Support Files/Pods-Thesis/Pods-Thesis.debug.xcconfig"; sourceTree = "<group>"; };
-		B7136B6F2911D64200C6D54E /* InformationUIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InformationUIView.swift; sourceTree = "<group>"; };
+		B7136B6F2911D64200C6D54E /* ModelInformationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModelInformationView.swift; sourceTree = "<group>"; };
 		B71CFFD32934DD0D005870E2 /* QuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
 		B71CFFD629351CC0005870E2 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		B71CFFD8293520F3005870E2 /* AnatomyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnatomyModel.swift; sourceTree = "<group>"; };
@@ -66,6 +68,8 @@
 		B7302F0E2911CEBD0018272C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B7302F102911CEBD0018272C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B73B6B7E29549DA600195D50 /* AREntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AREntity.swift; sourceTree = "<group>"; };
+		B73B6B802956491300195D50 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
+		B73B6B8229564F3400195D50 /* ModelInformationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInformationButton.swift; sourceTree = "<group>"; };
 		B74403C42953C49600BF93D6 /* textures.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = textures.metal; sourceTree = "<group>"; };
 		B74DF719293ABBFA001C9643 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnswerButton.swift; sourceTree = "<group>"; };
@@ -193,6 +197,7 @@
 				B7FDB48929244ADB00B8A17D /* CategoryViewController.swift */,
 				B71CFFD32934DD0D005870E2 /* QuizViewController.swift */,
 				B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */,
+				B73B6B802956491300195D50 /* TestViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -200,11 +205,12 @@
 		B7302F182911CF220018272C /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B7136B6F2911D64200C6D54E /* InformationUIView.swift */,
+				B7136B6F2911D64200C6D54E /* ModelInformationView.swift */,
 				B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */,
 				B7FDB48B29244B9E00B8A17D /* CategoryViewCollectionViewCell.swift */,
 				B74DF719293ABBFA001C9643 /* QuestionView.swift */,
 				B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */,
+				B73B6B8229564F3400195D50 /* ModelInformationButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -418,13 +424,14 @@
 			files = (
 				B71CFFD42934DD0D005870E2 /* QuizViewController.swift in Sources */,
 				B7FDB48C29244B9E00B8A17D /* CategoryViewCollectionViewCell.swift in Sources */,
+				B73B6B812956491300195D50 /* TestViewController.swift in Sources */,
 				B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */,
 				B71CFFD9293520F3005870E2 /* AnatomyModel.swift in Sources */,
 				B71CFFD729351CC0005870E2 /* Question.swift in Sources */,
 				B7302F072911CEBC0018272C /* ARViewController.swift in Sources */,
 				B73B6B7F29549DA600195D50 /* AREntity.swift in Sources */,
 				B74DF720293BF0BC001C9643 /* EndOfQuizController.swift in Sources */,
-				B7136B702911D64200C6D54E /* InformationUIView.swift in Sources */,
+				B7136B702911D64200C6D54E /* ModelInformationView.swift in Sources */,
 				B7FDB48A29244ADB00B8A17D /* CategoryViewController.swift in Sources */,
 				B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */,
 				B7302F032911CEBC0018272C /* AppDelegate.swift in Sources */,
@@ -432,6 +439,7 @@
 				B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */,
 				B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */,
 				B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */,
+				B73B6B8329564F3400195D50 /* ModelInformationButton.swift in Sources */,
 				B7AACAD529247125008A850B /* Extensions.swift in Sources */,
 				B7F64F00291FFCCF00652A9E /* MainViewController.swift in Sources */,
 				B7FDB44C2923B55000B8A17D /* MainViewCollectionViewCell.swift in Sources */,
