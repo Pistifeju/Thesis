@@ -13,7 +13,7 @@ protocol ModelInformationViewDelegate: AnyObject {
     func didTapClose()
     func didTapFade()
     func didTapFadeOthers()
-    func didTapMore(hide: Bool)
+    func didTapIsolate()
 }
 
 class ModelInformationView: UIView {
@@ -28,6 +28,7 @@ class ModelInformationView: UIView {
     private var fadeButton: ModelInformationButton = ModelInformationButton(title: "Fade")
     private var fadeOthersButton: ModelInformationButton = ModelInformationButton(title: "Fade\nOthers")
     private var notesButton: ModelInformationButton = ModelInformationButton(title: "Notes")
+    private var isolateButton: ModelInformationButton = ModelInformationButton(title: "Isolate")
     
     override var intrinsicContentSize: CGSize {
         return CGSize(width: UIScreen.main.bounds.width, height: CGFloat(Float(textView.frame.height + 135)))
@@ -46,12 +47,12 @@ class ModelInformationView: UIView {
     }()
     
     private lazy var optionButtons: UIStackView = {
-        let stackview = UIStackView(arrangedSubviews: [notesButton, fadeButton, fadeOthersButton, moreButton])
+        let stackview = UIStackView(arrangedSubviews: [isolateButton, fadeButton, fadeOthersButton, moreButton, notesButton])
         stackview.translatesAutoresizingMaskIntoConstraints = false
         stackview.spacing = 10
         stackview.axis = .horizontal
         stackview.alignment = .center
-        stackview.distribution = .equalSpacing
+        stackview.distribution = .fillEqually
         return stackview
     }()
     
@@ -91,6 +92,7 @@ class ModelInformationView: UIView {
         moreButton.addTarget(self, action: #selector(didTapMoreButton), for: .touchUpInside)
         nameToSpeechButton.addTarget(self, action: #selector(didTapNameToSpeechButton), for: .touchUpInside)
         notesButton.addTarget(self, action: #selector(didTapNotesButton), for: .touchUpInside)
+        isolateButton.addTarget(self, action: #selector(didTapIsolateButton), for: .touchUpInside)
         
         configureUI()
     }
@@ -152,25 +154,21 @@ class ModelInformationView: UIView {
         self.textView.text = textViewString + textViewString + textViewString + textViewString
     }
     
+    func updateBottomButtons(entity: AREntity) {
+        UIView.performWithoutAnimation {
+            self.fadeButton.setTitle(entity.isFaded ? "Unfade" : "Fade", for: .normal)
+            self.fadeButton.layoutIfNeeded()
+        }
+    }
+    
     private func createBlurEffect() {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView.alpha = 0.8
         blurEffectView.frame = bounds
         
-//        let gradient = createGradientBackground()
-//        blurEffectView.layer.addSublayer(gradient)
-//        gradient.frame = blurEffectView.frame
-        
         blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         addSubview(blurEffectView)
-    }
-    
-    private func createGradientBackground() -> CAGradientLayer {
-        let gradient = CAGradientLayer()
-        gradient.colors = [UIColor.systemPurple.cgColor, UIColor.systemBlue.cgColor]
-        gradient.locations = [0, 1]
-        return gradient
     }
     
     // MARK: - Selectors
@@ -183,15 +181,18 @@ class ModelInformationView: UIView {
         if(textView.isHidden) {
             textView.isHidden = false
             self.textViewHeightConstraint?.constant = 200
-
         } else {
             self.textViewHeightConstraint?.constant = 0
             textView.isHidden = true
         }
     }
     
-    @objc private func didTapFadeButton() {
+    @objc private func didTapIsolateButton() {
         
+    }
+    
+    @objc private func didTapFadeButton() {
+        delegate?.didTapFade()
     }
     
     @objc private func didTapFadeOthersButton() {

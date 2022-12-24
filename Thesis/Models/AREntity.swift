@@ -14,16 +14,27 @@ enum EntityState {
     case selected
 }
 
-struct AREntity {
+class AREntity {
     var entity: ModelEntity
     var state: EntityState
-    var originalMaterial: Material
+    var originalMaterial: PhysicallyBasedMaterial
     var isHidden: Bool
-    var isFaded: Bool
+    var isFaded: Bool 
     
-    var currentMaterial: Material {
-        var selectedMaterial = SimpleMaterial(color: .systemCyan, isMetallic: false) //Blue
+    var currentMaterial: PhysicallyBasedMaterial {
+        var selectedMaterial = PhysicallyBasedMaterial()
+        selectedMaterial.baseColor.tint = .systemCyan
         selectedMaterial.roughness = 0.0
+        selectedMaterial.sheen = .none
+        selectedMaterial.specular = 0.0
+        
+        if(self.isFaded) {
+            selectedMaterial.blending = .transparent(opacity: 0.5)
+            originalMaterial.blending = .transparent(opacity: 0.5)
+        } else {
+            selectedMaterial.blending = .transparent(opacity: 1.0)
+            originalMaterial.blending = .transparent(opacity: 1.0)
+        }
         
         switch self.state {
         case .unselected:
@@ -33,7 +44,7 @@ struct AREntity {
         }
     }
     
-    init(entity: ModelEntity, state: EntityState, originalMaterial: Material, isHidden: Bool, isFaded: Bool) {
+    init(entity: ModelEntity, state: EntityState, originalMaterial: PhysicallyBasedMaterial, isHidden: Bool, isFaded: Bool) {
         self.entity = entity
         self.state = state
         self.originalMaterial = originalMaterial
@@ -44,7 +55,7 @@ struct AREntity {
     init() {
         self.entity = ModelEntity()
         self.state = .unselected
-        self.originalMaterial = UnlitMaterial(color: .link)
+        self.originalMaterial = PhysicallyBasedMaterial()
         self.isHidden = false
         self.isFaded = false
     }

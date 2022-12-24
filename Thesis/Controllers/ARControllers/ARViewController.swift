@@ -25,6 +25,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     private var modelAnchor: AnchorEntity = AnchorEntity()
     private let modelInformationView = ModelInformationView(frame: .zero)
     
+    private var selectedEntity: AREntity = AREntity()
     private var entities: [AREntity] = [AREntity]()
     
     private lazy var focusSquare: FocusEntity = FocusEntity(on: self.arView, focus: .classic)
@@ -173,12 +174,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     }
     
     private func colorModelEntities() {
-        //        correctNameMaterial.blending = .transparent(opacity: 0.2)
-        
         for entity in entities {
-            if(entity.state == .unselected) {
-                entity.entity.model?.materials[0] = UnlitMaterial(color: .link)
-            }
             entity.entity.model?.materials[0] = entity.currentMaterial
         }
     }
@@ -221,10 +217,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             }
         }
         
-        //Unselect the currently selected entity
-        //Select the selected entity if it is not the already selected entity
-        //Color the modelEntities
-        
         colorModelEntities()
     }
 
@@ -253,6 +245,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             strongSelf.resetButton.isHidden = true
             strongSelf.placeButton.isHidden = false
             strongSelf.focusSquare.isEnabled = true
+            strongSelf.modelInformationView.isHidden = true
         }))
         alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { action in
             
@@ -273,13 +266,13 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             for children in geomChildrens.children {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
-                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0], isHidden: false, isFaded: false))
+                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false))
             }
         } else {
             for children in nameChildrens!.children {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
-                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0], isHidden: false, isFaded: false))
+                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false))
             }
         }
 
@@ -311,19 +304,33 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         let entity: ModelEntity = hitTest.entity as! ModelEntity
         
+        for index in 0..<entities.count {
+            if(entities[index].entity.name == entity.name) {
+                self.selectedEntity = entities[index]
+                break
+            }
+        }
+        
         selectEntity(withSelectedEntity: entity)
         
         modelInformationView.configure(nameLabel: entity.name, textViewString: LoremSwiftum.Lorem.tweet)
+        self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
     }
 }
 
 extension ARViewController: ModelInformationViewDelegate {
-    func didTapMore(hide: Bool) {
+    func didTapIsolate() {
         
     }
     
     func didTapFade() {
-        
+        if(self.selectedEntity.isFaded) {
+            self.selectedEntity.isFaded = false
+        } else {
+            self.selectedEntity.isFaded = true
+        }
+        self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
+        colorModelEntities()
     }
     
     func didTapFadeOthers() {
