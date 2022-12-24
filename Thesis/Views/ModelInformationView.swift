@@ -157,7 +157,11 @@ class ModelInformationView: UIView {
     func updateBottomButtons(entity: AREntity) {
         UIView.performWithoutAnimation {
             self.fadeButton.setTitle(entity.isFaded ? "Unfade" : "Fade", for: .normal)
+            self.fadeOthersButton.setTitle(entity.isFadedOthers ? "Unfade\nOthers" : "Fade\nOthers", for: .normal)
+            self.isolateButton.setTitle(entity.isIsolated ? "Unisolate" : "Isolate", for: .normal)
             self.fadeButton.layoutIfNeeded()
+            self.fadeOthersButton.layoutIfNeeded()
+            self.isolateButton.layoutIfNeeded()
         }
     }
     
@@ -188,7 +192,7 @@ class ModelInformationView: UIView {
     }
     
     @objc private func didTapIsolateButton() {
-        
+        delegate?.didTapIsolate()
     }
     
     @objc private func didTapFadeButton() {
@@ -196,7 +200,7 @@ class ModelInformationView: UIView {
     }
     
     @objc private func didTapFadeOthersButton() {
-        
+        delegate?.didTapFadeOthers()
     }
     
     @objc private func didTapNameToSpeechButton() {

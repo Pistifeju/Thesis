@@ -320,7 +320,23 @@ class ARViewController: UIViewController, FocusEntityDelegate {
 
 extension ARViewController: ModelInformationViewDelegate {
     func didTapIsolate() {
-        
+        if(self.selectedEntity.isIsolated) {
+            self.selectedEntity.isolated = false
+            for index in 0..<self.entities.count {
+                if(self.selectedEntity.entity.name != entities[index].entity.name) {
+                    entities[index].isIsolated = false
+                }
+            }
+        } else {
+            self.selectedEntity.isolated = true
+            for index in 0..<self.entities.count {
+                if(self.selectedEntity.entity.name != entities[index].entity.name) {
+                    entities[index].isIsolated = true
+                }
+            }
+        }
+        self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
+        colorModelEntities()
     }
     
     func didTapFade() {
@@ -334,7 +350,23 @@ extension ARViewController: ModelInformationViewDelegate {
     }
     
     func didTapFadeOthers() {
-        
+        if(self.selectedEntity.isFadedOthers) {
+            self.selectedEntity.isFadedOthers = false
+            for index in 0..<self.entities.count {
+                if(self.selectedEntity.entity.name != entities[index].entity.name) {
+                    entities[index].isFaded = false
+                }
+            }
+        } else {
+            self.selectedEntity.isFadedOthers = true
+            for index in 0..<self.entities.count {
+                if(self.selectedEntity.entity.name != entities[index].entity.name) {
+                    entities[index].isFaded = true
+                }
+            }
+        }
+        self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
+        colorModelEntities()
     }
     
     func didTapClose() {

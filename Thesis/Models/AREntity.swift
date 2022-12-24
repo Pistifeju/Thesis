@@ -20,6 +20,20 @@ class AREntity {
     var originalMaterial: PhysicallyBasedMaterial
     var isHidden: Bool
     var isFaded: Bool 
+    var isFadedOthers: Bool
+    var isolated: Bool
+    var isIsolated: Bool {
+        get{
+            return isolated
+        }
+        set(value) {
+            if(value) {
+                entity.isEnabled = false
+            } else {
+                entity.isEnabled = true
+            }
+        }
+    }
     
     var currentMaterial: PhysicallyBasedMaterial {
         var selectedMaterial = PhysicallyBasedMaterial()
@@ -50,6 +64,9 @@ class AREntity {
         self.originalMaterial = originalMaterial
         self.isHidden = isHidden
         self.isFaded = isFaded
+        self.isFadedOthers = false
+        self.isolated = false
+        self.isIsolated = false
     }
     
     init() {
@@ -58,5 +75,8 @@ class AREntity {
         self.originalMaterial = PhysicallyBasedMaterial()
         self.isHidden = false
         self.isFaded = false
+        self.isFadedOthers = false
+        self.isolated = false
+        self.isIsolated = false
     }
 }
