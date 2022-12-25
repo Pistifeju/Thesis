@@ -12,86 +12,71 @@ import MetalKit
 enum EntityState {
     case unselected
     case selected
-    case correctName
-    case wrongName
-    case wrongAndSelected
-    case correctAndSelected
 }
 
-struct AREntity {
+class AREntity {
     var entity: ModelEntity
     var state: EntityState
-    var originalMaterial: Material
+    var originalMaterial: PhysicallyBasedMaterial
+    var isHidden: Bool
+    var isFaded: Bool 
+    var isFadedOthers: Bool
+    var isolated: Bool
+    var isIsolated: Bool {
+        get{
+            return isolated
+        }
+        set(value) {
+            if(value) {
+                entity.isEnabled = false
+            } else {
+                entity.isEnabled = true
+            }
+        }
+    }
     
-    var currentMaterial: Material {
-        var selectedMaterial = SimpleMaterial(color: .systemCyan, isMetallic: false) //Blue
+    var currentMaterial: PhysicallyBasedMaterial {
+        var selectedMaterial = PhysicallyBasedMaterial()
+        selectedMaterial.baseColor.tint = .systemCyan
         selectedMaterial.roughness = 0.0
-        var wrongNameMaterial = SimpleMaterial(color: .systemRed, isMetallic: false) //Red
-        var correctNameMaterial = SimpleMaterial(color: .systemGreen, isMetallic: false) //Green
+        selectedMaterial.sheen = .none
+        selectedMaterial.specular = 0.0
         
-//        let device = MTLCreateSystemDefaultDevice()
-//
-//        let defaultLibrary = device!.makeDefaultLibrary()!
-//
-//        let modifier = CustomMaterial.GeometryModifier(
-//            named: "basicModifier",
-//            in: defaultLibrary)
-//
-//        //Selected Color
-//        let selectedShader = CustomMaterial.SurfaceShader(
-//            named: "basicSelectedShader",
-//            in: defaultLibrary)
-//
-//        let selectedMaterial = try! CustomMaterial(
-//            surfaceShader: selectedShader,
-//            geometryModifier: modifier,
-//            lightingModel: .lit)
-//
-//        //Wrong Color
-//        let wrongShader = CustomMaterial.SurfaceShader(
-//            named: "basicWrongShader",
-//            in: defaultLibrary)
-//
-//        let wrongNameMaterial = try! CustomMaterial(
-//            surfaceShader: wrongShader,
-//            geometryModifier: modifier,
-//            lightingModel: .lit)
-//
-//        //Correct Color
-//        let correctShader = CustomMaterial.SurfaceShader(
-//            named: "basicCorrectShader",
-//            in: defaultLibrary)
-//
-//        let correctNameMaterial = try! CustomMaterial(
-//            surfaceShader: correctShader,
-//            geometryModifier: modifier,
-//            lightingModel: .lit)
+        if(self.isFaded) {
+            selectedMaterial.blending = .transparent(opacity: 0.5)
+            originalMaterial.blending = .transparent(opacity: 0.5)
+        } else {
+            selectedMaterial.blending = .transparent(opacity: 1.0)
+            originalMaterial.blending = .transparent(opacity: 1.0)
+        }
         
         switch self.state {
         case .unselected:
             return originalMaterial
         case .selected:
             return selectedMaterial
-        case .correctName:
-            return correctNameMaterial
-        case .wrongName:
-            return wrongNameMaterial
-        case .wrongAndSelected:
-            return selectedMaterial
-        case .correctAndSelected:
-            return selectedMaterial
         }
     }
     
-    init(entity: ModelEntity, state: EntityState, originalMaterial: Material) {
+    init(entity: ModelEntity, state: EntityState, originalMaterial: PhysicallyBasedMaterial, isHidden: Bool, isFaded: Bool) {
         self.entity = entity
         self.state = state
         self.originalMaterial = originalMaterial
+        self.isHidden = isHidden
+        self.isFaded = isFaded
+        self.isFadedOthers = false
+        self.isolated = false
+        self.isIsolated = false
     }
     
     init() {
         self.entity = ModelEntity()
         self.state = .unselected
-        self.originalMaterial = UnlitMaterial(color: .link)
+        self.originalMaterial = PhysicallyBasedMaterial()
+        self.isHidden = false
+        self.isFaded = false
+        self.isFadedOthers = false
+        self.isolated = false
+        self.isIsolated = false
     }
 }

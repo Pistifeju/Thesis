@@ -10,6 +10,7 @@ import ARKit
 import FocusEntity
 import LoremSwiftum
 import Lottie
+import IGColorPicker
 
 protocol ARViewControllerDelegate: AnyObject {
     func didLoad()
@@ -18,38 +19,25 @@ protocol ARViewControllerDelegate: AnyObject {
 class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Properties
-        
-    weak var delegate: ARViewControllerDelegate?
     
-    private let lottieAnimationView = AnimationView()
+    private var colorPickerView: ColorPickerView = ColorPickerView(frame: .zero)
+    private var colorPickerHeight: NSLayoutConstraint!
+    private var selectedColor: UIColor = UIColor.white {
+        didSet {
+            colourButton.tintColor = selectedColor
+        }
+    }
+    
+    weak var delegate: ARViewControllerDelegate?
     
     public var model: AnatomyModel
     private var modelAnchor: AnchorEntity = AnchorEntity()
     private let modelInformationView = ModelInformationView(frame: .zero)
     
-    private var entities: [AREntity] = [AREntity]()
     private var selectedEntity: AREntity = AREntity()
+    private var entities: [AREntity] = [AREntity]()
     
     private lazy var focusSquare: FocusEntity = FocusEntity(on: self.arView, focus: .classic)
-    
-    private lazy var nameTextField: UITextField = {
-        let tf = UITextField()
-        tf.backgroundColor = .white
-        tf.tintColor = .black
-        tf.textColor = .black
-        tf.layer.cornerRadius = 10
-        tf.autocorrectionType = .no
-        tf.autocapitalizationType = .none
-        tf.returnKeyType = .done
-        
-        tf.leftViewMode = .always
-        tf.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: 0))
-        
-        tf.isHidden = true
-        tf.clearsOnBeginEditing = true
-        
-        return tf
-    }()
     
     private lazy var placeButton: UIButton = {
         let button = UIButton(type: .system)
@@ -84,6 +72,21 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         return button
     }()
     
+    private lazy var colourButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold, scale: .large)
+        let largeImage = UIImage(systemName: "paintpalette.fill", withConfiguration: largeConfig)
+        
+        button.setImage(largeImage, for: .normal)
+        button.addTarget(self, action: #selector(didTapColours), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = true
+        button.tintColor = self.selectedColor
+        
+        return button
+    }()
+    
     private lazy var exitButton: UIButton = {
         let button = UIButton(type: .system)
         
@@ -114,14 +117,19 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         modelInformationView.delegate = self
         focusSquare.isEnabled = true
+        colorPickerView.delegate = self
+        colorPickerView.layoutDelegate = self
+        
         view.keyboardLayoutGuide.followsUndockedKeyboard = true
-        nameTextField.delegate = self
+        
+        colorPickerView.colors = [UIColor.red, UIColor.yellow, UIColor.green, UIColor.white]
+        colorPickerView.selectionStyle = .none
         
         configureUI()
         setupARView()
         delegate?.didLoad()
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.isHidden = false
@@ -134,26 +142,14 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Helpers
     
-    private func setupAnimation(with animation: String) {
-        lottieAnimationView.isHidden = false
-        lottieAnimationView.animation = LottieAnimation.named(animation)
-        lottieAnimationView.contentMode = .scaleAspectFit
-        lottieAnimationView.loopMode = .playOnce
-        
-        lottieAnimationView.play { [weak self] finished in
-            guard let strongSelf = self else {return}
-            strongSelf.lottieAnimationView.isHidden = true
-        }
-    }
-    
     private func configureUI() {
         view.addSubview(arView)
         view.addSubview(placeButton)
         view.addSubview(modelInformationView)
-        view.addSubview(nameTextField)
-        view.addSubview(lottieAnimationView)
         view.addSubview(resetButton)
         view.addSubview(exitButton)
+        view.addSubview(colourButton)
+        view.addSubview(colorPickerView)
         
         arView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -173,43 +169,41 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         modelInformationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            modelInformationView.widthAnchor.constraint(equalToConstant: view.frame.size.width),
-            modelInformationView.heightAnchor.constraint(equalToConstant: 200),
             modelInformationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             modelInformationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             modelInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
         
-        let textFieldOnKeyboard = view.keyboardLayoutGuide.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 10)
-        view.keyboardLayoutGuide.setConstraints([textFieldOnKeyboard], activeWhenAwayFrom: .top)
-        nameTextField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            nameTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nameTextField.heightAnchor.constraint(equalToConstant: 52),
-            nameTextField.widthAnchor.constraint(equalToConstant: view.frame.size.width / 2),
-        ])
-        
-        lottieAnimationView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            lottieAnimationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            lottieAnimationView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            lottieAnimationView.heightAnchor.constraint(equalToConstant: 100),
-            lottieAnimationView.widthAnchor.constraint(equalToConstant: 100),
-        ])
-        
-        NSLayoutConstraint.activate([
-            resetButton.heightAnchor.constraint(equalToConstant: 25),
-            resetButton.widthAnchor.constraint(equalToConstant: 25),
+            resetButton.heightAnchor.constraint(equalToConstant: 50),
+            resetButton.widthAnchor.constraint(equalToConstant: 50),
             resetButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
             arView.trailingAnchor.constraint(equalToSystemSpacingAfter: resetButton.trailingAnchor, multiplier: 2),
         ])
         
         NSLayoutConstraint.activate([
-            exitButton.heightAnchor.constraint(equalToConstant: 25),
-            exitButton.widthAnchor.constraint(equalToConstant: 25),
+            colourButton.heightAnchor.constraint(equalToConstant: 50),
+            colourButton.widthAnchor.constraint(equalToConstant: 50),
+            colourButton.topAnchor.constraint(equalToSystemSpacingBelow: resetButton.bottomAnchor, multiplier: 2),
+            arView.trailingAnchor.constraint(equalToSystemSpacingAfter: colourButton.trailingAnchor, multiplier: 2),
+        ])
+        
+        NSLayoutConstraint.activate([
+            exitButton.heightAnchor.constraint(equalToConstant: 50),
+            exitButton.widthAnchor.constraint(equalToConstant: 50),
             exitButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
             exitButton.leadingAnchor.constraint(equalToSystemSpacingAfter: arView.leadingAnchor, multiplier: 2),
         ])
+        
+        self.colorPickerHeight = colorPickerView.heightAnchor.constraint(equalToConstant: 0)
+        self.colorPickerHeight.isActive = true
+        colorPickerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            colorPickerView.widthAnchor.constraint(equalToConstant: 50),
+            colorPickerView.topAnchor.constraint(equalToSystemSpacingBelow: colourButton.bottomAnchor, multiplier: 2),
+            colorPickerView.centerXAnchor.constraint(equalTo: self.colourButton.centerXAnchor),
+        ])
+        self.view.bringSubviewToFront(self.modelInformationView)
         
         modelInformationView.isHidden = true
     }
@@ -229,95 +223,52 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     }
     
     private func colorModelEntities() {
-//        correctNameMaterial.blending = .transparent(opacity: 0.2)
-        
         for entity in entities {
-            if(entity.state == .unselected) {
-                entity.entity.model?.materials[0] = UnlitMaterial(color: .link)
-            }
             entity.entity.model?.materials[0] = entity.currentMaterial
         }
     }
     
     private func selectEntity(withSelectedEntity: ModelEntity?) {
         modelInformationView.isHidden = false
-        nameTextField.isHidden = false
-        nameTextField.becomeFirstResponder()
-        nameTextField.text = ""
         
         //If we didnt hit any modelEntity
         guard let entity = withSelectedEntity else {
+            //Unselect the selected entity if there is one.
             
             for index in 0..<entities.count {
-                if entities[index].state == .wrongAndSelected {
-                    entities[index].state = .wrongName
-                }
-                if entities[index].state == .correctAndSelected {
-                    entities[index].state = .correctName
-                }
-                
-                //Unselect the selected entity if there is one.
                 if entities[index].state == .selected {
                     entities[index].state = .unselected
                 }
             }
             
             modelInformationView.isHidden = true
-            nameTextField.isHidden = true
-            nameTextField.resignFirstResponder()
             colorModelEntities()
             return
         }
         
-        //Find the tappedEntity in our entities array.
-        var selectedEntity = AREntity()
-        
+        var selectedPreviouslySelectedModel = false
         for index in 0..<entities.count {
-            if(entity.name == entities[index].entity.name) {
-                selectedEntity = entities[index]
-                
-                switch selectedEntity.state {
-                case .unselected:
-                    selectedEntity.state = .selected
-                case .selected:
-                    selectedEntity.state = .unselected
-                case .correctName:
-                    selectedEntity.state = .correctAndSelected
-                case .wrongName:
-                    selectedEntity.state = .wrongAndSelected
-                case .wrongAndSelected:
-                    selectedEntity.state = .wrongName
-                case .correctAndSelected:
-                    selectedEntity.state = .correctName
-                }
-                
-                entities[index] = selectedEntity
-                
+            if(entity.name == entities[index].entity.name && entities[index].state == .selected) {
+                //This means the user tapped on the same entity which was already selected.
+                entities[index].state = .unselected
+                selectedPreviouslySelectedModel = true
+                modelInformationView.isHidden = true
                 break
             }
         }
-                
-        if([EntityState.unselected, EntityState.wrongName, EntityState.correctName].contains(selectedEntity.state)) {
-            modelInformationView.isHidden = true
-            nameTextField.isHidden = true
-            nameTextField.resignFirstResponder()
-        }
         
-        for index in 0..<entities.count {
-            if(entities[index].entity.name != selectedEntity.entity.name) {
-                if(entities[index].state == .wrongAndSelected) {
-                    entities[index].state = .wrongName
-                } else if(entities[index].state == .correctAndSelected) {
-                    entities[index].state = .correctName
-                } else if(entities[index].state == .selected) {
-                    entities[index].state = .unselected
+        if(selectedPreviouslySelectedModel == false) {
+            for index in 0..<entities.count {
+                entities[index].state = .unselected
+                if(entities[index].entity.name == entity.name) {
+                    entities[index].state = .selected
                 }
             }
         }
         
         colorModelEntities()
     }
-
+    
     // MARK: - Selectors
     
     @objc private func dismissView() {
@@ -340,10 +291,11 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             //Reset
             strongSelf.arView.scene.removeAnchor(strongSelf.modelAnchor)
             strongSelf.entities = [AREntity]()
-            strongSelf.selectedEntity = AREntity()
             strongSelf.resetButton.isHidden = true
             strongSelf.placeButton.isHidden = false
             strongSelf.focusSquare.isEnabled = true
+            strongSelf.modelInformationView.isHidden = true
+            strongSelf.colourButton.isHidden = true
         }))
         alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { action in
             
@@ -352,7 +304,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         self.present(alert, animated: true)
     }
     
-    @objc private func placeObject() {
+    @objc private func placeObject(cloned: Bool) {
         let modelName = self.model.name ?? "" //Skull, Chest better hitbox
         
         let entity = try! Entity.load(named: modelName)
@@ -364,86 +316,130 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             for children in geomChildrens.children {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
-                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0]))
+                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false))
             }
         } else {
             for children in nameChildrens!.children {
                 let childModelEntity = children as! ModelEntity
                 childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
-                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0]))
+                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false))
             }
         }
-
+        
         let modelEntity = ModelEntity()
         modelEntity.addChild(entity)
         
         let anchorEntity = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: .zero))
         anchorEntity.addChild(modelEntity)
+        
         self.modelAnchor = anchorEntity
-
         arView.installGestures([.all],for: modelEntity)
-
+        
         arView.scene.addAnchor(anchorEntity)
         
         focusSquare.isEnabled = false
         placeButton.isHidden = true
         resetButton.isHidden = false
+        colourButton.isHidden = false
     }
     
     @objc private func handleTap(sender: UITapGestureRecognizer) {
+        self.colorPickerHeight.constant = 0
+        UIView.animate(withDuration: 0.5) {
+            // request layout on the *superview*
+            self.view.layoutIfNeeded()
+        }
+        
         let tapLocation: CGPoint = sender.location(in: arView)
         let result: [CollisionCastHit] = arView.hitTest(tapLocation)
         
         guard let hitTest: CollisionCastHit = result.first, hitTest.entity.name != "Ground Plane"
         else {
-            modelInformationView.isHidden = true
             selectEntity(withSelectedEntity: nil)
             return
         }
         
         let entity: ModelEntity = hitTest.entity as! ModelEntity
         
-        self.selectedEntity = AREntity(entity: entity, state: .selected, originalMaterial: UnlitMaterial(color: .red))
+        for index in 0..<entities.count {
+            if(entities[index].entity.name == entity.name) {
+                self.selectedEntity = entities[index]
+                break
+            }
+        }
         
         selectEntity(withSelectedEntity: entity)
         
         modelInformationView.configure(nameLabel: entity.name, textViewString: LoremSwiftum.Lorem.tweet)
-        modelInformationView.isHidden = true
+        self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
     }
-}
-
-extension ARViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        //Check if the textField.text is equeals to the name of the modelEntity
-        let text = textField.text ?? ""
-        if text == "" {
-            //Unselect here
-            selectEntity(withSelectedEntity: selectedEntity.entity)
-        } else if self.selectedEntity.entity.name.lowercased() == textField.text?.lowercased() {
-            selectedEntity.state = .correctName
-            setupAnimation(with: "checkmark")
+    
+    @objc private func didTapColours() {
+        if(self.colorPickerHeight.constant == 0) {
+            self.colorPickerHeight.constant = 300
         } else {
-            selectedEntity.state = .wrongName
-            setupAnimation(with: "failed")
+            self.colorPickerHeight.constant = 0
         }
-        for index in 0..<entities.count {
-            let insiderEntity = entities[index]
-            if insiderEntity.entity.name == selectedEntity.entity.name {
-                selectedEntity.originalMaterial = insiderEntity.originalMaterial
-                entities[index] = selectedEntity
-                break
-            }
+        UIView.animate(withDuration: 0.5) {
+            
+            // request layout on the *superview*
+            self.view.layoutIfNeeded()
         }
-        colorModelEntities()
-        nameTextField.resignFirstResponder()
-        nameTextField.isHidden = true
-        textField.text = ""
-        return true
     }
 }
 
 extension ARViewController: ModelInformationViewDelegate {
-    func didTapExit() {
+    func didTapIsolate() {
+        if(self.selectedEntity.isIsolated) {
+            self.selectedEntity.isolated = false
+            for index in 0..<self.entities.count {
+                if(self.selectedEntity.entity.name != entities[index].entity.name) {
+                    entities[index].isIsolated = false
+                }
+            }
+        } else {
+            self.selectedEntity.isolated = true
+            for index in 0..<self.entities.count {
+                if(self.selectedEntity.entity.name != entities[index].entity.name) {
+                    entities[index].isIsolated = true
+                }
+            }
+        }
+        self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
+        colorModelEntities()
+    }
+    
+    func didTapFade() {
+        if(self.selectedEntity.isFaded) {
+            self.selectedEntity.isFaded = false
+        } else {
+            self.selectedEntity.isFaded = true
+        }
+        self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
+        colorModelEntities()
+    }
+    
+    func didTapFadeOthers() {
+        if(self.selectedEntity.isFadedOthers) {
+            self.selectedEntity.isFadedOthers = false
+            for index in 0..<self.entities.count {
+                if(self.selectedEntity.entity.name != entities[index].entity.name) {
+                    entities[index].isFaded = false
+                }
+            }
+        } else {
+            self.selectedEntity.isFadedOthers = true
+            for index in 0..<self.entities.count {
+                if(self.selectedEntity.entity.name != entities[index].entity.name) {
+                    entities[index].isFaded = true
+                }
+            }
+        }
+        self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
+        colorModelEntities()
+    }
+    
+    func didTapClose() {
         modelInformationView.isHidden = true
         selectEntity(withSelectedEntity: nil)
     }
@@ -455,7 +451,7 @@ extension ARView: ARCoachingOverlayViewDelegate {
         let coachingOverlay = ARCoachingOverlayView()
         // Make sure it rescales if the device orientation changes
         coachingOverlay.autoresizingMask = [
-          .flexibleWidth, .flexibleHeight
+            .flexibleWidth, .flexibleHeight
         ]
         self.addSubview(coachingOverlay)
         
@@ -474,10 +470,55 @@ extension ARView: ARCoachingOverlayViewDelegate {
         coachingOverlay.session = self.session
         // Set the delegate for any callbacks
         coachingOverlay.delegate = self
-      }
+    }
     
-      // Example callback for the delegate object
+    // Example callback for the delegate object
     public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
         coachingOverlayView.activatesAutomatically = false
     }
+}
+
+// MARK: - ColorPickerViewDelegate
+extension ARViewController: ColorPickerViewDelegate {
+
+  func colorPickerView(_ colorPickerView: ColorPickerView, didSelectItemAt indexPath: IndexPath) {
+    // A color has been selected
+      self.selectedColor = self.colorPickerView.colors[indexPath.row]
+      self.colorPickerHeight.constant = 0
+      UIView.animate(withDuration: 0.5) {
+          // request layout on the *superview*
+          self.view.layoutIfNeeded()
+      }
+  }
+
+  // This is an optional method
+  func colorPickerView(_ colorPickerView: ColorPickerView, didDeselectItemAt indexPath: IndexPath) {
+    // A color has been deselected
+  }
+
+}
+
+extension ARViewController: ColorPickerViewDelegateFlowLayout {
+    
+  func colorPickerView(_ colorPickerView: ColorPickerView, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    // The size for each cell
+    // 👉🏻 WIDTH AND HEIGHT MUST BE EQUALS!
+    return CGSize(width: 50, height: 50)
+  }
+
+  func colorPickerView(_ colorPickerView: ColorPickerView, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    // Space between cells
+    return 0
+  }
+
+  func colorPickerView(_ colorPickerView: ColorPickerView, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    // Space between rows
+    return 5
+  }
+
+  func colorPickerView(_ colorPickerView: ColorPickerView, insetForSectionAt section: Int) -> UIEdgeInsets {
+    // Inset used aroud the view
+    return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+  }
+
 }

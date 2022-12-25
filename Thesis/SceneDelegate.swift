@@ -19,7 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
-        //window?.rootViewController = UINavigationController(rootViewController: ARViewController())
+//        window?.rootViewController = UINavigationController(rootViewController: TestViewController())
+//        window?.makeKeyAndVisible()
         
         if UserDefaults.standard.bool(forKey: "hasOnboarded") {
             let layout = UICollectionViewFlowLayout()
