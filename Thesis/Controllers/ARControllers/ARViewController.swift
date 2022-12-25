@@ -10,6 +10,7 @@ import ARKit
 import FocusEntity
 import LoremSwiftum
 import Lottie
+import IGColorPicker
 
 protocol ARViewControllerDelegate: AnyObject {
     func didLoad()
@@ -18,6 +19,14 @@ protocol ARViewControllerDelegate: AnyObject {
 class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Properties
+    
+    private var colorPickerView: ColorPickerView = ColorPickerView(frame: .zero)
+    private var colorPickerHeight: NSLayoutConstraint!
+    private var selectedColor: UIColor = UIColor.white {
+        didSet {
+            colourButton.tintColor = selectedColor
+        }
+    }
     
     weak var delegate: ARViewControllerDelegate?
     
@@ -63,6 +72,21 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         return button
     }()
     
+    private lazy var colourButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold, scale: .large)
+        let largeImage = UIImage(systemName: "paintpalette.fill", withConfiguration: largeConfig)
+        
+        button.setImage(largeImage, for: .normal)
+        button.addTarget(self, action: #selector(didTapColours), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = true
+        button.tintColor = self.selectedColor
+        
+        return button
+    }()
+    
     private lazy var exitButton: UIButton = {
         let button = UIButton(type: .system)
         
@@ -93,7 +117,13 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         modelInformationView.delegate = self
         focusSquare.isEnabled = true
+        colorPickerView.delegate = self
+        colorPickerView.layoutDelegate = self
+        
         view.keyboardLayoutGuide.followsUndockedKeyboard = true
+        
+        colorPickerView.colors = [UIColor.red, UIColor.yellow, UIColor.green, UIColor.white]
+        colorPickerView.selectionStyle = .none
         
         configureUI()
         setupARView()
@@ -118,6 +148,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         view.addSubview(modelInformationView)
         view.addSubview(resetButton)
         view.addSubview(exitButton)
+        view.addSubview(colourButton)
+        view.addSubview(colorPickerView)
         
         arView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -143,18 +175,35 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         ])
         
         NSLayoutConstraint.activate([
-            resetButton.heightAnchor.constraint(equalToConstant: 25),
-            resetButton.widthAnchor.constraint(equalToConstant: 25),
+            resetButton.heightAnchor.constraint(equalToConstant: 50),
+            resetButton.widthAnchor.constraint(equalToConstant: 50),
             resetButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
             arView.trailingAnchor.constraint(equalToSystemSpacingAfter: resetButton.trailingAnchor, multiplier: 2),
         ])
         
         NSLayoutConstraint.activate([
-            exitButton.heightAnchor.constraint(equalToConstant: 25),
-            exitButton.widthAnchor.constraint(equalToConstant: 25),
+            colourButton.heightAnchor.constraint(equalToConstant: 50),
+            colourButton.widthAnchor.constraint(equalToConstant: 50),
+            colourButton.topAnchor.constraint(equalToSystemSpacingBelow: resetButton.bottomAnchor, multiplier: 2),
+            arView.trailingAnchor.constraint(equalToSystemSpacingAfter: colourButton.trailingAnchor, multiplier: 2),
+        ])
+        
+        NSLayoutConstraint.activate([
+            exitButton.heightAnchor.constraint(equalToConstant: 50),
+            exitButton.widthAnchor.constraint(equalToConstant: 50),
             exitButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
             exitButton.leadingAnchor.constraint(equalToSystemSpacingAfter: arView.leadingAnchor, multiplier: 2),
         ])
+        
+        self.colorPickerHeight = colorPickerView.heightAnchor.constraint(equalToConstant: 0)
+        self.colorPickerHeight.isActive = true
+        colorPickerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            colorPickerView.widthAnchor.constraint(equalToConstant: 50),
+            colorPickerView.topAnchor.constraint(equalToSystemSpacingBelow: colourButton.bottomAnchor, multiplier: 2),
+            colorPickerView.centerXAnchor.constraint(equalTo: self.colourButton.centerXAnchor),
+        ])
+        self.view.bringSubviewToFront(self.modelInformationView)
         
         modelInformationView.isHidden = true
     }
@@ -219,7 +268,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         colorModelEntities()
     }
-
+    
     // MARK: - Selectors
     
     @objc private func dismissView() {
@@ -246,6 +295,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             strongSelf.placeButton.isHidden = false
             strongSelf.focusSquare.isEnabled = true
             strongSelf.modelInformationView.isHidden = true
+            strongSelf.colourButton.isHidden = true
         }))
         alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { action in
             
@@ -254,7 +304,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         self.present(alert, animated: true)
     }
     
-    @objc private func placeObject() {
+    @objc private func placeObject(cloned: Bool) {
         let modelName = self.model.name ?? "" //Skull, Chest better hitbox
         
         let entity = try! Entity.load(named: modelName)
@@ -275,24 +325,31 @@ class ARViewController: UIViewController, FocusEntityDelegate {
                 self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false))
             }
         }
-
+        
         let modelEntity = ModelEntity()
         modelEntity.addChild(entity)
         
         let anchorEntity = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: .zero))
         anchorEntity.addChild(modelEntity)
+        
         self.modelAnchor = anchorEntity
-
         arView.installGestures([.all],for: modelEntity)
-
+        
         arView.scene.addAnchor(anchorEntity)
         
         focusSquare.isEnabled = false
         placeButton.isHidden = true
         resetButton.isHidden = false
+        colourButton.isHidden = false
     }
     
     @objc private func handleTap(sender: UITapGestureRecognizer) {
+        self.colorPickerHeight.constant = 0
+        UIView.animate(withDuration: 0.5) {
+            // request layout on the *superview*
+            self.view.layoutIfNeeded()
+        }
+        
         let tapLocation: CGPoint = sender.location(in: arView)
         let result: [CollisionCastHit] = arView.hitTest(tapLocation)
         
@@ -315,6 +372,19 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         modelInformationView.configure(nameLabel: entity.name, textViewString: LoremSwiftum.Lorem.tweet)
         self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
+    }
+    
+    @objc private func didTapColours() {
+        if(self.colorPickerHeight.constant == 0) {
+            self.colorPickerHeight.constant = 300
+        } else {
+            self.colorPickerHeight.constant = 0
+        }
+        UIView.animate(withDuration: 0.5) {
+            
+            // request layout on the *superview*
+            self.view.layoutIfNeeded()
+        }
     }
 }
 
@@ -381,7 +451,7 @@ extension ARView: ARCoachingOverlayViewDelegate {
         let coachingOverlay = ARCoachingOverlayView()
         // Make sure it rescales if the device orientation changes
         coachingOverlay.autoresizingMask = [
-          .flexibleWidth, .flexibleHeight
+            .flexibleWidth, .flexibleHeight
         ]
         self.addSubview(coachingOverlay)
         
@@ -400,10 +470,55 @@ extension ARView: ARCoachingOverlayViewDelegate {
         coachingOverlay.session = self.session
         // Set the delegate for any callbacks
         coachingOverlay.delegate = self
-      }
+    }
     
-      // Example callback for the delegate object
+    // Example callback for the delegate object
     public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
         coachingOverlayView.activatesAutomatically = false
     }
+}
+
+// MARK: - ColorPickerViewDelegate
+extension ARViewController: ColorPickerViewDelegate {
+
+  func colorPickerView(_ colorPickerView: ColorPickerView, didSelectItemAt indexPath: IndexPath) {
+    // A color has been selected
+      self.selectedColor = self.colorPickerView.colors[indexPath.row]
+      self.colorPickerHeight.constant = 0
+      UIView.animate(withDuration: 0.5) {
+          // request layout on the *superview*
+          self.view.layoutIfNeeded()
+      }
+  }
+
+  // This is an optional method
+  func colorPickerView(_ colorPickerView: ColorPickerView, didDeselectItemAt indexPath: IndexPath) {
+    // A color has been deselected
+  }
+
+}
+
+extension ARViewController: ColorPickerViewDelegateFlowLayout {
+    
+  func colorPickerView(_ colorPickerView: ColorPickerView, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    // The size for each cell
+    // 👉🏻 WIDTH AND HEIGHT MUST BE EQUALS!
+    return CGSize(width: 50, height: 50)
+  }
+
+  func colorPickerView(_ colorPickerView: ColorPickerView, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    // Space between cells
+    return 0
+  }
+
+  func colorPickerView(_ colorPickerView: ColorPickerView, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+    // Space between rows
+    return 5
+  }
+
+  func colorPickerView(_ colorPickerView: ColorPickerView, insetForSectionAt section: Int) -> UIEdgeInsets {
+    // Inset used aroud the view
+    return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+  }
+
 }

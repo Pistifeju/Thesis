@@ -9,7 +9,6 @@ import Foundation
 import UIKit
 
 class ModelInformationButton: UIButton {
-    
     convenience init(title: String, type: UIButton.ButtonType = .system) {
         self.init(type: type)
         layer.opacity = 0.7
@@ -17,7 +16,7 @@ class ModelInformationButton: UIButton {
         backgroundColor = .clear
         setTitleColor(UIColor.white, for: .normal)
         setTitle(title, for: .normal)
-        titleLabel!.font = UIFont.preferredFont(forTextStyle: .headline)
+        titleLabel!.font = UIFont.preferredFont(forTextStyle: .subheadline)
         translatesAutoresizingMaskIntoConstraints = false
     }
 }

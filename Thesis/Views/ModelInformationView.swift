@@ -66,6 +66,16 @@ class ModelInformationView: UIView {
         return label
     }()
     
+    private var latinNameLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.preferredFont(forTextStyle: .footnote)
+        label.textColor = .white
+        label.text = "phalanges anatomia"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
     private let textView: UITextView = {
         let textView = UITextView(frame: .zero)
         textView.textColor = .white
@@ -79,6 +89,7 @@ class ModelInformationView: UIView {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.showsHorizontalScrollIndicator = false
         textView.showsVerticalScrollIndicator = true
+        textView.textAlignment = .justified
         
         return textView
     }()
@@ -117,6 +128,7 @@ class ModelInformationView: UIView {
         addSubview(nameToSpeechButton)
         addSubview(optionButtons)
         addSubview(textView)
+        addSubview(latinNameLabel)
         
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: 1),
@@ -129,12 +141,17 @@ class ModelInformationView: UIView {
         ])
         
         NSLayoutConstraint.activate([
+            latinNameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            latinNameLabel.topAnchor.constraint(equalToSystemSpacingBelow: nameLabel.bottomAnchor, multiplier: 0),
+        ])
+        
+        NSLayoutConstraint.activate([
             nameToSpeechButton.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
             nameToSpeechButton.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
         ])
         
         NSLayoutConstraint.activate([
-            self.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: optionButtons.bottomAnchor, multiplier: 0),
+            self.bottomAnchor.constraint(equalToSystemSpacingBelow: optionButtons.bottomAnchor, multiplier: 2),
             optionButtons.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
             self.trailingAnchor.constraint(equalToSystemSpacingAfter: optionButtons.trailingAnchor, multiplier: 2),
         ])
@@ -142,7 +159,7 @@ class ModelInformationView: UIView {
         textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: 0)
         textViewHeightConstraint?.isActive = true
         NSLayoutConstraint.activate([
-            textView.topAnchor.constraint(equalToSystemSpacingBelow: nameLabel.bottomAnchor, multiplier: 1),
+            textView.topAnchor.constraint(equalToSystemSpacingBelow: latinNameLabel.bottomAnchor, multiplier: 1),
             textView.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
             self.trailingAnchor.constraint(equalToSystemSpacingAfter: textView.trailingAnchor, multiplier: 2),
             textView.bottomAnchor.constraint(equalToSystemSpacingBelow: optionButtons.topAnchor, multiplier: -2),
@@ -152,6 +169,7 @@ class ModelInformationView: UIView {
     func configure(nameLabel: String, textViewString: String) {
         self.nameLabel.text = nameLabel
         self.textView.text = textViewString + textViewString + textViewString + textViewString
+        //TODO: - set latinNameLabel
     }
     
     func updateBottomButtons(entity: AREntity) {
