@@ -10,7 +10,6 @@ import ARKit
 import FocusEntity
 import LoremSwiftum
 import Lottie
-import IGColorPicker
 
 protocol ARViewControllerDelegate: AnyObject {
     func didLoad()
@@ -21,10 +20,15 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     // MARK: - Properties
     
     private var colorPickerView: ColorPickerView = ColorPickerView(frame: .zero)
+
     private var colorPickerHeight: NSLayoutConstraint!
-    private var selectedColor: UIColor = UIColor.white {
+    private var selectedColor: UIColor? = nil {
         didSet {
-            colourButton.tintColor = selectedColor
+            if let color = self.selectedColor {
+                colourButton.tintColor = color
+            } else {
+                colourButton.tintColor = .white
+            }
         }
     }
     
@@ -82,7 +86,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         button.addTarget(self, action: #selector(didTapColours), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isHidden = true
-        button.tintColor = self.selectedColor
+        button.tintColor = .white
         
         return button
     }()
@@ -117,13 +121,9 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         modelInformationView.delegate = self
         focusSquare.isEnabled = true
-        colorPickerView.delegate = self
-        colorPickerView.layoutDelegate = self
+        colorPickerView.pickerDelegate = self
         
         view.keyboardLayoutGuide.followsUndockedKeyboard = true
-        
-        colorPickerView.colors = [UIColor.red, UIColor.yellow, UIColor.green, UIColor.white]
-        colorPickerView.selectionStyle = .none
         
         configureUI()
         setupARView()
@@ -366,11 +366,11 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         for index in 0..<entities.count {
             if(entities[index].entity.name == entity.name) {
                 selectedModelEntity = entities[index]
-                if(selectedColor == UIColor.white) {
-                    selectedModelEntity.state = .unselected
-                } else {
+                if let selectedColor = self.selectedColor{
                     selectedModelEntity.state = .colored
-                    selectedModelEntity.coloredMaterialColor = self.selectedColor
+                    selectedModelEntity.coloredMaterialColor = selectedColor
+                } else {
+                    selectedModelEntity.state = .unselected
                 }
                 entities[index] = selectedModelEntity
                 break
@@ -519,47 +519,22 @@ extension ARView: ARCoachingOverlayViewDelegate {
     }
 }
 
-// MARK: - ColorPickerViewDelegate
 extension ARViewController: ColorPickerViewDelegate {
-
-  func colorPickerView(_ colorPickerView: ColorPickerView, didSelectItemAt indexPath: IndexPath) {
-    // A color has been selected
-      self.selectedColor = self.colorPickerView.colors[indexPath.row]
-      self.colorPickerHeight.constant = 0
-      UIView.animate(withDuration: 0.5) {
-          // request layout on the *superview*
-          self.view.layoutIfNeeded()
-      }
-  }
-
-  // This is an optional method
-  func colorPickerView(_ colorPickerView: ColorPickerView, didDeselectItemAt indexPath: IndexPath) {
-    // A color has been deselected
-  }
-
-}
-
-extension ARViewController: ColorPickerViewDelegateFlowLayout {
+    func didSelectColor(withColor: UIColor?) {
+        guard let color = withColor else {
+            self.colourButton.tintColor = .white
+            self.selectedColor = nil
+            self.colorPickerHeight.constant = 0
+            UIView.animate(withDuration: 0.5) {
+                
+                // request layout on the *superview*
+                self.view.layoutIfNeeded()
+            }
+            return
+        }
+        
+        self.selectedColor = color
+    }
     
-  func colorPickerView(_ colorPickerView: ColorPickerView, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    // The size for each cell
-    // 👉🏻 WIDTH AND HEIGHT MUST BE EQUALS!
-    return CGSize(width: 50, height: 50)
-  }
-
-  func colorPickerView(_ colorPickerView: ColorPickerView, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    // Space between cells
-    return 0
-  }
-
-  func colorPickerView(_ colorPickerView: ColorPickerView, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    // Space between rows
-    return 5
-  }
-
-  func colorPickerView(_ colorPickerView: ColorPickerView, insetForSectionAt section: Int) -> UIEdgeInsets {
-    // Inset used aroud the view
-    return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-  }
-
+    
 }

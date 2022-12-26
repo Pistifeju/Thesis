@@ -45,6 +45,7 @@
 		B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */; };
 		B7F64F00291FFCCF00652A9E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFF291FFCCF00652A9E /* MainViewController.swift */; };
 		B7F64F0229204C3D00652A9E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64F0129204C3D00652A9E /* Constants.swift */; };
+		B7F8C91F295A2D070091C68E /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F8C91E295A2D070091C68E /* ColorPickerView.swift */; };
 		B7FDB44C2923B55000B8A17D /* MainViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */; };
 		B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB4872924402500B8A17D /* DatabaseManager.swift */; };
 		B7FDB48A29244ADB00B8A17D /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB48929244ADB00B8A17D /* CategoryViewController.swift */; };
@@ -93,6 +94,7 @@
 		B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		B7F64EFF291FFCCF00652A9E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		B7F64F0129204C3D00652A9E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		B7F8C91E295A2D070091C68E /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewCollectionViewCell.swift; sourceTree = "<group>"; };
 		B7FDB4872924402500B8A17D /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		B7FDB48929244ADB00B8A17D /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
@@ -211,6 +213,7 @@
 				B74DF719293ABBFA001C9643 /* QuestionView.swift */,
 				B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */,
 				B73B6B8229564F3400195D50 /* ModelInformationButton.swift */,
+				B7F8C91E295A2D070091C68E /* ColorPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -438,6 +441,7 @@
 				B74403C52953C49600BF93D6 /* textures.metal in Sources */,
 				B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */,
 				B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */,
+				B7F8C91F295A2D070091C68E /* ColorPickerView.swift in Sources */,
 				B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */,
 				B73B6B8329564F3400195D50 /* ModelInformationButton.swift in Sources */,
 				B7AACAD529247125008A850B /* Extensions.swift in Sources */,
