@@ -220,6 +220,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
         
         arView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:))))
+        arView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:))))
     }
     
     private func colorModelEntities() {
@@ -259,9 +260,11 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         if(selectedPreviouslySelectedModel == false) {
             for index in 0..<entities.count {
-                entities[index].state = .unselected
-                if(entities[index].entity.name == entity.name) {
-                    entities[index].state = .selected
+                if(entities[index].state != .colored) {
+                    entities[index].state = .unselected
+                    if(entities[index].entity.name == entity.name) {
+                        entities[index].state = .selected
+                    }
                 }
             }
         }
@@ -285,6 +288,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     }
     
     @objc private func resetModel() {
+        print(selectedEntity.entity.name)
+        print(selectedEntity.state)
         let alert = UIAlertController(title: "Do you want to reset your model?", message: "", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
             guard let strongSelf = self else { return }
@@ -343,6 +348,42 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         colourButton.isHidden = false
     }
     
+    @objc private func handleLongPress(sender: UILongPressGestureRecognizer) {
+        let pressLocation: CGPoint = sender.location(in: arView)
+        let result: [CollisionCastHit] = arView.hitTest(pressLocation)
+        
+        guard let hitTest: CollisionCastHit = result.first, hitTest.entity.name != "Ground Plane"
+        else {
+            print("DEBUG: Did not press anything.")
+            return
+        }
+        
+        let entity: ModelEntity = hitTest.entity as! ModelEntity
+        print("ENTITY: \(entity.name)")
+        
+        var selectedModelEntity = AREntity()
+        
+        for index in 0..<entities.count {
+            if(entities[index].entity.name == entity.name) {
+                selectedModelEntity = entities[index]
+                if(selectedColor == UIColor.white) {
+                    selectedModelEntity.state = .unselected
+                } else {
+                    selectedModelEntity.state = .colored
+                    selectedModelEntity.coloredMaterialColor = self.selectedColor
+                }
+                entities[index] = selectedModelEntity
+                break
+            }
+        }
+        
+        
+        print(selectedModelEntity.entity.name)
+        print(selectedModelEntity.state)
+        
+        self.colorModelEntities()
+    }
+                                    
     @objc private func handleTap(sender: UITapGestureRecognizer) {
         self.colorPickerHeight.constant = 0
         UIView.animate(withDuration: 0.5) {
