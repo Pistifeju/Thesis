@@ -17,7 +17,7 @@ class ColorPickerView: UICollectionView {
     weak var pickerDelegate: ColorPickerViewDelegate?
     
     private var clearImage: UIImage = {
-        let imageConfig = UIImage.SymbolConfiguration(pointSize: 50, weight: .light, scale: .default)
+        let imageConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .light, scale: .default)
         let largeImage = UIImage(systemName: "x.circle", withConfiguration: imageConfig)
         
         
@@ -62,7 +62,7 @@ extension ColorPickerView: UICollectionViewDataSource, UICollectionViewDelegateF
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 50, height: 50)
+        return CGSize(width: 25, height: 25)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

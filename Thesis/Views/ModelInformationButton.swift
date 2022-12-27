@@ -18,5 +18,7 @@ class ModelInformationButton: UIButton {
         setTitle(title, for: .normal)
         titleLabel!.font = UIFont.preferredFont(forTextStyle: .subheadline)
         translatesAutoresizingMaskIntoConstraints = false
+        titleLabel?.lineBreakMode = .byWordWrapping
+        titleLabel?.textAlignment = .center
     }
 }

@@ -47,6 +47,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
         button.addTarget(self, action: #selector(placeObject), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
         
         return button
     }()
@@ -64,7 +65,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     private lazy var resetButton: UIButton = {
         let button = UIButton(type: .system)
         
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold, scale: .large)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .medium, scale: .large)
         let largeImage = UIImage(systemName: "gobackward", withConfiguration: largeConfig)
         
         button.setImage(largeImage, for: .normal)
@@ -79,7 +80,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     private lazy var colourButton: UIButton = {
         let button = UIButton(type: .system)
         
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold, scale: .large)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .medium, scale: .large)
         let largeImage = UIImage(systemName: "paintpalette.fill", withConfiguration: largeConfig)
         
         button.setImage(largeImage, for: .normal)
@@ -94,7 +95,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     private lazy var exitButton: UIButton = {
         let button = UIButton(type: .system)
         
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .bold, scale: .large)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .medium, scale: .large)
         let largeImage = UIImage(systemName: "x.square", withConfiguration: largeConfig)
         
         button.setImage(largeImage, for: .normal)
@@ -151,7 +152,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         view.addSubview(colourButton)
         view.addSubview(colorPickerView)
         
-        arView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             arView.topAnchor.constraint(equalTo: view.topAnchor),
             arView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -159,7 +159,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             arView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
         
-        placeButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             placeButton.widthAnchor.constraint(equalToConstant: 50),
             placeButton.heightAnchor.constraint(equalToConstant: 50),
@@ -170,7 +169,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         modelInformationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             modelInformationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            modelInformationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            modelInformationView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor),
             modelInformationView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
         
@@ -396,6 +395,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         guard let hitTest: CollisionCastHit = result.first, hitTest.entity.name != "Ground Plane"
         else {
+            self.modelInformationView.notesTextView.endEditing(true)
             selectEntity(withSelectedEntity: nil)
             return
         }

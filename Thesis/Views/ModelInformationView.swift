@@ -9,6 +9,11 @@ import UIKit
 import LoremSwiftum
 import AVFoundation
 
+private enum ViewState {
+    case moreTextView
+    case notesTextView
+}
+
 protocol ModelInformationViewDelegate: AnyObject {
     func didTapClose()
     func didTapFade()
@@ -21,25 +26,63 @@ class ModelInformationView: UIView {
     var delegate: ModelInformationViewDelegate?
     
     private let synth = AVSpeechSynthesizer()
-    private var textViewHeightConstraint: NSLayoutConstraint?
+    private var containerViewHeightConstraint: NSLayoutConstraint?
     
-    private var closeButton: ModelInformationButton = ModelInformationButton(title: "Exit")
+    private var closeButton: ModelInformationButton = ModelInformationButton(title: "Close")
     private var moreButton: ModelInformationButton = ModelInformationButton(title: "More")
     private var fadeButton: ModelInformationButton = ModelInformationButton(title: "Fade")
     private var fadeOthersButton: ModelInformationButton = ModelInformationButton(title: "Fade\nOthers")
     private var notesButton: ModelInformationButton = ModelInformationButton(title: "Notes")
     private var isolateButton: ModelInformationButton = ModelInformationButton(title: "Isolate")
     
-    override var intrinsicContentSize: CGSize {
-        return CGSize(width: UIScreen.main.bounds.width, height: CGFloat(Float(textView.frame.height + 135)))
+    private var containerViewState: ViewState? {
+        didSet {
+            guard let state = containerViewState else { return }
+            
+            // Remove previously added view
+            containerViewForTextView.subviews.forEach({ $0.removeFromSuperview() })
+            
+            var contentView: UIView
+            
+            switch state {
+            case .moreTextView:
+                informationTextView.isHidden = false
+                contentView = informationTextView
+            case .notesTextView:
+                notesTextView.isHidden = false
+                contentView = notesTextView
+            }
+            
+            containerViewForTextView.addSubview(contentView)
+            
+            NSLayoutConstraint.activate([
+                contentView.topAnchor.constraint(equalTo: containerViewForTextView.topAnchor),
+                contentView.leadingAnchor.constraint(equalTo: containerViewForTextView.leadingAnchor),
+                contentView.trailingAnchor.constraint(equalTo: containerViewForTextView.trailingAnchor),
+                contentView.bottomAnchor.constraint(equalTo: containerViewForTextView.bottomAnchor)
+            ])
+        }
     }
+    
+    override var intrinsicContentSize: CGSize {
+        return CGSize(width: UIScreen.main.bounds.width, height: CGFloat(Float(informationTextView.frame.height + 135)))
+    }
+    
+    private var containerViewForTextView: UIView = {
+        let containerView = UIView()
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.backgroundColor = .clear
+        containerView.isHidden = true
+        
+        return containerView
+    }()
     
     private var nameToSpeechButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
         button.layer.opacity = 0.7
         button.translatesAutoresizingMaskIntoConstraints = false
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .bold, scale: .large)
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 15, weight: .medium, scale: .large)
         let largeBoldDoc = UIImage(systemName: "speaker.wave.2", withConfiguration: largeConfig)
         button.setImage(largeBoldDoc, for: .normal)
         
@@ -76,20 +119,34 @@ class ModelInformationView: UIView {
         return label
     }()
     
-    private let textView: UITextView = {
+    private let informationTextView: UITextView = {
         let textView = UITextView(frame: .zero)
         textView.textColor = .white
-        textView.font = .systemFont(ofSize: 16)
+        textView.font = UIFont.preferredFont(forTextStyle: .body, compatibleWith: .none)
         textView.backgroundColor = .clear
         textView.allowsEditingTextAttributes = false
         textView.isSelectable = false
         textView.isEditable = false
         textView.isUserInteractionEnabled = true
-        textView.isHidden = true
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.showsHorizontalScrollIndicator = false
         textView.showsVerticalScrollIndicator = true
         textView.textAlignment = .justified
+        
+        return textView
+    }()
+    
+    public let notesTextView: UITextView = {
+        let textView = UITextView()
+        textView.font = UIFont.preferredFont(forTextStyle: .body, compatibleWith: .none)
+        textView.tintColor = .white
+        textView.backgroundColor = .clear
+        textView.isEditable = true
+        textView.isUserInteractionEnabled = true
+        textView.showsVerticalScrollIndicator = true
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.allowsEditingTextAttributes = true
+        textView.autocorrectionType = .no
         
         return textView
     }()
@@ -120,14 +177,13 @@ class ModelInformationView: UIView {
         self.layer.masksToBounds = true
         createBlurEffect()
         
-        fadeOthersButton.titleLabel?.lineBreakMode = .byWordWrapping
-        fadeOthersButton.titleLabel?.textAlignment = .center
-        
         addSubview(nameLabel)
         addSubview(closeButton)
         addSubview(nameToSpeechButton)
         addSubview(optionButtons)
-        addSubview(textView)
+        addSubview(containerViewForTextView)
+        containerViewForTextView.addSubview(informationTextView)
+        containerViewForTextView.addSubview(notesTextView)
         addSubview(latinNameLabel)
         
         NSLayoutConstraint.activate([
@@ -156,19 +212,19 @@ class ModelInformationView: UIView {
             self.trailingAnchor.constraint(equalToSystemSpacingAfter: optionButtons.trailingAnchor, multiplier: 2),
         ])
 
-        textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: 0)
-        textViewHeightConstraint?.isActive = true
+        containerViewHeightConstraint = containerViewForTextView.heightAnchor.constraint(equalToConstant: 0)
+        containerViewHeightConstraint?.isActive = true
         NSLayoutConstraint.activate([
-            textView.topAnchor.constraint(equalToSystemSpacingBelow: latinNameLabel.bottomAnchor, multiplier: 1),
-            textView.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
-            self.trailingAnchor.constraint(equalToSystemSpacingAfter: textView.trailingAnchor, multiplier: 2),
-            textView.bottomAnchor.constraint(equalToSystemSpacingBelow: optionButtons.topAnchor, multiplier: -2),
+            containerViewForTextView.topAnchor.constraint(equalToSystemSpacingBelow: latinNameLabel.bottomAnchor, multiplier: 1),
+            containerViewForTextView.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
+            self.trailingAnchor.constraint(equalToSystemSpacingAfter: containerViewForTextView.trailingAnchor, multiplier: 2),
+            containerViewForTextView.bottomAnchor.constraint(equalToSystemSpacingBelow: optionButtons.topAnchor, multiplier: -2),
         ])
     }
     
     func configure(nameLabel: String, textViewString: String) {
         self.nameLabel.text = nameLabel
-        self.textView.text = textViewString + textViewString + textViewString + textViewString
+        self.informationTextView.text = textViewString + textViewString + textViewString + textViewString
         //TODO: - set latinNameLabel
     }
     
@@ -197,15 +253,45 @@ class ModelInformationView: UIView {
     
     @objc private func didTapCloseButton() {
         delegate?.didTapClose()
+        notesTextView.endEditing(true)
     }
     
     @objc private func didTapMoreButton() {
-        if(textView.isHidden) {
-            textView.isHidden = false
-            self.textViewHeightConstraint?.constant = 200
-        } else {
-            self.textViewHeightConstraint?.constant = 0
-            textView.isHidden = true
+        UIView.performWithoutAnimation {
+            if(containerViewForTextView.isHidden || (containerViewForTextView.isHidden == false && containerViewState == .notesTextView)) {
+                containerViewForTextView.isHidden = false
+                containerViewState = .moreTextView
+                self.containerViewHeightConstraint?.constant = 200
+                self.moreButton.setTitle("Hide\nMore", for: .normal)
+                self.notesButton.setTitle("Notes", for: .normal)
+            } else {
+                self.containerViewHeightConstraint?.constant = 0
+                containerViewForTextView.isHidden = true
+                self.moreButton.setTitle("More", for: .normal)
+            }
+            
+            notesButton.layoutIfNeeded()
+            moreButton.layoutIfNeeded()
+        }
+    }
+    
+    @objc private func didTapNotesButton() {
+        UIView.performWithoutAnimation {
+            if(containerViewForTextView.isHidden || (containerViewForTextView.isHidden == false && containerViewState == .moreTextView)) {
+                containerViewForTextView.isHidden = false
+                containerViewState = .notesTextView
+                self.containerViewHeightConstraint?.constant = 200
+                self.notesButton.setTitle("Hide\nNotes", for: .normal)
+                self.moreButton.setTitle("More", for: .normal)
+            } else {
+                self.containerViewHeightConstraint?.constant = 0
+                containerViewForTextView.isHidden = true
+                notesTextView.endEditing(true)
+                self.notesButton.setTitle("Notes", for: .normal)
+            }
+            
+            notesButton.layoutIfNeeded()
+            moreButton.layoutIfNeeded()
         }
     }
     
@@ -227,9 +313,5 @@ class ModelInformationView: UIView {
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
 
         synth.speak(utterance)
-    }
-    
-    @objc private func didTapNotesButton() {
-        
     }
 }
