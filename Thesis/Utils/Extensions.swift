@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 11. 16..
 //
 
-import Foundation
 import UIKit
 import JGProgressHUD
 
@@ -36,4 +35,3 @@ extension UIViewController {
         }
     }
 }
-

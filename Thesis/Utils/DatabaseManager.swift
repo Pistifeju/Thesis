@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 11. 15..
 //
 
-import Foundation
 import UIKit
 import RealmSwift
 
@@ -18,6 +17,15 @@ final class DatabaseManager {
     }
     
     static func loadData() {
+//        do {
+//            // Delete the realm if a migration would be required, instead of migrating it.
+//            // While it's useful during development, do not leave this set to `true` in a production app!
+//            let configuration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
+//            let realm = try Realm(configuration: configuration)
+//        } catch {
+//            print("Error opening realm: \(error.localizedDescription)")
+//        }
+        
         deleteAll()
         
         let skeletalSystem: [[String]] = [
@@ -52,15 +60,6 @@ final class DatabaseManager {
             innerAnswers.append(objectsIn: answers[i])
             skeletalQuestions[i].answers = innerAnswers
         }
-        
-//        do {
-//            // Delete the realm if a migration would be required, instead of migrating it.
-//            // While it's useful during development, do not leave this set to `true` in a production app!
-//            let configuration = Realm.Configuration(deleteRealmIfMigrationNeeded: true)
-//            let realm = try Realm(configuration: configuration)
-//        } catch {
-//            print("Error opening realm: \(error.localizedDescription)")
-//        }
             
         let realm = try! Realm()
         

@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 11. 28..
 //
 
-import Foundation
 import UIKit
 import RealmSwift
 
@@ -44,7 +43,6 @@ class QuizViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
-        
         
         return collectionView
     }()
@@ -238,6 +236,8 @@ extension QuizViewController: UICollectionViewDelegate, UICollectionViewDataSour
         return 1
     }
 }
+
+// MARK: -
 
 extension QuizViewController: QuestionViewDelegate {
     func didSelectAnswer(with question: Question) {

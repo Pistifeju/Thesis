@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 12. 26..
 //
 
-import Foundation
 import UIKit
 
 protocol ColorPickerViewDelegate: AnyObject {
@@ -19,7 +18,6 @@ class ColorPickerView: UICollectionView {
     private var clearImage: UIImage = {
         let imageConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .light, scale: .default)
         let largeImage = UIImage(systemName: "x.circle", withConfiguration: imageConfig)
-        
         
         return largeImage!
     }()
@@ -50,8 +48,9 @@ class ColorPickerView: UICollectionView {
     }
 }
 
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+
 extension ColorPickerView: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if(self.colors[indexPath.row] is UIColor) {

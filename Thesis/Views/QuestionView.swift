@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 12. 03..
 //
 
-import Foundation
 import UIKit
 import RealmSwift
 
@@ -147,7 +146,7 @@ class QuestionView: UICollectionViewCell {
             answerButton4.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
             answerButton4.isSelected = true
         default:
-            print("Semmit")
+            break
         }
     }
     

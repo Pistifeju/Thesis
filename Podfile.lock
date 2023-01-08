@@ -1,8 +1,4 @@
 PODS:
-  - IGColorPicker (0.4.3):
-    - M13Checkbox
-  - lottie-ios (3.5.0)
-  - M13Checkbox (3.4.0)
   - Realm (10.32.0):
     - Realm/Headers (= 10.32.0)
   - Realm/Headers (10.32.0)
@@ -10,25 +6,17 @@ PODS:
     - Realm (= 10.32.0)
 
 DEPENDENCIES:
-  - IGColorPicker
-  - lottie-ios
   - RealmSwift (~> 10)
 
 SPEC REPOS:
   trunk:
-    - IGColorPicker
-    - lottie-ios
-    - M13Checkbox
     - Realm
     - RealmSwift
 
 SPEC CHECKSUMS:
-  IGColorPicker: f6034f8629aa90cce308a76ecc0fdf2afed0bf34
-  lottie-ios: c55158d67d0629a260625cc2ded2052b829e3c3e
-  M13Checkbox: 6f59404540ac98ba83a3d1afac335895a40c6a5d
   Realm: a00e93347b8d26d372c7a82f6c0b08d6536a21c8
   RealmSwift: fe09c29ca409f8f905fe4086f2a52936193f2e3d
 
-PODFILE CHECKSUM: 47f5a52c5b0e7b201823de382aa402e39d08429f
+PODFILE CHECKSUM: 23dc5da612d17d3077a47c7042a94adabf8e035a
 
 COCOAPODS: 1.11.3

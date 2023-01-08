@@ -5,14 +5,13 @@
 //  Created by István Juhász on 2022. 11. 12..
 //
 
-import Foundation
 import UIKit
 
 class OnboardingPageViewController: UIPageViewController {
 
     var pages = [UIViewController]()
     
-    override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
+    override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey: Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
@@ -76,13 +75,11 @@ class OnboardingPageViewController: UIPageViewController {
         
         pageControl.numberOfPages = pages.count
 
-        
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
     }
     
     private func configureUI() {
         navigationController?.navigationBar.tintColor = .white
-        
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Skip", style: .plain, target: self, action: #selector(skipTapped))
         navigationItem.rightBarButtonItem?.tintColor = .black

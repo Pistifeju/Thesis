@@ -21,7 +21,6 @@
 		B73B6B7F29549DA600195D50 /* AREntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B7E29549DA600195D50 /* AREntity.swift */; };
 		B73B6B812956491300195D50 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B802956491300195D50 /* TestViewController.swift */; };
 		B73B6B8329564F3400195D50 /* ModelInformationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B8229564F3400195D50 /* ModelInformationButton.swift */; };
-		B74403C52953C49600BF93D6 /* textures.metal in Sources */ = {isa = PBXBuildFile; fileRef = B74403C42953C49600BF93D6 /* textures.metal */; };
 		B74DF71A293ABBFA001C9643 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF719293ABBFA001C9643 /* QuestionView.swift */; };
 		B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */; };
 		B74DF720293BF0BC001C9643 /* EndOfQuizController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */; };
@@ -34,6 +33,7 @@
 		B77FCAD32911D3C800E45438 /* Leg.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC92911D3C800E45438 /* Leg.usdz */; };
 		B77FCAD42911D3C800E45438 /* VertebralColumn.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCACA2911D3C800E45438 /* VertebralColumn.usdz */; };
 		B77FCAD52911D3C800E45438 /* Arm.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCACB2911D3C800E45438 /* Arm.usdz */; };
+		B7A3E175296B584E009670FC /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = B7A3E174296B584E009670FC /* .swiftlint.yml */; };
 		B7AACAD32924711C008A850B /* JGProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = B7AACAD22924711C008A850B /* JGProgressHUD */; };
 		B7AACAD529247125008A850B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AACAD429247125008A850B /* Extensions.swift */; };
 		B7BC4248294FAB89005D90C0 /* failed.json in Resources */ = {isa = PBXBuildFile; fileRef = B7BC4246294FAB89005D90C0 /* failed.json */; };
@@ -71,7 +71,6 @@
 		B73B6B7E29549DA600195D50 /* AREntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AREntity.swift; sourceTree = "<group>"; };
 		B73B6B802956491300195D50 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		B73B6B8229564F3400195D50 /* ModelInformationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInformationButton.swift; sourceTree = "<group>"; };
-		B74403C42953C49600BF93D6 /* textures.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = textures.metal; sourceTree = "<group>"; };
 		B74DF719293ABBFA001C9643 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnswerButton.swift; sourceTree = "<group>"; };
 		B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfQuizController.swift; sourceTree = "<group>"; };
@@ -84,6 +83,7 @@
 		B77FCAC92911D3C800E45438 /* Leg.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Leg.usdz; sourceTree = "<group>"; };
 		B77FCACA2911D3C800E45438 /* VertebralColumn.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = VertebralColumn.usdz; sourceTree = "<group>"; };
 		B77FCACB2911D3C800E45438 /* Arm.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Arm.usdz; sourceTree = "<group>"; };
+		B7A3E174296B584E009670FC /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		B7AACAD429247125008A850B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B7BC4246294FAB89005D90C0 /* failed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = failed.json; sourceTree = "<group>"; };
 		B7BC424A294FAFBA005D90C0 /* checkmark.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = checkmark.json; sourceTree = "<group>"; };
@@ -154,6 +154,7 @@
 		B7302EF62911CEBC0018272C = {
 			isa = PBXGroup;
 			children = (
+				B7A3E174296B584E009670FC /* .swiftlint.yml */,
 				B77B697E2911DD9F004FDA40 /* Design.fig */,
 				B77B697D2911DD9F004FDA40 /* Design.png */,
 				B7302F012911CEBC0018272C /* Thesis */,
@@ -185,7 +186,6 @@
 				B7302F022911CEBC0018272C /* AppDelegate.swift */,
 				B7302F042911CEBC0018272C /* SceneDelegate.swift */,
 				B7302F102911CEBD0018272C /* Info.plist */,
-				B74403C42953C49600BF93D6 /* textures.metal */,
 			);
 			path = Thesis;
 			sourceTree = "<group>";
@@ -299,6 +299,7 @@
 				B7302EFC2911CEBC0018272C /* Frameworks */,
 				B7302EFD2911CEBC0018272C /* Resources */,
 				B168F61D6C92CCB537D1473B /* [CP] Embed Pods Frameworks */,
+				B7A3E173296B5839009670FC /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -366,6 +367,7 @@
 				B77FCACF2911D3C800E45438 /* Hand.usdz in Resources */,
 				B77FCAD22911D3C800E45438 /* ShoulderGirdle.usdz in Resources */,
 				B7302F0F2911CEBD0018272C /* LaunchScreen.storyboard in Resources */,
+				B7A3E175296B584E009670FC /* .swiftlint.yml in Resources */,
 				B7302F0C2911CEBD0018272C /* Assets.xcassets in Resources */,
 				B77FCAD32911D3C800E45438 /* Leg.usdz in Resources */,
 				B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */,
@@ -395,6 +397,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Thesis/Pods-Thesis-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		B7A3E173296B5839009670FC /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		CFEC964CAA6D28D9700065A6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -438,7 +457,6 @@
 				B7FDB48A29244ADB00B8A17D /* CategoryViewController.swift in Sources */,
 				B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */,
 				B7302F032911CEBC0018272C /* AppDelegate.swift in Sources */,
-				B74403C52953C49600BF93D6 /* textures.metal in Sources */,
 				B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */,
 				B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */,
 				B7F8C91F295A2D070091C68E /* ColorPickerView.swift in Sources */,

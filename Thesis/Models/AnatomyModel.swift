@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 11. 28..
 //
 
-import Foundation
 import RealmSwift
 
 //This represents the AnatomyModel in Realm
@@ -28,6 +27,4 @@ import RealmSwift
 
 extension AnatomyModel {
 
-  
-  
 }

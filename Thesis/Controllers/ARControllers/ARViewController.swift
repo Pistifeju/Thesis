@@ -9,7 +9,6 @@ import RealityKit
 import ARKit
 import FocusEntity
 import LoremSwiftum
-import Lottie
 
 protocol ARViewControllerDelegate: AnyObject {
     func didLoad()
@@ -21,7 +20,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     private var colorPickerView: ColorPickerView = ColorPickerView(frame: .zero)
 
-    private var colorPickerHeight: NSLayoutConstraint!
+    private var colorPickerHeight = NSLayoutConstraint()
     private var selectedColor: UIColor? = nil {
         didSet {
             if let color = self.selectedColor {
@@ -287,8 +286,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     }
     
     @objc private func resetModel() {
-        print(selectedEntity.entity.name)
-        print(selectedEntity.state)
         let alert = UIAlertController(title: "Do you want to reset your model?", message: "", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
             guard let strongSelf = self else { return }
@@ -353,12 +350,10 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         guard let hitTest: CollisionCastHit = result.first, hitTest.entity.name != "Ground Plane"
         else {
-            print("DEBUG: Did not press anything.")
             return
         }
         
         let entity: ModelEntity = hitTest.entity as! ModelEntity
-        print("ENTITY: \(entity.name)")
         
         var selectedModelEntity = AREntity()
         
@@ -375,10 +370,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
                 break
             }
         }
-        
-        
-        print(selectedModelEntity.entity.name)
-        print(selectedModelEntity.state)
         
         self.colorModelEntities()
     }
@@ -428,6 +419,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         }
     }
 }
+
+// MARK: - ModelInformationViewDelegate
 
 extension ARViewController: ModelInformationViewDelegate {
     func didTapIsolate() {
@@ -486,6 +479,8 @@ extension ARViewController: ModelInformationViewDelegate {
     }
 }
 
+// MARK: - ARCoachingOverlayViewDelegate
+
 extension ARView: ARCoachingOverlayViewDelegate {
     func addCoaching() {
         // Create a ARCoachingOverlayView object
@@ -519,6 +514,8 @@ extension ARView: ARCoachingOverlayViewDelegate {
     }
 }
 
+// MARK: - ColorPickerViewDelegate
+
 extension ARViewController: ColorPickerViewDelegate {
     func didSelectColor(withColor: UIColor?) {
         guard let color = withColor else {
@@ -535,6 +532,4 @@ extension ARViewController: ColorPickerViewDelegate {
         
         self.selectedColor = color
     }
-    
-    
 }

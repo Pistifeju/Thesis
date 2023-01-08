@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 12. 23..
 //
 
-import Foundation
 import UIKit
 import LoremSwiftum
 
@@ -14,7 +13,7 @@ class TestViewController: UIViewController {
     // MARK: - Properties
 
     var colorPickerView: ColorPickerView = ColorPickerView(frame: .zero)
-    var colorPickerHeight: NSLayoutConstraint!
+    var colorPickerHeight = NSLayoutConstraint()
     
     private let modelInformationView = ModelInformationView(frame: .zero)
     
@@ -121,14 +120,14 @@ class TestViewController: UIViewController {
     }
 }
 
+// MARK: - ColorPickerViewDelegate
+
 extension TestViewController: ColorPickerViewDelegate {
     func didSelectColor(withColor: UIColor?) {
-        guard let color = withColor else {
+        guard withColor != nil else {
             self.colourButton.tintColor = .white
             self.colorPickerHeight.constant = 0
             UIView.animate(withDuration: 0.5) {
-                
-                // request layout on the *superview*
                 self.view.layoutIfNeeded()
             }
             return

@@ -5,9 +5,7 @@
 //  Created by István Juhász on 2022. 11. 15..
 //
 
-import Foundation
 import UIKit
-
 
 class MainViewCollectionViewCell: UICollectionViewCell {
     
@@ -102,7 +100,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
             self.sectionCount = system.count
             self.sectionLabel.text = "\(sectionCount) sections"
         default:
-            print("Default")
+            break
         }
     }
     // MARK: - Selectors

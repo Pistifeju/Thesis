@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 11. 12..
 //
 
-import Foundation
 import UIKit
 import RealityKit
 

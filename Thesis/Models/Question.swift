@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 11. 28..
 //
 
-import Foundation
 import RealmSwift
 
 @objcMembers class Question: Object {

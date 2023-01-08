@@ -5,7 +5,6 @@
 //  Created by István Juhász on 2022. 11. 12..
 //
 
-import Foundation
 import UIKit
 import RealmSwift
 
@@ -44,7 +43,7 @@ class MainViewController: UICollectionViewController {
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         
-        let cellSize = CGSize(width:view.frame.width - 50, height:view.frame.width / 2)
+        let cellSize = CGSize(width: view.frame.width - 50, height: view.frame.width / 2)
         
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical //.horizontal
@@ -59,7 +58,6 @@ class MainViewController: UICollectionViewController {
 
     // MARK: - Selectors
 }
-
 
 // MARK: - UICollectionViewDataSource
 
@@ -103,6 +101,5 @@ extension MainViewController {
         
         self.present(nav, animated: true)
     }
-    
     
 }
