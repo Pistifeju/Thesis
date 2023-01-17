@@ -103,6 +103,7 @@ class OnboardingPageViewController: UIPageViewController {
         dismiss(animated: true)
         
         UserDefaults.standard.set(true, forKey: "hasOnboarded")
+        DatabaseManager.loadData()
         
         let layout = UICollectionViewFlowLayout()
         let controller = MainViewController(collectionViewLayout: layout)

@@ -22,15 +22,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        window?.rootViewController = UINavigationController(rootViewController: TestViewController())
 //        window?.makeKeyAndVisible()
         
+        DatabaseManager.loadData()
+        
         if UserDefaults.standard.bool(forKey: "hasOnboarded") {
             let layout = UICollectionViewFlowLayout()
             let vc = MainViewController(collectionViewLayout: layout)
             let nav = UINavigationController(rootViewController: vc)
             window?.rootViewController = nav
             window?.makeKeyAndVisible()
-            DatabaseManager.loadData()
         } else {
-            DatabaseManager.loadData()
             let nav = UINavigationController(rootViewController: OnboardingPageViewController())
             window?.rootViewController = nav
             window?.makeKeyAndVisible()

@@ -1,0 +1,119 @@
+[
+  {
+    "name": "Laryngeal",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      "Arytenoid_Cartilage": "",
+      "Corniculate_Cartilage": "",
+      "Cricoid_Cartilage": "",
+      "Hyoid_Bone": "",
+      "Thyroid_Cartilage": ""
+    }
+  },
+  {
+    "name": "Chest",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      "Manubrium": "The manubrium (Latin for 'handle') is the broad upper part of the sternum. It has a quadrangular shape, narrowing from the top, which gives it four borders. The suprasternal notch (jugular notch) is located in the middle at the upper broadest part of the manubrium. This notch can be felt between the two clavicles. On either side of this notch are the right and left clavicular notches. The manubrium joins with the body of the sternum, the clavicles and the cartilages of the first pair of ribs. The inferior border, oval and rough, is covered with a thin layer of cartilage for articulation with the body. The lateral borders are each marked above by a depression for the first costal cartilage, and below by a small facet, which, with a similar facet on the upper angle of the body, forms a notch for the reception of the costal cartilage of the second rib. Between the depression for the first costal cartilage and the demi-facet for the second is a narrow, curved edge, which slopes from above downward towards the middle. Also, the superior sternopericardial ligament attaches the pericardium to the posterior side of the manubrium.",
+      "Rib_cage": "The rib cage is a series of bones in the chest that protect the organs in the thorax, including the heart and lungs. It is made up of 12 pairs of ribs, the sternum, and the thoracic vertebrae. The ribs are attached to the spine at the back and to the sternum at the front. The upper seven pairs of ribs are called 'true ribs' because they are directly attached to the sternum. The next three pairs are called 'false ribs' because they are not directly attached to the sternum, but instead are attached to the ribs above them. The last two pairs are called 'floating ribs' because they are only attached at the back and do not connect to the sternum at all. The rib cage is important for protecting the organs in the thorax and for helping the body to breathe.",
+      "Sternum": "The longest sternal part. It is flat and considered to have only a front and back surface. It is flat on the front, directed upward and forward, and marked by three transverse ridges which cross the bone opposite the third, fourth, and fifth articular depressions. The pectoralis major attaches to it on either side. At the junction of the third and fourth parts of the body is occasionally seen an orifice, the sternal foramen, of varying size and form. The posterior surface, slightly concave, is also marked by three transverse lines, less distinct, however, than those in front; from its lower part, on either side, the transversus thoracis takes origin. The sternal angle is located at the point where the body joins the manubrium. The sternal angle can be felt at the point where the sternum projects farthest forward. However, in some people the sternal angle is concave or rounded. During physical examinations, the sternal angle is a useful landmark because the second rib attaches here. Each outer border, at its superior angle, has a small facet, which with a similar facet on the manubrium, forms a cavity for the cartilage of the second rib; below this are four angular depressions which receive the cartilages of the third, fourth, fifth, and sixth ribs. The inferior angle has a small facet, which, with a corresponding one on the xiphoid process, forms a notch for the cartilage of the seventh rib. These articular depressions are separated by a series of curved interarticular intervals, which diminish in length from above downward, and correspond to the intercostal spaces. Most of the cartilages belonging to the true ribs, articulate with the sternum at the lines of junction of its primitive component segments. This is well seen in some other vertebrates, where the parts of the bone remain separated for longer. The upper border is oval and articulates with the manubrium, at the sternal angle. The lower border is narrow, and articulates with the xiphoid process.",
+      "Xiphoid_Process": "Located at the inferior end of the sternum is the pointed xiphoid process. Improperly performed chest compressions during cardiopulmonary resuscitation can cause the xiphoid process to snap off, driving it into the liver which can cause a fatal hemorrhage. The sternum is composed of highly vascular tissue, covered by a thin layer of compact bone which is thickest in the manubrium between the articular facets for the clavicles. The inferior sternopericardial ligament attaches the pericardium to the posterior xiphoid process."
+    }
+  },
+  {
+    "name": "Skull",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      
+    }
+  },
+  {
+    "name": "Arm",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      "Humerus": "",
+      "Radius": "",
+      "Ulna": ""
+    }
+  },
+  {
+    "name": "Foot",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      "Calcaneus": "",
+      "Cuboid": "",
+      "Intermediate_Cuneiform": "",
+      "Lateral_Cuneiform": "",
+      "Medial_Cuneiform": "",
+      "Metatarsal": "",
+      "Navicular_Bone": "",
+      "Phalanx": "",
+      "Sesamoid": "",
+      "Talus": ""
+    }
+  },
+  {
+    "name": "Hand",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      "Capitate": "",
+      "Hamate": "",
+      "Lunate": "",
+      "Metacarpal": "",
+      "Phalanx": "",
+      "Pisiform": "",
+      "Scaphoid": "",
+      "Trapezium": "",
+      "Trapezoid": "",
+      "Triquetrum": ""
+    }
+  },
+  {
+    "name": "Leg",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      "Femur": "",
+      "Fibula": "",
+      "Patella": "",
+      "Tibia": ""
+    }
+  },
+  {
+    "name": "Pelvic_Girdle",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      "Hip": ""
+    }
+  },
+  {
+    "name": "Shoulder_Girdle",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      "Clavicle": "",
+      "Scapula": ""
+    }
+  },
+  {
+    "name": "Vertebral_Column",
+    "informationText": "",
+    "category": "skeletalSystem",
+    "subModels": {
+      "Atlas": "The atlas, also known as the first cervical vertebra or C1, is a unique vertebra in the neck region of the vertebral column. It is located between the skull and the second cervical vertebra (C2), and is the first of the seven cervical vertebrae. The atlas is named after the Greek god Atlas, who was known for holding up the world on his shoulders. Like the mythical Atlas, the atlas has a special role in supporting and stabilizing the head. The atlas is a small, ring-shaped vertebra that has no vertebral body or spinous process (a bony projection on the back of the vertebra). Instead, it has a pair of bony processes called the lateral masses, which provide attachment points for muscles and ligaments. The atlas also has a distinctive feature called the dens, which is a bony protuberance that extends upward from the vertebral body of the second cervical vertebra (C2). The head pivots around the dens when it moves, allowing the head to rotate and tilt in all directions.",
+      "Axis": "The axis, also known as the second cervical vertebra or C2, is a unique vertebra in the neck region of the vertebral column. It is located between the atlas (C1) and the third cervical vertebra (C3) and is the second of the seven cervical vertebrae. The axis is named after the Greek god Atlas, who was known for holding up the world on his shoulders. Like the atlas, the axis has a special role in supporting and stabilizing the head. The axis has a distinctive feature called the odontoid process, also known as the dens, which is a bony protuberance that extends upward from the vertebral body. The atlas pivots around the dens when the head moves, allowing the head to rotate and tilt in all directions. The axis also has a number of bony processes, including the transverse processes, which provide attachment points for muscles and ligaments.",
+      "Cervical_Vertebra": "The cervical vertebrae are a group of seven bones located in the neck region of the vertebral column. They are also known as the C-vertebrae. The cervical vertebrae are the smallest and most delicate of the vertebrae, as they are responsible for supporting the weight of the head and allowing it to move freely. They are also responsible for protecting the spinal cord, which runs through the vertebral foramen (a hole in the center of each vertebra) and carries messages between the brain and the rest of the body. Each cervical vertebra has a body, which is the main weight-bearing part of the bone, and a number of bony processes, which are protuberances that provide attachment points for muscles and ligaments. The vertebral body is round in shape and has a concave area on its back side, called the vertebral foramen, through which the spinal cord passes. The cervical vertebrae are separated from each other by intervertebral discs, which are made of cartilage and act as shock absorbers to protect the spine from damage.",
+      "Coccyx": "The coccyx (plural: coccyges or coccyxes), commonly referred to as the tailbone, is the final segment of the vertebral column in all apes, and analogous structures in certain other mammals such as horses. In tailless primates (e.g. humans and other great apes) since Nacholapithecus (a Miocene hominoid), the coccyx is the remnant of a vestigial tail. In animals with bony tails, it is known as tailhead or dock, in bird anatomy as tailfan. It comprises three to five separate or fused coccygeal vertebrae below the sacrum, attached to the sacrum by a fibrocartilaginous joint, the sacrococcygeal symphysis, which permits limited movement between the sacrum and the coccyx.",
+      "Lumbar_Vertebra": "The lumbar vertebrae are, in human anatomy, the five vertebrae between the rib cage and the pelvis. They are the largest segments of the vertebral column and are characterized by the absence of the foramen transversarium within the transverse process (since it is only found in the cervical region) and by the absence of facets on the sides of the body (as found only in the thoracic region). They are designated L1 to L5, starting at the top. The lumbar vertebrae help support the weight of the body, and permit movement.",
+      "Sacrum": "The sacrum (plural: sacra or sacrums), in human anatomy, is a large, triangular bone at the base of the spine that forms by the fusing of the sacral vertebrae (S1–S5) between ages 18 and 30.The sacrum situates at the upper, back part of the pelvic cavity, between the two wings of the pelvis. It forms joints with four other bones. The two projections at the sides of the sacrum are called the alae (wings), and articulate with the ilium at the L-shaped sacroiliac joints. The upper part of the sacrum connects with the last lumbar vertebra (L5), and its lower part with the coccyx (tailbone) via the sacral and coccygeal cornua. The sacrum has three different surfaces which are shaped to accommodate surrounding pelvic structures. Overall it is concave (curved upon itself). The base of the sacrum, the broadest and uppermost part, is tilted forward as the sacral promontory internally. The central part is curved outward toward the posterior, allowing greater room for the pelvic cavity. In all other quadrupedal vertebrates, the pelvic vertebrae undergo a similar developmental process to form a sacrum in the adult, even while the bony tail (caudal) vertebrae remain unfused.",
+      "Thoracic_Vertebra": "The thoracic vertebrae are a group of 12 bones in the vertebral column that are located in the chest region, between the cervical vertebrae in the neck and the lumbar vertebrae in the lower back. They are also known as the T-vertebrae. The thoracic vertebrae are larger and stronger than the cervical vertebrae, but smaller and less massive than the lumbar vertebrae. They are designed to support the weight of the upper body and to provide a stable foundation for the rib cage. Each thoracic vertebra has a body, which is the main weight-bearing part of the bone, and a number of bony processes, which are protuberances that provide attachment points for muscles and ligaments. The vertebral body is oval in shape and has a concave area on its back side, called the vertebral foramen, through which the spinal cord passes. The thoracic vertebrae are separated from each other by intervertebral discs, which are made of cartilage and act as shock absorbers to protect the spine from damage."
+    }
+  }
+]

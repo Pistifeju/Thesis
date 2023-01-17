@@ -5,21 +5,19 @@
 //  Created by István Juhász on 2022. 11. 28..
 //
 
-import RealmSwift
-
-//This represents the AnatomyModel in Realm
-@objcMembers class AnatomyModel: Object {
-    dynamic var name: String?
-    dynamic var informationText: String?
-    dynamic var questions: List<Question> = List<Question>()
-    dynamic var category: String?
+//This represents the AnatomyModel in UserDefaults
+struct AnatomyModel: Codable {
+    var name: String?
+    var informationText: String?
+    var category: String?
+    var subModels: [String: String]?
     
-    convenience init(name: String, informationText: String, category: String, questions: List<Question>) {
-        self.init()
+    init() {}
+    
+    init(name: String, informationText: String, category: String) {
         self.name = name
         self.informationText = informationText
         self.category = category
-        self.questions = questions
     }
 }
 

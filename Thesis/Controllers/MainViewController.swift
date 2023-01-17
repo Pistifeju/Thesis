@@ -22,11 +22,11 @@ class MainViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-                
-        let realm = try! Realm()
-        //print(Realm.Configuration.defaultConfiguration.fileURL)
 
-        self.systems = Array(realm.objects(AnatomyModel.self).filter("category = 'skeletal'"))
+        if let encoded = UserDefaults.standard.data(forKey: "skeletalModels"), let anatomyModels = try? JSONDecoder().decode([AnatomyModel].self, from: encoded) {
+            // Use the retrieved anatomy models
+            self.systems = anatomyModels
+        }
         
         configureUI()
     }

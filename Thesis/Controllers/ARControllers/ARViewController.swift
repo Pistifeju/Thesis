@@ -19,7 +19,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     // MARK: - Properties
     
     private var colorPickerView: ColorPickerView = ColorPickerView(frame: .zero)
-
+    
     private var colorPickerHeight = NSLayoutConstraint()
     private var selectedColor: UIColor? = nil {
         didSet {
@@ -270,6 +270,16 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         colorModelEntities()
     }
     
+    private func loadEntities(from childrens: Entity.ChildCollection?) {
+        for children in childrens! {
+            let childModelEntity = children as! ModelEntity
+            childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
+            let informationText = self.model.subModels?[childModelEntity.name]
+            let arEntity = AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false, informationText: informationText!)
+            self.entities.append(arEntity)
+        }
+    }
+    
     // MARK: - Selectors
     
     @objc private func dismissView() {
@@ -305,39 +315,31 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         self.present(alert, animated: true)
     }
     
-    @objc private func placeObject(cloned: Bool) {
+    @objc private func placeObject() {
         let modelName = self.model.name ?? "" //Skull, Chest better hitbox
         
         let entity = try! Entity.load(named: modelName)
         
         let geomChildrens = entity.findEntity(named: "Geom")
-        let nameChildrens = entity.findEntity(named: modelName)
         
-        if let geomChildrens = geomChildrens {
-            for children in geomChildrens.children {
-                let childModelEntity = children as! ModelEntity
-                childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
-                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false))
-            }
+        if !(geomChildrens?.children.first is ModelEntity) {
+            let childrens = geomChildrens?.children.first?.children.first?.children.first?.children.first!.children // just dont please
+            self.loadEntities(from: childrens)
         } else {
-            for children in nameChildrens!.children {
-                let childModelEntity = children as! ModelEntity
-                childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
-                self.entities.append(AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false))
-            }
+            self.loadEntities(from: geomChildrens?.children)
         }
         
         let modelEntity = ModelEntity()
         modelEntity.addChild(entity)
-        
+
         let anchorEntity = AnchorEntity(.plane(.horizontal, classification: .any, minimumBounds: .zero))
         anchorEntity.addChild(modelEntity)
-        
+
         self.modelAnchor = anchorEntity
         arView.installGestures([.all],for: modelEntity)
-        
+
         arView.scene.addAnchor(anchorEntity)
-        
+
         focusSquare.isEnabled = false
         placeButton.isHidden = true
         resetButton.isHidden = false
@@ -373,7 +375,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         self.colorModelEntities()
     }
-                                    
+    
     @objc private func handleTap(sender: UITapGestureRecognizer) {
         self.colorPickerHeight.constant = 0
         UIView.animate(withDuration: 0.5) {
@@ -402,7 +404,9 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         selectEntity(withSelectedEntity: entity)
         
-        modelInformationView.configure(nameLabel: entity.name, textViewString: LoremSwiftum.Lorem.tweet)
+        let entityForText = self.entities.first(where: { $0.entity.name == entity.name })
+        
+        modelInformationView.configure(nameLabel: entity.name.replacingOccurrences(of: "_", with: " "), textViewString: entityForText!.informationText)
         self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
     }
     

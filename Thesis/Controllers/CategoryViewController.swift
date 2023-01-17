@@ -59,7 +59,7 @@ extension CategoryViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! CategoryViewCollectionViewCell
         let index = systems[indexPath.row]
-        cell.modelName.text = index.name
+        cell.modelName.text = index.name!.replacingOccurrences(of: "_", with: " ")
         cell.anatomyModel = index
         
         return cell
@@ -83,7 +83,7 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
                 cell.alpha = 1
             })
         }
-                
+        
         let vc = ARViewController(with: cell.anatomyModel)
         vc.delegate = self
         navigationController?.pushViewController(vc, animated: true)

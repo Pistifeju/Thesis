@@ -113,7 +113,7 @@ class ModelInformationView: UIView {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .footnote)
         label.textColor = .white
-        label.text = "phalanges anatomia"
+        label.text = "latin name"
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
@@ -224,7 +224,7 @@ class ModelInformationView: UIView {
     
     func configure(nameLabel: String, textViewString: String) {
         self.nameLabel.text = nameLabel
-        self.informationTextView.text = textViewString + textViewString + textViewString + textViewString
+        self.informationTextView.text = textViewString
         //TODO: - set latinNameLabel
     }
     
