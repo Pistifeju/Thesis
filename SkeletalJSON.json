@@ -1,7 +1,7 @@
 [
   {
     "name": "Laryngeal",
-    "informationText": "",
+    "informationText": "The larynx, also known as the voice box, is a muscular organ located in the upper part of the neck. It plays a vital role in the respiratory and digestive systems, as well as in speech production. The larynx connects the pharynx (throat) to the trachea (windpipe) and helps to regulate the flow of air into the lungs. It also contains the vocal cords, which vibrate to produce sound. The larynx also protects the airways from foreign objects and prevents food from entering the lungs during swallowing. In humans, the larynx is also involved in speech production, as the movement and tension of the vocal cords can be controlled to produce different sounds.",
     "category": "skeletalSystem",
     "subModels": {
       "Arytenoid_Cartilage": "",
@@ -13,7 +13,7 @@
   },
   {
     "name": "Chest",
-    "informationText": "",
+    "informationText": "The rib cage is a bony structure located in the thorax (chest) that surrounds and protect the vital organs, such as the lungs, heart, and major blood vessels. It is made up of the sternum, costal bones, and thoracic vertebrae. The rib cage is connected to the spine and the sternum (breastbone) in the front of the thorax, forming a sturdy and flexible cage-like structure.\nThe rib cage has 12 pairs of ribs, each of which attach to the thoracic vertebrae in the back and the sternum in the front. The first 7 pairs of ribs are called `true ribs` because they attach directly to the sternum via the costal cartilage. The next 3 pairs are called `false ribs` because they attach indirectly to the sternum, via the costal cartilage of the ribs above them. The last 2 pairs are called `floating ribs` because they do not attach to the sternum at all.",
     "category": "skeletalSystem",
     "subModels": {
       "Manubrium": "The manubrium (Latin for 'handle') is the broad upper part of the sternum. It has a quadrangular shape, narrowing from the top, which gives it four borders. The suprasternal notch (jugular notch) is located in the middle at the upper broadest part of the manubrium. This notch can be felt between the two clavicles. On either side of this notch are the right and left clavicular notches. The manubrium joins with the body of the sternum, the clavicles and the cartilages of the first pair of ribs. The inferior border, oval and rough, is covered with a thin layer of cartilage for articulation with the body. The lateral borders are each marked above by a depression for the first costal cartilage, and below by a small facet, which, with a similar facet on the upper angle of the body, forms a notch for the reception of the costal cartilage of the second rib. Between the depression for the first costal cartilage and the demi-facet for the second is a narrow, curved edge, which slopes from above downward towards the middle. Also, the superior sternopericardial ligament attaches the pericardium to the posterior side of the manubrium.",
@@ -24,7 +24,7 @@
   },
   {
     "name": "Skull",
-    "informationText": "",
+    "informationText": "The skull is a bony structure that forms the head and face in vertebrates. It serves to protect the brain, provide attachment points for muscles, and support the sense organs such as the eyes and ears. The skull is made up of several bones that are fused together, including the frontal bone, parietal bones, temporal bones, and occipital bone. The skull also includes several openings, such as the orbits for the eyes, the nasal cavity, and the auditory canals for the ears. In mammals, the skull also includes the jaw bones, which are used for biting and chewing food. The structure and shape of the skull can vary greatly among different species, reflecting the different adaptations and evolutionary pressures that have shaped them over time.",
     "category": "skeletalSystem",
     "subModels": {
       
@@ -32,7 +32,7 @@
   },
   {
     "name": "Arm",
-    "informationText": "",
+    "informationText": "The arm is made up of three bones: the humerus, radius, and ulna. The humerus is the bone that runs from the shoulder to the elbow and is the largest bone in the arm. The radius and ulna are the bones that run from the elbow to the wrist. The radius is located on the thumb side of the arm and the ulna is located on the little finger side.\nThe shoulder joint, which connects the arm to the torso, is formed by the head of the humerus and the scapula. The elbow joint, which connects the arm to the forearm, is formed by the humerus, radius, and ulna. The wrist is formed by the radius and ulna connecting to the bones of the hand.\nThe arm bones are supported by a network of muscles, tendons, and ligaments that work together to allow for a wide range of movements such as lifting, reaching, and grasping. The bones of the arm also protect the nerves and blood vessels that travel through the arm, allowing for the sensation and movement of the hand and fingers.",
     "category": "skeletalSystem",
     "subModels": {
       "Humerus": "",
@@ -42,7 +42,7 @@
   },
   {
     "name": "Foot",
-    "informationText": "",
+    "informationText": "The foot is made up of several bones that work together to provide support, stability, and mobility. The foot is divided into three parts: the hindfoot, the midfoot, and the forefoot.\nThe hindfoot is composed of the heel bone (calcaneus) and the ankle bone (talus). The heel bone is the largest bone in the foot and provides a stable base for the foot. The ankle bone sits on top of the heel bone and forms the ankle joint, which allows for up and down movement of the foot.\nThe midfoot is composed of the arch bones (navicular, cuboid, and cuneiforms) and the metatarsals. These bones form the arch of the foot and provide support and shock absorption.\nThe forefoot is composed of the bones of the toes (phalanges) and the bones that connect them to the rest of the foot (metatarsals). These bones form the toes and allow for grasping and fine motor movements.",
     "category": "skeletalSystem",
     "subModels": {
       "Calcaneus": "",
@@ -59,7 +59,7 @@
   },
   {
     "name": "Hand",
-    "informationText": "",
+    "informationText": "The hand is made up of many bones that work together to provide support, stability, and mobility. The bones of the hand are divided into three parts: the carpals (wrist bones), metacarpals (hand bones) and phalanges (finger bones).\nThe carpals are eight small bones located at the base of the hand that form the wrist joint. They are the Scaphoid, Lunate, Triquetral, Pisiform, Trapezium, Trapezoid, Capitate, and Hamate.\nThe metacarpals are five long bones that run from the carpals to the phalanges and form the bones of the hand. They are numbered 1-5, starting from the thumb. The metacarpals provide support and stability to the hand and also serve as attachment points for the muscles that control the movement of the fingers.\nThe phalanges are the bones that form the fingers and thumb. Each finger has three phalanges: the proximal, middle, and distal phalanges. The thumb only has two phalanges. These bones provide the fine motor movements and dexterity needed for tasks such as grasping and manipulating objects.",
     "category": "skeletalSystem",
     "subModels": {
       "Capitate": "",
@@ -76,7 +76,7 @@
   },
   {
     "name": "Leg",
-    "informationText": "",
+    "informationText": "The leg is made up of two bones: the femur and the tibia and fibula. The femur is the thigh bone and is the longest and strongest bone in the body. It runs from the hip to the knee and forms the hip joint at the top and the knee joint at the bottom. The tibia and fibula are the bones that run from the knee to the ankle and form the knee joint. The tibia is the larger of the two bones and is located on the inner side of the leg, while the fibula is a smaller bone located on the outer side of the leg.\nThe bones of the leg are supported by a network of muscles, tendons, and ligaments that work together to allow for a wide range of movements such as walking, running, and jumping. The bones of the leg also protect the nerves and blood vessels that travel through the leg, allowing for sensation and movement of the foot and toes.",
     "category": "skeletalSystem",
     "subModels": {
       "Femur": "",
@@ -87,7 +87,7 @@
   },
   {
     "name": "Pelvic_Girdle",
-    "informationText": "",
+    "informationText": "The pelvic girdle is a bony structure that forms the foundation of the spine and supports the upper body. It is made up of two hip bones (os coxae), which connect to the sacrum, a triangular bone at the base of the spine. The hip bones are formed by the fusion of three bones: the ilium, ischium, and pubis.\nThe pelvic girdle serves several important functions, including providing a stable base for the spine and supporting the weight of the upper body. It also serves as the attachment point for several muscles, including those of the hip, thigh, and lower back. These muscles work together to allow for a wide range of movements such as walking, running, and jumping.",
     "category": "skeletalSystem",
     "subModels": {
       "Hip": ""
@@ -95,7 +95,7 @@
   },
   {
     "name": "Shoulder_Girdle",
-    "informationText": "",
+    "informationText": "The shoulder girdle, also known as the pectoral girdle, is a bony structure that connects the upper limb (arm) to the trunk of the body. It is made up of two bones: the scapula (shoulder blade) and the clavicle (collarbone). The scapula is a flat, triangular bone that sits on the back of the chest wall, while the clavicle is a long, slender bone that runs from the sternum (breastbone) to the scapula.\nThe shoulder girdle serves several important functions, including providing a stable base for the arm, allowing for a wide range of movements such as lifting, reaching, and grasping. The bones of the shoulder girdle also serve as the attachment point for several muscles, including those of the chest, back, and arm. These muscles work together to allow for movement and stability of the shoulder joint.",
     "category": "skeletalSystem",
     "subModels": {
       "Clavicle": "",
@@ -104,7 +104,7 @@
   },
   {
     "name": "Vertebral_Column",
-    "informationText": "",
+    "informationText": "The vertebral column is divided into five regions: cervical, thoracic, lumbar, sacral, and coccygeal. Each region has a different number of vertebrae and performs different functions. The cervical region, for example, has 7 vertebrae, it is the most mobile and flexible region of the spine, allowing for the head to move in all directions. The thoracic region has 12 vertebrae, it is the most stable region, and it connects the ribcage to the spine. The lumbar region has 5 vertebrae, it is the most susceptible to stress, and it supports most of the body's weight. The sacral region has 5 fused vertebrae, it forms the back of the pelvic girdle and it has limited movement. The coccygeal region has 4 fused vertebrae, it forms the tailbone, and it doesn't have any movement.",
     "category": "skeletalSystem",
     "subModels": {
       "Atlas": "The atlas, also known as the first cervical vertebra or C1, is a unique vertebra in the neck region of the vertebral column. It is located between the skull and the second cervical vertebra (C2), and is the first of the seven cervical vertebrae. The atlas is named after the Greek god Atlas, who was known for holding up the world on his shoulders. Like the mythical Atlas, the atlas has a special role in supporting and stabilizing the head. The atlas is a small, ring-shaped vertebra that has no vertebral body or spinous process (a bony projection on the back of the vertebra). Instead, it has a pair of bony processes called the lateral masses, which provide attachment points for muscles and ligaments. The atlas also has a distinctive feature called the dens, which is a bony protuberance that extends upward from the vertebral body of the second cervical vertebra (C2). The head pivots around the dens when it moves, allowing the head to rotate and tilt in all directions.",

@@ -15,7 +15,7 @@ class MainViewController: UICollectionViewController {
     // MARK: - Properties
     
     private var systems: [AnatomyModel] = []
-    private var systemsName: [String] = ["skeletalSystem", "visceralSystem", "muscularSystem"]
+    private var systemsName: [String] = ["Skeletal_System", "Visceral_System", "Muscular_System"]
     
     // MARK: - Lifecycle
     
@@ -118,7 +118,7 @@ extension MainViewController {
         }
         
         let vc = CategoryViewController(collectionViewLayout: UICollectionViewFlowLayout())
-        vc.title = cell.categoryName
+        vc.title = cell.categoryName.replacingOccurrences(of: "_", with: " ")
         vc.systems = cell.system
         let nav = UINavigationController(rootViewController: vc)
         nav.modalTransitionStyle = .coverVertical

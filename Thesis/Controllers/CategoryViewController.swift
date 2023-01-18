@@ -29,7 +29,6 @@ class CategoryViewController: UICollectionViewController {
     
     private func configureUI() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissVC))
-        navigationItem.title = "Skeletal System"
         
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.isHidden = false
@@ -84,9 +83,15 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
             })
         }
         
-        let vc = ARViewController(with: cell.anatomyModel)
-        vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
+//        let vc = ARViewController(with: cell.anatomyModel)
+//        vc.delegate = self
+//        navigationController?.pushViewController(vc, animated: true)
+        let vc = ModelViewController()
+        let index = systems[indexPath.row]
+        vc.title = index.name!.replacingOccurrences(of: "_", with: " ")
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

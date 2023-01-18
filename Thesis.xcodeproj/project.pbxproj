@@ -51,6 +51,7 @@
 		B7D05E26291FDA9400439680 /* Chest.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E25291FDA9400439680 /* Chest.usdz */; };
 		B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E27291FDA9E00439680 /* Laryngeal.usdz */; };
 		B7EBEF402977636E00FB401B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7EBEF3F2977636E00FB401B /* GoogleService-Info.plist */; };
+		B7EBEF432978B5BF00FB401B /* ModelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF422978B5BF00FB401B /* ModelViewController.swift */; };
 		B7EEAA6B296B6D5E00AAAC61 /* SkeletalJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */; };
 		B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */; };
 		B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */; };
@@ -113,6 +114,7 @@
 		B7D05E25291FDA9400439680 /* Chest.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Chest.usdz; sourceTree = "<group>"; };
 		B7D05E27291FDA9E00439680 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
 		B7EBEF3F2977636E00FB401B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B7EBEF422978B5BF00FB401B /* ModelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelViewController.swift; sourceTree = "<group>"; };
 		B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SkeletalJSON.json; sourceTree = "<group>"; };
 		B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -249,14 +251,15 @@
 		B7302F172911CF1D0018272C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B7EBEF422978B5BF00FB401B /* ModelViewController.swift */,
 				B7F64EFF291FFCCF00652A9E /* MainViewController.swift */,
-				B707B369297754B1001DB1E8 /* Authentication */,
-				B71CFFD22934DCD6005870E2 /* ARControllers */,
-				B7F64EF6291FF85900652A9E /* Onboarding */,
 				B7FDB48929244ADB00B8A17D /* CategoryViewController.swift */,
 				B71CFFD32934DD0D005870E2 /* QuizViewController.swift */,
 				B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */,
 				B73B6B802956491300195D50 /* TestViewController.swift */,
+				B707B369297754B1001DB1E8 /* Authentication */,
+				B71CFFD22934DCD6005870E2 /* ARControllers */,
+				B7F64EF6291FF85900652A9E /* Onboarding */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -264,14 +267,12 @@
 		B7302F182911CF220018272C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B7EBEF412978B49B00FB401B /* AR */,
 				B707B3702977558B001DB1E8 /* Authentication */,
-				B7136B6F2911D64200C6D54E /* ModelInformationView.swift */,
 				B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */,
 				B7FDB48B29244B9E00B8A17D /* CategoryViewCollectionViewCell.swift */,
 				B74DF719293ABBFA001C9643 /* QuestionView.swift */,
 				B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */,
-				B73B6B8229564F3400195D50 /* ModelInformationButton.swift */,
-				B7F8C91E295A2D070091C68E /* ColorPickerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -327,6 +328,16 @@
 				B77FCACA2911D3C800E45438 /* Vertebral_Column.usdz */,
 			);
 			path = Skeletial;
+			sourceTree = "<group>";
+		};
+		B7EBEF412978B49B00FB401B /* AR */ = {
+			isa = PBXGroup;
+			children = (
+				B7F8C91E295A2D070091C68E /* ColorPickerView.swift */,
+				B73B6B8229564F3400195D50 /* ModelInformationButton.swift */,
+				B7136B6F2911D64200C6D54E /* ModelInformationView.swift */,
+			);
+			path = AR;
 			sourceTree = "<group>";
 		};
 		B7F64EF6291FF85900652A9E /* Onboarding */ = {
@@ -514,6 +525,7 @@
 				B707B36B297754F5001DB1E8 /* LoginViewController.swift in Sources */,
 				B7302F032911CEBC0018272C /* AppDelegate.swift in Sources */,
 				B79DC3C9297760AD00863A9A /* RegisterUserRequest.swift in Sources */,
+				B7EBEF432978B5BF00FB401B /* ModelViewController.swift in Sources */,
 				B707B36D297754FC001DB1E8 /* RegistrationViewController.swift in Sources */,
 				B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */,
 				B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */,

@@ -87,15 +87,15 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         self.system = system
         
         switch categoryName {
-        case "skeletalSystem":
+        case "Skeletal_System":
             self.categoryLabel.text = "I. Skeletal System"
             self.sectionCount = system.count
             self.sectionLabel.text = "\(sectionCount) sections"
-        case "visceralSystem":
+        case "Visceral_System":
             self.categoryLabel.text = "II. Visceral System"
             self.sectionCount = system.count
             self.sectionLabel.text = "\(sectionCount) sections"
-        case "muscularSystem":
+        case "Muscular_System":
             self.categoryLabel.text = "III. Muscular System"
             self.sectionCount = system.count
             self.sectionLabel.text = "\(sectionCount) sections"
