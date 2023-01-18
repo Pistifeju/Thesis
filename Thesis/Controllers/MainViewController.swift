@@ -44,7 +44,7 @@ class MainViewController: UICollectionViewController {
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(didPressLogout))
-        navigationItem.leftBarButtonItem?.tintColor = UIColor.label
+        navigationItem.leftBarButtonItem?.tintColor = UIColor.black
         
         let cellSize = CGSize(width: view.frame.width - 50, height: view.frame.width / 2)
         
