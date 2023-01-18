@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import LoremSwiftum
 import AVFoundation
 
 private enum ViewState {

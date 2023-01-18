@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import LoremSwiftum
 
 class TestViewController: UIViewController {
 
@@ -95,7 +94,7 @@ class TestViewController: UIViewController {
         self.view.backgroundColor = .systemBlue
         view.addSubview(modelInformationView)
         
-        modelInformationView.configure(nameLabel: "Phalanx", textViewString: LoremSwiftum.Lorem.tweet)
+        modelInformationView.configure(nameLabel: "Phalanx", textViewString: "test")
         modelInformationView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             modelInformationView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
