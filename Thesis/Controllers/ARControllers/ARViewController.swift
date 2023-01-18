@@ -8,7 +8,6 @@ import UIKit
 import RealityKit
 import ARKit
 import FocusEntity
-import LoremSwiftum
 
 protocol ARViewControllerDelegate: AnyObject {
     func didLoad()

@@ -110,6 +110,6 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
 
 extension CategoryViewController: ARViewControllerDelegate {
     func didLoad() {
-        collectionView.showLoader(false)
+        
     }
 }
