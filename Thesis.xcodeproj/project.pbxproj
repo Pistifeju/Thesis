@@ -251,11 +251,10 @@
 		B7302F172911CF1D0018272C /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				B7EBEF44297F40CA00FB401B /* Quiz */,
 				B7EBEF422978B5BF00FB401B /* ModelViewController.swift */,
 				B7F64EFF291FFCCF00652A9E /* MainViewController.swift */,
 				B7FDB48929244ADB00B8A17D /* CategoryViewController.swift */,
-				B71CFFD32934DD0D005870E2 /* QuizViewController.swift */,
-				B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */,
 				B73B6B802956491300195D50 /* TestViewController.swift */,
 				B707B369297754B1001DB1E8 /* Authentication */,
 				B71CFFD22934DCD6005870E2 /* ARControllers */,
@@ -338,6 +337,15 @@
 				B7136B6F2911D64200C6D54E /* ModelInformationView.swift */,
 			);
 			path = AR;
+			sourceTree = "<group>";
+		};
+		B7EBEF44297F40CA00FB401B /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */,
+				B71CFFD32934DD0D005870E2 /* QuizViewController.swift */,
+			);
+			path = Quiz;
 			sourceTree = "<group>";
 		};
 		B7F64EF6291FF85900652A9E /* Onboarding */ = {

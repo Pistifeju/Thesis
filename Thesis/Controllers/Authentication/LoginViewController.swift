@@ -25,6 +25,9 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        emailField.delegate = self
+        passwordField.delegate = self
+        
         self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
         self.newUserButton.addTarget(self, action: #selector(didTapNewUser), for: .touchUpInside)
         self.forgotPassword.addTarget(self, action: #selector(didTapForgotPassword), for: .touchUpInside)
@@ -116,5 +119,14 @@ class LoginViewController: UIViewController {
     @objc private func didTapForgotPassword() {
         let vc = ForgotPasswordViewController()
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

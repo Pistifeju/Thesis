@@ -9,10 +9,6 @@ import RealityKit
 import ARKit
 import FocusEntity
 
-protocol ARViewControllerDelegate: AnyObject {
-    func didLoad()
-}
-
 class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Properties
@@ -29,9 +25,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             }
         }
     }
-    
-    weak var delegate: ARViewControllerDelegate?
-    
+        
     public var model: AnatomyModel
     private var modelAnchor: AnchorEntity = AnchorEntity()
     private let modelInformationView = ModelInformationView(frame: .zero)
@@ -126,7 +120,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         configureUI()
         setupARView()
-        delegate?.didLoad()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -322,7 +315,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         let geomChildrens = entity.findEntity(named: "Geom")
         
         if !(geomChildrens?.children.first is ModelEntity) {
-            let childrens = geomChildrens?.children.first?.children.first?.children.first?.children.first!.children // just dont please
+            let childrens = geomChildrens?.children.first?.children.first?.children.first?.children.first!.children // just dont, please
             self.loadEntities(from: childrens)
         } else {
             self.loadEntities(from: geomChildrens?.children)

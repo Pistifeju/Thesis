@@ -22,6 +22,8 @@ class ForgotPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        emailField.delegate = self
+        
         self.resetPasswordButton.addTarget(self, action: #selector(didTapForgotPassword), for: .touchUpInside)
         
         self.setupUI()
@@ -77,5 +79,14 @@ class ForgotPasswordViewController: UIViewController {
             
             AlertManager.showPasswordResetSentAlert(on: strongSelf)
         }
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension ForgotPasswordViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

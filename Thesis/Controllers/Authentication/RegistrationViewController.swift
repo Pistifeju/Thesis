@@ -26,6 +26,11 @@ class RegistrationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
+        usernameField.delegate = self
+        passwordField.delegate = self
+        passwordAgainField.delegate = self
+        emailField.delegate = self
+        
         self.signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
         self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
         
@@ -129,5 +134,14 @@ class RegistrationViewController: UIViewController {
     @objc private func didTapForgotPassword() {
         let vc = ForgotPasswordViewController()
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension RegistrationViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
