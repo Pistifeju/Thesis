@@ -52,6 +52,10 @@
 		B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E27291FDA9E00439680 /* Laryngeal.usdz */; };
 		B7EBEF402977636E00FB401B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7EBEF3F2977636E00FB401B /* GoogleService-Info.plist */; };
 		B7EBEF432978B5BF00FB401B /* ModelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF422978B5BF00FB401B /* ModelViewController.swift */; };
+		B7EBEF49298029E500FB401B /* ModelControllerSegmentationControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF48298029E500FB401B /* ModelControllerSegmentationControl.swift */; };
+		B7EBEF4B29809B4600FB401B /* ModelControllerAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */; };
+		B7EBEF4D29809F4200FB401B /* StartNewTestPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4C29809F4200FB401B /* StartNewTestPopUpView.swift */; };
+		B7EBEF4F29809FAB00FB401B /* PopUpViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */; };
 		B7EEAA6B296B6D5E00AAAC61 /* SkeletalJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */; };
 		B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */; };
 		B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */; };
@@ -115,6 +119,10 @@
 		B7D05E27291FDA9E00439680 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
 		B7EBEF3F2977636E00FB401B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B7EBEF422978B5BF00FB401B /* ModelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelViewController.swift; sourceTree = "<group>"; };
+		B7EBEF48298029E500FB401B /* ModelControllerSegmentationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelControllerSegmentationControl.swift; sourceTree = "<group>"; };
+		B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelControllerAddButton.swift; sourceTree = "<group>"; };
+		B7EBEF4C29809F4200FB401B /* StartNewTestPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewTestPopUpView.swift; sourceTree = "<group>"; };
+		B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewButton.swift; sourceTree = "<group>"; };
 		B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SkeletalJSON.json; sourceTree = "<group>"; };
 		B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -266,6 +274,7 @@
 		B7302F182911CF220018272C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B7EBEF47298029C800FB401B /* ModelController */,
 				B7EBEF412978B49B00FB401B /* AR */,
 				B707B3702977558B001DB1E8 /* Authentication */,
 				B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */,
@@ -346,6 +355,17 @@
 				B71CFFD32934DD0D005870E2 /* QuizViewController.swift */,
 			);
 			path = Quiz;
+			sourceTree = "<group>";
+		};
+		B7EBEF47298029C800FB401B /* ModelController */ = {
+			isa = PBXGroup;
+			children = (
+				B7EBEF48298029E500FB401B /* ModelControllerSegmentationControl.swift */,
+				B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */,
+				B7EBEF4C29809F4200FB401B /* StartNewTestPopUpView.swift */,
+				B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */,
+			);
+			path = ModelController;
 			sourceTree = "<group>";
 		};
 		B7F64EF6291FF85900652A9E /* Onboarding */ = {
@@ -522,7 +542,9 @@
 				B707B374297755A8001DB1E8 /* CustomAuthButton.swift in Sources */,
 				B7302F072911CEBC0018272C /* ARViewController.swift in Sources */,
 				B73B6B7F29549DA600195D50 /* AREntity.swift in Sources */,
+				B7EBEF4B29809B4600FB401B /* ModelControllerAddButton.swift in Sources */,
 				B707B36F29775503001DB1E8 /* ForgotPasswordViewControlelr.swift in Sources */,
+				B7EBEF4F29809FAB00FB401B /* PopUpViewButton.swift in Sources */,
 				B74DF720293BF0BC001C9643 /* EndOfQuizController.swift in Sources */,
 				B7136B702911D64200C6D54E /* ModelInformationView.swift in Sources */,
 				B707B376297755B0001DB1E8 /* CustomAuthTextField.swift in Sources */,
@@ -537,6 +559,7 @@
 				B707B36D297754FC001DB1E8 /* RegistrationViewController.swift in Sources */,
 				B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */,
 				B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */,
+				B7EBEF4D29809F4200FB401B /* StartNewTestPopUpView.swift in Sources */,
 				B7F8C91F295A2D070091C68E /* ColorPickerView.swift in Sources */,
 				B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */,
 				B707B37B29775B4D001DB1E8 /* Validator.swift in Sources */,
@@ -549,6 +572,7 @@
 				B7FDB44C2923B55000B8A17D /* MainViewCollectionViewCell.swift in Sources */,
 				B74DF71A293ABBFA001C9643 /* QuestionView.swift in Sources */,
 				B7F64F0229204C3D00652A9E /* Constants.swift in Sources */,
+				B7EBEF49298029E500FB401B /* ModelControllerSegmentationControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
