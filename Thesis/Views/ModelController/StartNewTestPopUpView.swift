@@ -37,11 +37,11 @@ class StartNewTestPopUpView: UIView {
     private let testCodeTextField: UITextField = {
         let tf = UITextField()
         tf.translatesAutoresizingMaskIntoConstraints = false
-        tf.placeholder = "GFS46H-HRED32"
+        tf.attributedPlaceholder = NSAttributedString(string: "GF5763-FFGSD2", attributes: [.foregroundColor: UIColor.systemGray])
         tf.autocapitalizationType = .allCharacters
         tf.textAlignment = .center
         tf.textColor = .black
-        tf.backgroundColor = .systemGray2.withAlphaComponent(0.3)
+        tf.backgroundColor = .systemGray.withAlphaComponent(0.1)
         tf.layer.cornerRadius = 8
         return tf
     }()
