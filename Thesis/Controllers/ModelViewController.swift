@@ -84,17 +84,17 @@ class ModelViewController: UIViewController {
             
             goToARLearningModeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             goToARLearningModeButton.topAnchor.constraint(equalToSystemSpacingBelow: modelInformationLabel.bottomAnchor, multiplier: 2),
-            goToARLearningModeButton.heightAnchor.constraint(equalToConstant: 45),
+            goToARLearningModeButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: startTestButton.bottomAnchor, multiplier: 2),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: startTestButton.trailingAnchor, multiplier: 2),
-            startTestButton.heightAnchor.constraint(equalToConstant: 100),
-            startTestButton.widthAnchor.constraint(equalToConstant: 100),
+            startTestButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
+            startTestButton.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
             
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: createNewTestButton.bottomAnchor, multiplier: 2),
             createNewTestButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            createNewTestButton.heightAnchor.constraint(equalToConstant: 100),
-            createNewTestButton.widthAnchor.constraint(equalToConstant: 100),
+            createNewTestButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
+            createNewTestButton.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
         ])
     }
     
@@ -136,7 +136,12 @@ class ModelViewController: UIViewController {
     }
     
     @objc private func didTapCreateNewTestButton() {
-        
+        let vc = CreateQuizViewController()
+        vc.model = model
+        vc.title = "Create a New Test"
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
     }
 }
 

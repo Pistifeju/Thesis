@@ -27,7 +27,6 @@
 		B7302F0C2911CEBD0018272C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B7302F0B2911CEBD0018272C /* Assets.xcassets */; };
 		B7302F0F2911CEBD0018272C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B7302F0D2911CEBD0018272C /* LaunchScreen.storyboard */; };
 		B73B6B7F29549DA600195D50 /* AREntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B7E29549DA600195D50 /* AREntity.swift */; };
-		B73B6B812956491300195D50 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B802956491300195D50 /* TestViewController.swift */; };
 		B73B6B8329564F3400195D50 /* ModelInformationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73B6B8229564F3400195D50 /* ModelInformationButton.swift */; };
 		B74DF71A293ABBFA001C9643 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF719293ABBFA001C9643 /* QuestionView.swift */; };
 		B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */; };
@@ -56,6 +55,7 @@
 		B7EBEF4B29809B4600FB401B /* ModelControllerAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */; };
 		B7EBEF4D29809F4200FB401B /* StartNewTestPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4C29809F4200FB401B /* StartNewTestPopUpView.swift */; };
 		B7EBEF4F29809FAB00FB401B /* PopUpViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */; };
+		B7EBEF512983341C00FB401B /* CreateQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF502983341C00FB401B /* CreateQuizViewController.swift */; };
 		B7EEAA6B296B6D5E00AAAC61 /* SkeletalJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */; };
 		B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */; };
 		B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */; };
@@ -94,7 +94,6 @@
 		B7302F0E2911CEBD0018272C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B7302F102911CEBD0018272C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B73B6B7E29549DA600195D50 /* AREntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AREntity.swift; sourceTree = "<group>"; };
-		B73B6B802956491300195D50 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		B73B6B8229564F3400195D50 /* ModelInformationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelInformationButton.swift; sourceTree = "<group>"; };
 		B74DF719293ABBFA001C9643 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnswerButton.swift; sourceTree = "<group>"; };
@@ -123,6 +122,7 @@
 		B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelControllerAddButton.swift; sourceTree = "<group>"; };
 		B7EBEF4C29809F4200FB401B /* StartNewTestPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewTestPopUpView.swift; sourceTree = "<group>"; };
 		B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewButton.swift; sourceTree = "<group>"; };
+		B7EBEF502983341C00FB401B /* CreateQuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuizViewController.swift; sourceTree = "<group>"; };
 		B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SkeletalJSON.json; sourceTree = "<group>"; };
 		B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -263,7 +263,6 @@
 				B7EBEF422978B5BF00FB401B /* ModelViewController.swift */,
 				B7F64EFF291FFCCF00652A9E /* MainViewController.swift */,
 				B7FDB48929244ADB00B8A17D /* CategoryViewController.swift */,
-				B73B6B802956491300195D50 /* TestViewController.swift */,
 				B707B369297754B1001DB1E8 /* Authentication */,
 				B71CFFD22934DCD6005870E2 /* ARControllers */,
 				B7F64EF6291FF85900652A9E /* Onboarding */,
@@ -353,6 +352,7 @@
 			children = (
 				B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */,
 				B71CFFD32934DD0D005870E2 /* QuizViewController.swift */,
+				B7EBEF502983341C00FB401B /* CreateQuizViewController.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -535,7 +535,6 @@
 			files = (
 				B71CFFD42934DD0D005870E2 /* QuizViewController.swift in Sources */,
 				B7FDB48C29244B9E00B8A17D /* CategoryViewCollectionViewCell.swift in Sources */,
-				B73B6B812956491300195D50 /* TestViewController.swift in Sources */,
 				B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */,
 				B71CFFD9293520F3005870E2 /* AnatomyModel.swift in Sources */,
 				B71CFFD729351CC0005870E2 /* Question.swift in Sources */,
@@ -549,6 +548,7 @@
 				B7136B702911D64200C6D54E /* ModelInformationView.swift in Sources */,
 				B707B376297755B0001DB1E8 /* CustomAuthTextField.swift in Sources */,
 				B79DC3CD2977619F00863A9A /* User.swift in Sources */,
+				B7EBEF512983341C00FB401B /* CreateQuizViewController.swift in Sources */,
 				B7FDB48A29244ADB00B8A17D /* CategoryViewController.swift in Sources */,
 				B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */,
 				B79DC3C72977604C00863A9A /* AuthService.swift in Sources */,
