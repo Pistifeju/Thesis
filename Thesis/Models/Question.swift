@@ -5,18 +5,23 @@
 //  Created by István Juhász on 2022. 11. 28..
 //
 
-import RealmSwift
-
-@objcMembers class Question: Object {
-    dynamic var question: String = ""
-    dynamic var answerIndex: Int = 0
-    dynamic var answers: List<String> = List<String>()
-    dynamic var selectedIndex: Int = -1
+class Question {
+    var question: String
+    var answerIndex: Int
+    var answers: [String]
+    var selectedIndex: Int
     
-    convenience init(question: String, answerIndex: Int, answers: List<String>) {
-        self.init()
+    init(question: String, answerIndex: Int, answers: [String]) {
+        self.selectedIndex = -1
         self.question = question
         self.answerIndex = answerIndex
         self.answers = answers
+    }
+    
+    init() {
+        self.question = ""
+        self.selectedIndex = -1
+        self.answers = []
+        self.answerIndex = 0
     }
 }

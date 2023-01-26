@@ -83,10 +83,8 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
             })
         }
         
-//        let vc = ARViewController(with: cell.anatomyModel)
-//        vc.delegate = self
-//        navigationController?.pushViewController(vc, animated: true)
         let vc = ModelViewController()
+        vc.model = cell.anatomyModel
         let index = systems[indexPath.row]
         vc.title = index.name!.replacingOccurrences(of: "_", with: " ")
         let nav = UINavigationController(rootViewController: vc)
@@ -108,13 +106,5 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
         let height = width
         
         return CGSize(width: width, height: height)
-    }
-}
-
-// MARK: - ARViewControllerDelegate
-
-extension CategoryViewController: ARViewControllerDelegate {
-    func didLoad() {
-        
     }
 }

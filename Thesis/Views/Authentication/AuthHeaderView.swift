@@ -20,7 +20,7 @@ class AuthHeaderView: UIView {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.label
+        label.textColor = .black
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 26, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -30,7 +30,7 @@ class AuthHeaderView: UIView {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = UIColor.secondaryLabel
+        label.textColor = .systemGray.withAlphaComponent(0.8)
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false

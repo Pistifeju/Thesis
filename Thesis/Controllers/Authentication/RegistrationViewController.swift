@@ -26,6 +26,11 @@ class RegistrationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
+        usernameField.delegate = self
+        passwordField.delegate = self
+        passwordAgainField.delegate = self
+        emailField.delegate = self
+        
         self.signUpButton.addTarget(self, action: #selector(didTapSignUp), for: .touchUpInside)
         self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
         
@@ -36,7 +41,7 @@ class RegistrationViewController: UIViewController {
     
     // MARK: - UI Setup
     private func setupUI() {
-        self.view.backgroundColor = .systemBackground
+        self.view.backgroundColor = .white
         
         view.addSubview(headerView)
         view.addSubview(usernameField)
@@ -51,29 +56,29 @@ class RegistrationViewController: UIViewController {
             headerView.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 0),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 270),
+            headerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.35),
         ])
         
         //Textfields
         NSLayoutConstraint.activate([
             usernameField.topAnchor.constraint(equalToSystemSpacingBelow: headerView.bottomAnchor, multiplier: 2),
             usernameField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            usernameField.heightAnchor.constraint(equalToConstant: 55),
+            usernameField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             usernameField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             
             emailField.topAnchor.constraint(equalToSystemSpacingBelow: usernameField.bottomAnchor, multiplier: 2),
             emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailField.heightAnchor.constraint(equalToConstant: 55),
+            emailField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             
             passwordField.topAnchor.constraint(equalToSystemSpacingBelow: emailField.bottomAnchor, multiplier: 2),
             passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordField.heightAnchor.constraint(equalToConstant: 55),
+            passwordField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             passwordField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             
             passwordAgainField.topAnchor.constraint(equalToSystemSpacingBelow: passwordField.bottomAnchor, multiplier: 2),
             passwordAgainField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordAgainField.heightAnchor.constraint(equalToConstant: 55),
+            passwordAgainField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             passwordAgainField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
         ])
         
@@ -81,12 +86,12 @@ class RegistrationViewController: UIViewController {
         NSLayoutConstraint.activate([
             signUpButton.topAnchor.constraint(equalToSystemSpacingBelow: passwordAgainField.bottomAnchor, multiplier: 2),
             signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            signUpButton.heightAnchor.constraint(equalToConstant: 55),
+            signUpButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             signUpButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             
             signInButton.topAnchor.constraint(equalToSystemSpacingBelow: signUpButton.bottomAnchor, multiplier: 1),
             signInButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            signInButton.heightAnchor.constraint(equalToConstant: 33),
+            signInButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             signInButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
         ])
     }
@@ -124,10 +129,24 @@ class RegistrationViewController: UIViewController {
                 return
             }
         }
+        
+        emailField.text = ""
+        passwordField.text = ""
+        passwordAgainField.text = ""
+        usernameField.text = ""
     }
     
     @objc private func didTapForgotPassword() {
         let vc = ForgotPasswordViewController()
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension RegistrationViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

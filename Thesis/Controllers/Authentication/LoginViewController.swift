@@ -25,6 +25,9 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        emailField.delegate = self
+        passwordField.delegate = self
+        
         self.signInButton.addTarget(self, action: #selector(didTapSignIn), for: .touchUpInside)
         self.newUserButton.addTarget(self, action: #selector(didTapNewUser), for: .touchUpInside)
         self.forgotPassword.addTarget(self, action: #selector(didTapForgotPassword), for: .touchUpInside)
@@ -34,7 +37,7 @@ class LoginViewController: UIViewController {
     
     // MARK: - UI Setup
     private func setupUI() {
-        self.view.backgroundColor = .systemBackground
+        self.view.backgroundColor = .white
         
         view.addSubview(headerView)
         view.addSubview(emailField)
@@ -48,19 +51,19 @@ class LoginViewController: UIViewController {
             headerView.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 0),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 270),
+            headerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.35),
         ])
         
         //Textfields
         NSLayoutConstraint.activate([
             emailField.topAnchor.constraint(equalToSystemSpacingBelow: headerView.bottomAnchor, multiplier: 2),
             emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailField.heightAnchor.constraint(equalToConstant: 55),
+            emailField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             
             passwordField.topAnchor.constraint(equalToSystemSpacingBelow: emailField.bottomAnchor, multiplier: 2),
             passwordField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordField.heightAnchor.constraint(equalToConstant: 55),
+            passwordField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             passwordField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
         ])
         
@@ -68,17 +71,17 @@ class LoginViewController: UIViewController {
         NSLayoutConstraint.activate([
             signInButton.topAnchor.constraint(equalToSystemSpacingBelow: passwordField.bottomAnchor, multiplier: 2),
             signInButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            signInButton.heightAnchor.constraint(equalToConstant: 55),
+            signInButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             signInButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             
             newUserButton.topAnchor.constraint(equalToSystemSpacingBelow: signInButton.bottomAnchor, multiplier: 1),
             newUserButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            newUserButton.heightAnchor.constraint(equalToConstant: 44),
+            newUserButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07),
             newUserButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             
             forgotPassword.topAnchor.constraint(equalToSystemSpacingBelow: newUserButton.bottomAnchor, multiplier: 1),
             forgotPassword.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            forgotPassword.heightAnchor.constraint(equalToConstant: 22),
+            forgotPassword.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.04),
             forgotPassword.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
         ])
     }
@@ -106,6 +109,9 @@ class LoginViewController: UIViewController {
                 sceneDelegate.checkAuthentication()
             }
         }
+        
+        emailField.text = ""
+        passwordField.text = ""
     }
     
     @objc private func didTapNewUser() {
@@ -116,5 +122,14 @@ class LoginViewController: UIViewController {
     @objc private func didTapForgotPassword() {
         let vc = ForgotPasswordViewController()
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

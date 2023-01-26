@@ -19,7 +19,7 @@ class QuestionView: UICollectionViewCell {
     
     private var answeredQuestion: Bool = false
     
-    weak var delegate: (QuestionViewDelegate)?
+    weak var delegate: QuestionViewDelegate?
     
     private var question: Question {
         didSet {

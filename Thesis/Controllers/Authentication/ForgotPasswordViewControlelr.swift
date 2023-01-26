@@ -22,6 +22,8 @@ class ForgotPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        emailField.delegate = self
+        
         self.resetPasswordButton.addTarget(self, action: #selector(didTapForgotPassword), for: .touchUpInside)
         
         self.setupUI()
@@ -29,7 +31,7 @@ class ForgotPasswordViewController: UIViewController {
     
     // MARK: - UI Setup
     private func setupUI() {
-        self.view.backgroundColor = UIColor.systemBackground
+        self.view.backgroundColor = .white
         
         view.addSubview(headerView)
         view.addSubview(emailField)
@@ -39,18 +41,18 @@ class ForgotPasswordViewController: UIViewController {
             headerView.topAnchor.constraint(equalToSystemSpacingBelow: view.topAnchor, multiplier: 0),
             headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            headerView.heightAnchor.constraint(equalToConstant: 270),
+            headerView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.35),
         ])
         
         NSLayoutConstraint.activate([
             emailField.topAnchor.constraint(equalToSystemSpacingBelow: headerView.bottomAnchor, multiplier: 2),
             emailField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emailField.heightAnchor.constraint(equalToConstant: 55),
+            emailField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             emailField.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
             
             resetPasswordButton.topAnchor.constraint(equalToSystemSpacingBelow: emailField.bottomAnchor, multiplier: 2),
             resetPasswordButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            resetPasswordButton.heightAnchor.constraint(equalToConstant: 55),
+            resetPasswordButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             resetPasswordButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.85),
         ])
     }
@@ -77,5 +79,16 @@ class ForgotPasswordViewController: UIViewController {
             
             AlertManager.showPasswordResetSentAlert(on: strongSelf)
         }
+        
+        emailField.text = ""
+    }
+}
+
+// MARK: - UITextFieldDelegate
+
+extension ForgotPasswordViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

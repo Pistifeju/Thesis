@@ -11,5 +11,6 @@ target 'Thesis' do
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
   pod 'FirebaseStorage'  
+  pod 'IQKeyboardManager'
 
 end
