@@ -38,7 +38,7 @@ class OnboardingPageViewController: UIPageViewController {
         pageControl.pageIndicatorTintColor = .systemGray2
         pageControl.currentPage = initialPage
         pageControl.backgroundStyle = .automatic
-        
+
         return pageControl
     }()
     
