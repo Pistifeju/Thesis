@@ -45,7 +45,7 @@ class CategoryViewController: UICollectionViewController {
     // MARK: - Selectors
     
     @objc private func dismissVC() {
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
 }
@@ -87,9 +87,7 @@ extension CategoryViewController: UICollectionViewDelegateFlowLayout {
         vc.model = cell.anatomyModel
         let index = systems[indexPath.row]
         vc.title = index.name!.replacingOccurrences(of: "_", with: " ")
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .fullScreen
-        present(nav, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {

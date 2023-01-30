@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RealityKit
 
 let skeletalSystems = ["Laryngeal", "Chest", "Skull", "Arm", "Foot", "Hand", "Leg", "PelvicGirdle", "ShoulderGirdle", "VertebralColumn"]
 

@@ -18,7 +18,6 @@ class CategoryViewCollectionViewCell: UICollectionViewCell {
         label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .headline)
-        
         return label
     }()
     

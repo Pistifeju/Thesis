@@ -18,15 +18,35 @@ class CreateQuizViewController: UIPageViewController {
         return pages.firstIndex(of: vc) ?? 0
     }
     
+    private let settingsPage = QuizSettingsViewController()
     public var model: AnatomyModel?
     var pages = [UIViewController]()
     
-    private var deleteCurrentQuestion: UIButton = {
+    private let numberOfQuestionsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "1/1"
+        label.textColor = .black
+        label.font = UIFont.preferredFont(forTextStyle: .footnote).italic()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var deleteCurrentQuestionButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.tintColor = .red
-        let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .regular, scale: .small)
+        let config = UIImage.SymbolConfiguration(pointSize: view.frame.size.width / 11, weight: .regular, scale: .small)
         let image = UIImage(systemName: "trash", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    
+    private lazy var testSettingsButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .black
+        let config = UIImage.SymbolConfiguration(pointSize: view.frame.size.width / 11, weight: .regular, scale: .small)
+        let image = UIImage(systemName: "gearshape", withConfiguration: config)
         button.setImage(image, for: .normal)
         return button
     }()
@@ -59,11 +79,11 @@ class CreateQuizViewController: UIPageViewController {
         delegate = self
         
         addNewQuestionButton.addTarget(self, action: #selector(didTapAddNewQuestionButton), for: .touchUpInside)
-        deleteCurrentQuestion.addTarget(self, action: #selector(didTapDeleteCurrentQuestionButton), for: .touchUpInside)
+        deleteCurrentQuestionButton.addTarget(self, action: #selector(didTapDeleteCurrentQuestionButton), for: .touchUpInside)
+        testSettingsButton.addTarget(self, action: #selector(didTapTestSettingsButton), for: .touchUpInside)
         
         let firstPage = NewQuestionViewController()
         firstPage.view.tag = 0
-        firstPage.title = "\(pages.count)"
         pages.append(firstPage)
         
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
@@ -76,6 +96,7 @@ class CreateQuizViewController: UIPageViewController {
         view.backgroundColor = .white
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissVC))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Finish", style: .plain, target: self, action: #selector(didTapFinishButton))
         
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.isHidden = false
@@ -84,24 +105,48 @@ class CreateQuizViewController: UIPageViewController {
         
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationItem.leftBarButtonItem?.tintColor = .black
+        navigationItem.rightBarButtonItem?.tintColor = .black
         
         view.addSubview(addNewQuestionButton)
-        view.addSubview(deleteCurrentQuestion)
+        view.addSubview(deleteCurrentQuestionButton)
+        view.addSubview(testSettingsButton)
+        view.addSubview(numberOfQuestionsLabel)
         
         NSLayoutConstraint.activate([
             addNewQuestionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             view.bottomAnchor.constraint(equalToSystemSpacingBelow: addNewQuestionButton.bottomAnchor, multiplier: 2),
             addNewQuestionButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             
-            deleteCurrentQuestion.centerYAnchor.constraint(equalTo: addNewQuestionButton.centerYAnchor),
-            deleteCurrentQuestion.leadingAnchor.constraint(equalToSystemSpacingAfter: addNewQuestionButton.trailingAnchor, multiplier: 2),
+            deleteCurrentQuestionButton.centerYAnchor.constraint(equalTo: addNewQuestionButton.centerYAnchor),
+            deleteCurrentQuestionButton.leadingAnchor.constraint(equalToSystemSpacingAfter: addNewQuestionButton.trailingAnchor, multiplier: 2),
+            
+            testSettingsButton.centerYAnchor.constraint(equalTo: addNewQuestionButton.centerYAnchor),
+            addNewQuestionButton.leadingAnchor.constraint(equalToSystemSpacingAfter: testSettingsButton.trailingAnchor, multiplier: 2),
+            
+            addNewQuestionButton.topAnchor.constraint(equalToSystemSpacingBelow: numberOfQuestionsLabel.bottomAnchor, multiplier: 2),
+            numberOfQuestionsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ])
+    }
+    
+    private func updateNumberOfQuestionsLabel(with index: Int) {
+        numberOfQuestionsLabel.text = "\(index)/\(pages.count)"
     }
     
     // MARK: - Selectors
     
     @objc private func dismissVC() {
         dismiss(animated: true)
+    }
+    
+    @objc private func didTapFinishButton() {
+        let alert = UIAlertController(title: "Finish test", message: "Would you like to finish creating your test?", preferredStyle: .alert)
+        
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+        alert.addAction(UIAlertAction(title: "Finish", style: .default, handler: nil))
+        
+        // show the alert
+        present(alert, animated: true, completion: nil)
     }
     
     @objc private func didTapDeleteCurrentQuestionButton() {
@@ -113,7 +158,8 @@ class CreateQuizViewController: UIPageViewController {
         }
         
         pages.remove(at: currentIndex)
-        setViewControllers([pages[pages.count - 1]], direction: .reverse, animated: true, completion: nil)
+        setViewControllers([pages[currentIndex + 1]], direction: .forward, animated: true, completion: nil)
+        updateNumberOfQuestionsLabel(with: currentIndex + 1)
     }
     
     @objc private func didTapAddNewQuestionButton() {
@@ -122,10 +168,20 @@ class CreateQuizViewController: UIPageViewController {
         
         setViewControllers([pages[pages.count - 1]], direction: .forward, animated: true)
         newPage.view.tag = currentIndex
+        
+        updateNumberOfQuestionsLabel(with: currentIndex + 1)
+    }
+    
+    @objc private func didTapTestSettingsButton() {
+        present(settingsPage, animated: true)
     }
 }
 
 extension CreateQuizViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
+    
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        updateNumberOfQuestionsLabel(with: currentIndex + 1)
+    }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }

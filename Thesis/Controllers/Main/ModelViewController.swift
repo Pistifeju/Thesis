@@ -32,9 +32,9 @@ class ModelViewController: UIViewController {
     private var goToARLearningModeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Go to AR Learning Mode", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
+        button.backgroundColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
         button.layer.cornerRadius = 8
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return button
@@ -112,7 +112,7 @@ class ModelViewController: UIViewController {
     // MARK: - Selectors
     
     @objc private func dismissVC() {
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc private func didTapGoToARLearningModeButton() {

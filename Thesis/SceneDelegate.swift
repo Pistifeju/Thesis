@@ -31,7 +31,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         } else if (registered == true) {
             self.goToController(with: OnboardingPageViewController(), withNav: true)
         } else {
-            self.goToController(with: MainViewController(collectionViewLayout: UICollectionViewFlowLayout()), withNav: true)
+            self.goToController(with: MainTabController(), withNav: false)
         }
     }
     

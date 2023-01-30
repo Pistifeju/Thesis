@@ -121,10 +121,7 @@ extension MainViewController {
         vc.title = cell.categoryName.replacingOccurrences(of: "_", with: " ")
         vc.systems = cell.system
         let nav = UINavigationController(rootViewController: vc)
-        nav.modalTransitionStyle = .coverVertical
-        nav.modalPresentationStyle = .fullScreen
-        
-        self.present(nav, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }
