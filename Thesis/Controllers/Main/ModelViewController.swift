@@ -12,9 +12,7 @@ class ModelViewController: UIViewController {
     // MARK: - Properties
     
     public var model: AnatomyModel?
-    
-    private var startNewTestPopUpView = StartNewTestPopUpView()
-    
+        
     private var createNewTestButton = ModelControllerAddButton(title: "create test", imageName: "list.bullet.clipboard")
     private var startTestButton = ModelControllerAddButton(title: "start test", imageName: "plus")
     
@@ -26,6 +24,7 @@ class ModelViewController: UIViewController {
         label.numberOfLines = 0
         label.text = "Error"
         label.textAlignment = .justified
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -44,12 +43,10 @@ class ModelViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        startNewTestPopUpView.delegate = self
-        
+                
         goToARLearningModeButton.addTarget(self, action: #selector(didTapGoToARLearningModeButton), for: .touchUpInside)
         createNewTestButton.addTarget(self, action: #selector(didTapCreateNewTestButton), for: .touchUpInside)
-        startTestButton.addTarget(self, action: #selector(didTapStartTestButtonButton), for: .touchUpInside)
+        startTestButton.addTarget(self, action: #selector(didTapStartTestButton), for: .touchUpInside)
         
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "clock.arrow.circlepath"), style: .plain, target: self, action: #selector(didTapHistoryButton))
@@ -78,12 +75,13 @@ class ModelViewController: UIViewController {
         view.addSubview(createNewTestButton)
         
         NSLayoutConstraint.activate([
-            modelInformationLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            modelInformationLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: modelInformationLabel.trailingAnchor, multiplier: 2),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: createNewTestButton.bottomAnchor, multiplier: 2),
+            createNewTestButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            createNewTestButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
+            createNewTestButton.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
             
             goToARLearningModeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            goToARLearningModeButton.topAnchor.constraint(equalToSystemSpacingBelow: modelInformationLabel.bottomAnchor, multiplier: 2),
+            createNewTestButton.topAnchor.constraint(equalToSystemSpacingBelow: goToARLearningModeButton.bottomAnchor, multiplier: 1),
             goToARLearningModeButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: startTestButton.bottomAnchor, multiplier: 2),
@@ -91,25 +89,29 @@ class ModelViewController: UIViewController {
             startTestButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
             startTestButton.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
             
-            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: createNewTestButton.bottomAnchor, multiplier: 2),
-            createNewTestButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            createNewTestButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
-            createNewTestButton.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
-        ])
-    }
-    
-    private func addStartNewTestPopUpViewToView() {
-        view.addSubview(startNewTestPopUpView)
-        
-        NSLayoutConstraint.activate([
-            startNewTestPopUpView.topAnchor.constraint(equalTo: view.topAnchor),
-            startNewTestPopUpView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            startNewTestPopUpView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            startNewTestPopUpView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            modelInformationLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
+            modelInformationLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: modelInformationLabel.trailingAnchor, multiplier: 2),
+            goToARLearningModeButton.topAnchor.constraint(equalToSystemSpacingBelow: modelInformationLabel.bottomAnchor, multiplier: 2),
         ])
     }
     
     // MARK: - Selectors
+    
+    @objc private func didTapStartTestButton() {
+        let ac = UIAlertController(title: "Enter test code", message: "Enter the test code in order to start the test.", preferredStyle: .alert)
+        ac.addTextField()
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
+        let submitAction = UIAlertAction(title: "Start", style: .default) { [unowned ac] _ in
+            let code = ac.textFields![0].text
+        }
+        
+        ac.addAction(cancelAction)
+        ac.addAction(submitAction)
+        
+        present(ac, animated: true)
+    }
     
     @objc private func dismissVC() {
         navigationController?.popViewController(animated: true)
@@ -128,13 +130,6 @@ class ModelViewController: UIViewController {
         
     }
     
-    @objc private func didTapStartTestButtonButton() {
-        DispatchQueue.main.async {
-            self.addStartNewTestPopUpViewToView()
-            self.startNewTestPopUpView.animateIn()
-        }
-    }
-    
     @objc private func didTapCreateNewTestButton() {
         let vc = CreateQuizViewController()
         vc.model = model
@@ -142,13 +137,5 @@ class ModelViewController: UIViewController {
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true)
-    }
-}
-
-// MARK: - StartNewTestPopUpViewDelegate
-
-extension ModelViewController: StartNewTestPopUpViewDelegate {
-    func didTapBackButton() {
-        startNewTestPopUpView.removeFromSuperview()
     }
 }

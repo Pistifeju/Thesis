@@ -53,7 +53,6 @@
 		B7EBEF432978B5BF00FB401B /* ModelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF422978B5BF00FB401B /* ModelViewController.swift */; };
 		B7EBEF49298029E500FB401B /* ModelControllerSegmentationControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF48298029E500FB401B /* ModelControllerSegmentationControl.swift */; };
 		B7EBEF4B29809B4600FB401B /* ModelControllerAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */; };
-		B7EBEF4D29809F4200FB401B /* StartNewTestPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4C29809F4200FB401B /* StartNewTestPopUpView.swift */; };
 		B7EBEF4F29809FAB00FB401B /* PopUpViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */; };
 		B7EBEF512983341C00FB401B /* CreateQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF502983341C00FB401B /* CreateQuizViewController.swift */; };
 		B7EBEF53298340B200FB401B /* NewQuestionCustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF52298340B200FB401B /* NewQuestionCustomTextField.swift */; };
@@ -125,7 +124,6 @@
 		B7EBEF422978B5BF00FB401B /* ModelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelViewController.swift; sourceTree = "<group>"; };
 		B7EBEF48298029E500FB401B /* ModelControllerSegmentationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelControllerSegmentationControl.swift; sourceTree = "<group>"; };
 		B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelControllerAddButton.swift; sourceTree = "<group>"; };
-		B7EBEF4C29809F4200FB401B /* StartNewTestPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartNewTestPopUpView.swift; sourceTree = "<group>"; };
 		B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewButton.swift; sourceTree = "<group>"; };
 		B7EBEF502983341C00FB401B /* CreateQuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuizViewController.swift; sourceTree = "<group>"; };
 		B7EBEF52298340B200FB401B /* NewQuestionCustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewQuestionCustomTextField.swift; sourceTree = "<group>"; };
@@ -371,7 +369,6 @@
 			children = (
 				B7EBEF48298029E500FB401B /* ModelControllerSegmentationControl.swift */,
 				B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */,
-				B7EBEF4C29809F4200FB401B /* StartNewTestPopUpView.swift */,
 				B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */,
 			);
 			path = ModelController;
@@ -592,7 +589,6 @@
 				B7EBEF5729870F6800FB401B /* NewQuestionViewController.swift in Sources */,
 				B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */,
 				B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */,
-				B7EBEF4D29809F4200FB401B /* StartNewTestPopUpView.swift in Sources */,
 				B7F8C91F295A2D070091C68E /* ColorPickerView.swift in Sources */,
 				B7EBEF5B2988699500FB401B /* MainTabController.swift in Sources */,
 				B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */,
