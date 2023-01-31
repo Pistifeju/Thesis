@@ -132,6 +132,44 @@ class CreateQuizViewController: UIPageViewController {
         numberOfQuestionsLabel.text = "\(index)/\(pages.count)"
     }
     
+    private func isQuizReady() -> Bool {
+        var isReady = true
+        for page in pages {
+            let page = page as! NewQuestionViewController
+            if !page.areQuestionsReady() {
+                isReady = false
+            }
+        }
+        
+        return isReady
+    }
+    
+    private func showIncompleteError(with title: String, and message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
+    
+        present(alert, animated: true, completion: nil)
+    }
+    
+    private func createQuiz() {
+        let settings = settingsPage.createSettingsModel()
+        var questions: [Question] = []
+        for page in pages {
+            let page = page as! NewQuestionViewController
+            if let question = page.createQuestion() {
+                questions.append(question)
+            }
+        }
+        
+        let quiz = Quiz(settings: settings!, questions: questions)
+        uploadQuizToFirebase(quiz: quiz)
+    }
+    
+    private func uploadQuizToFirebase(quiz: Quiz) {
+        // TODO: - Upload Quiz to
+    }
+    
     // MARK: - Selectors
     
     @objc private func dismissVC() {
@@ -139,14 +177,23 @@ class CreateQuizViewController: UIPageViewController {
     }
     
     @objc private func didTapFinishButton() {
-        let alert = UIAlertController(title: "Finish test", message: "Would you like to finish creating your test?", preferredStyle: .alert)
-        
-        // add the actions (buttons)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
-        alert.addAction(UIAlertAction(title: "Finish", style: .default, handler: nil))
-        
-        // show the alert
-        present(alert, animated: true, completion: nil)
+        if settingsPage.areSettingsReady() {
+            if isQuizReady() {
+                let alert = UIAlertController(title: "Finish test", message: "Would you like to finish creating your test?", preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+                alert.addAction(UIAlertAction(title: "Finish", style: .default, handler: { [weak self] _ in
+                    self?.createQuiz()
+                }))
+                
+                present(alert, animated: true, completion: nil)
+            } else {
+                showIncompleteError(with: "Test is incomplete", and: "Make sure to finish every question in the test")
+            }
+            
+        } else {
+            showIncompleteError(with: "Settings are incomplete", and: "Please fill in every field in the settings panel.")
+        }
     }
     
     @objc private func didTapDeleteCurrentQuestionButton() {
@@ -158,7 +205,12 @@ class CreateQuizViewController: UIPageViewController {
         }
         
         pages.remove(at: currentIndex)
-        setViewControllers([pages[currentIndex + 1]], direction: .forward, animated: true, completion: nil)
+        if pages.count == 1 {
+            setViewControllers([pages[currentIndex]], direction: .forward, animated: true, completion: nil)
+        } else {
+            setViewControllers([pages[currentIndex + 1]], direction: .forward, animated: true, completion: nil)
+        }
+        
         updateNumberOfQuestionsLabel(with: currentIndex + 1)
     }
     
@@ -187,6 +239,8 @@ extension CreateQuizViewController: UIPageViewControllerDelegate, UIPageViewCont
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         guard pages.count != 1 else { return nil }
         
+        print(currentIndex)
+        
         if currentIndex == 0 {
             return nil              // wrap last
         } else {
@@ -197,6 +251,8 @@ extension CreateQuizViewController: UIPageViewControllerDelegate, UIPageViewCont
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         guard pages.count != 1 else { return nil }
+        
+        print(currentIndex)
         
         if currentIndex < pages.count - 1 {
             return pages[currentIndex + 1]  // go next

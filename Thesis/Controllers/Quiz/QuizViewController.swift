@@ -164,7 +164,7 @@ class QuizViewController: UIViewController {
             guard let strongSelf = self else { return }
             for question in strongSelf.questions {
                 try! realm.write {
-                    question.selectedIndex = -1
+//                    question.selectedIndex = -1
                 }
             }
             self?.dismiss(animated: true)

@@ -82,6 +82,30 @@ class NewQuestionViewController: UIViewController {
         ])
     }
     
+    public func createQuestion() -> Question? {
+        guard let questionLabel = questionTextField.text, let answer1 = answer1TextField.text, let answer2 = answer2TextField.text, let answer3 = answer3TextField.text, let answer4 = answer4TextField.text else { return nil }
+        
+        let answers = [answer1, answer2, answer3, answer4]
+        let question = Question(question: questionLabel, answers: answers)
+        
+        return question
+    }
+    
+    public func areQuestionsReady() -> Bool {
+        var isReady = true
+        let textFields: [UITextField] = [questionTextField, answer1TextField, answer2TextField, answer3TextField, answer4TextField]
+        for textField in textFields {
+            if textField.text!.isEmpty {
+                isReady = false
+                textField.layer.borderColor = UIColor.red.cgColor
+            } else {
+                textField.layer.borderColor = UIColor.systemGray.withAlphaComponent(0.8).cgColor
+            }
+        }
+        
+        return isReady
+    }
+    
     private func generateAnswerLabels() {
         for _ in 0...3 {
             let label = UILabel(frame: .zero)

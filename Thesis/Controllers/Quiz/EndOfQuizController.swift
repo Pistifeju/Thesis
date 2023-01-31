@@ -43,14 +43,16 @@ class EndOfQuizController: UIViewController {
     }
     
     private func checkGoodAnswers() -> Int {
-        var goodAnswers: Int = 0
-        for question in questions {
-            if question.selectedIndex == question.answerIndex {
-                goodAnswers += 1
-            }
-        }
-        
-        return goodAnswers
+        // TODO:
+//        var goodAnswers: Int = 0
+//        for question in questions {
+//            if question.selectedIndex == question.answerIndex {
+//                goodAnswers += 1
+//            }
+//        }
+//
+//        return goodAnswers
+        return 1
     }
     
     // MARK: - Selectors

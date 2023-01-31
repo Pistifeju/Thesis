@@ -131,23 +131,23 @@ class QuestionView: UICollectionViewCell {
     }
     
     public func configure(with question: Question) {
-        self.question = question
-        switch question.selectedIndex {
-        case 0:
-            answerButton1.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
-            answerButton1.isSelected = true
-        case 1:
-            answerButton2.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
-            answerButton2.isSelected = true
-        case 2:
-            answerButton3.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
-            answerButton3.isSelected = true
-        case 3:
-            answerButton4.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
-            answerButton4.isSelected = true
-        default:
-            break
-        }
+//        self.question = question
+//        switch question.selectedIndex {
+//        case 0:
+//            answerButton1.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
+//            answerButton1.isSelected = true
+//        case 1:
+//            answerButton2.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
+//            answerButton2.isSelected = true
+//        case 2:
+//            answerButton3.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
+//            answerButton3.isSelected = true
+//        case 3:
+//            answerButton4.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
+//            answerButton4.isSelected = true
+//        default:
+//            break
+//        }
     }
     
     // MARK: - Selectors
@@ -165,7 +165,7 @@ class QuestionView: UICollectionViewCell {
             //unselect
             sender.isSelected = false
             try! realm.write {
-                question.selectedIndex = -1
+//                question.selectedIndex = -1
             }
             delegate?.didUnselectAnswer(with: question)
         } else {
@@ -179,7 +179,7 @@ class QuestionView: UICollectionViewCell {
             sender.isSelected = true
             sender.backgroundColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
             try! realm.write {
-                question.selectedIndex = sender.tag
+//                question.selectedIndex = sender.tag
             }
             delegate?.didSelectAnswer(with: question)
         }

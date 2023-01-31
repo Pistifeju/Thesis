@@ -21,9 +21,20 @@ class QuizSettingsViewController: UIViewController {
         return label
     }()
     
+    private var backButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Back", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+        button.layer.cornerRadius = 12
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+        return button
+    }()
+    
     private let nameLabel = QuizSettingsCustomLabel(with: "Test Name")
     private let codeLabel = QuizSettingsCustomLabel(with: "Test Code")
-    private let completionTimeLabel = QuizSettingsCustomLabel(with: "Completion Time (Minutes)")
+    private let completionTimeLabel = QuizSettingsCustomLabel(with: "Time to Complete (Minutes)")
     private let allowARModeLabel = QuizSettingsCustomLabel(with: "Enable AR Mode During Test")
     private let allowViewCompletedTestLabel = QuizSettingsCustomLabel(with: "Allow Users to view the completed Test")
     
@@ -37,6 +48,9 @@ class QuizSettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        backButton.addTarget(self, action: #selector(didTapBackButton), for: .touchUpInside)
+        
         setupUI()
     }
     
@@ -78,7 +92,14 @@ class QuizSettingsViewController: UIViewController {
         view.addSubview(allowARModeCheckBox)
         view.addSubview(allowViewCompletedTestCheckbox)
         
+        view.addSubview(backButton)
+        
         NSLayoutConstraint.activate([
+            backButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: backButton.bottomAnchor, multiplier: 2),
+            backButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
+            backButton.widthAnchor.constraint(equalTo: backButton.heightAnchor, multiplier: 2),
+            
             settingsTitle.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
             settingsTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
@@ -88,7 +109,7 @@ class QuizSettingsViewController: UIViewController {
             testNameTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: testNameTextField.trailingAnchor, multiplier: 2),
             testNameTextField.topAnchor.constraint(equalToSystemSpacingBelow: nameLabel.bottomAnchor, multiplier: 0.5),
-            testNameTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07),
+            testNameTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
             
             codeLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             codeLabel.topAnchor.constraint(equalToSystemSpacingBelow: testNameTextField.bottomAnchor, multiplier: 1),
@@ -96,14 +117,14 @@ class QuizSettingsViewController: UIViewController {
             testCodeTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: testCodeTextField.trailingAnchor, multiplier: 2),
             testCodeTextField.topAnchor.constraint(equalToSystemSpacingBelow: codeLabel.bottomAnchor, multiplier: 0.5),
-            testCodeTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07),
+            testCodeTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
             
             completionTimeLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             completionTimeLabel.topAnchor.constraint(equalToSystemSpacingBelow: testCodeTextField.bottomAnchor, multiplier: 1),
             
             completionTimeTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             completionTimeTextField.topAnchor.constraint(equalToSystemSpacingBelow: completionTimeLabel.bottomAnchor, multiplier: 0.5),
-            completionTimeTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07),
+            completionTimeTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
             completionTimeTextField.trailingAnchor.constraint(equalTo: codeLabel.trailingAnchor),
             
             allowARModeLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
@@ -138,12 +159,39 @@ class QuizSettingsViewController: UIViewController {
         }
     }
     
+    public func createSettingsModel() -> QuizSettings? {
+        guard let name = testNameTextField.text, let code = testCodeTextField.text, let timeToComplete = completionTimeTextField.text, let timeToCompleteInt = Int(timeToComplete) else { return nil }
+        
+        let quizSettings = QuizSettings(name: name, code: code, timeToComplete: timeToCompleteInt, enableARMode: allowARModeCheckBox.on, allowViewCompletedTest: allowViewCompletedTestCheckbox.on)
+        
+        return quizSettings
+    }
+    
+    public func areSettingsReady() -> Bool {
+        var isReady = true
+        let textFields: [UITextField] = [testNameTextField, testCodeTextField, completionTimeTextField]
+        for textField in textFields {
+            if textField.text!.isEmpty {
+                isReady = false
+                textField.layer.borderColor = UIColor.red.cgColor
+            } else {
+                textField.layer.borderColor = UIColor.systemGray.withAlphaComponent(0.8).cgColor
+            }
+        }
+        
+        return isReady
+    }
+    
     // MARK: - Selectors
     
     @objc private func didPressGenerateCodeButton() {
         // TODO: - Create code generation for test
         //GENERATE CODE
         //CHECK IF IT EXISTS IN FIREBASE
+    }
+    
+    @objc private func didTapBackButton() {
+        dismiss(animated: true)
     }
 }
 

@@ -7,21 +7,15 @@
 
 class Question {
     var question: String
-    var answerIndex: Int
     var answers: [String]
-    var selectedIndex: Int
     
-    init(question: String, answerIndex: Int, answers: [String]) {
-        self.selectedIndex = -1
+    init(question: String, answers: [String]) {
         self.question = question
-        self.answerIndex = answerIndex
         self.answers = answers
     }
     
     init() {
         self.question = ""
-        self.selectedIndex = -1
         self.answers = []
-        self.answerIndex = 0
     }
 }
