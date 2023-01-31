@@ -169,28 +169,26 @@ class CreateQuizViewController: UIPageViewController {
             }
             
             // TODO: - Show success alert and go to profile
-            AlertManager.showCreateQuizAlert(on: strongSelf, with: nil)
-            strongSelf.navigationController?.popViewController(animated: true)
+            AlertManager.showCreateQuizAlert(on: strongSelf) {
+                strongSelf.dismiss(animated: true)
+            }
         }
     }
     
     // MARK: - Selectors
     
     @objc private func dismissVC() {
-        dismiss(animated: true)
+        AlertManager.showLeaveCurrentQuizAlert(on: self) {
+            self.dismiss(animated: true)
+        }
     }
     
     @objc private func didTapFinishButton() {
         if settingsPage.areSettingsReady() {
             if isQuizReady() {
-                let alert = UIAlertController(title: "Finish test", message: "Would you like to finish creating your test?", preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
-                alert.addAction(UIAlertAction(title: "Finish", style: .default, handler: { [weak self] _ in
-                    self?.createQuiz()
-                }))
-                
-                present(alert, animated: true, completion: nil)
+                AlertManager.showFinishTestAlert(on: self) {
+                    self.createQuiz()
+                }
             } else {
                 AlertManager.showIncompleteQuizError(on: self, with: "Test is incomplete", and: "Make sure to finish every question in the test")
             }

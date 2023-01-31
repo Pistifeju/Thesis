@@ -11,7 +11,6 @@ import UIKit
 class AlertManager {
     
     private static func showBasicAlert(on VC: UIViewController, with title: String, and message: String?) {
-        
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
@@ -79,7 +78,7 @@ extension AlertManager {
     }
 }
 
-//MARK: - Fetching User Errors
+// MARK: - Fetching User Errors
 extension AlertManager {
     public static func showFetchingUserErrorAlert(on VC: UIViewController) {
         self.showBasicAlert(on: VC, with: "Unkown User Fetching Error", and: nil)
@@ -94,7 +93,7 @@ extension AlertManager {
     }
 }
 
-//MARK: - Creating Quiz Alerts
+// MARK: - Creating Quiz Alerts
 extension AlertManager {
     
     public static func showQuizError(on VC: UIViewController, with title: String, and message: String) {
@@ -105,8 +104,37 @@ extension AlertManager {
         self.showBasicAlert(on: VC, with: "Creating Quiz Error", and: error?.localizedDescription ?? "")
     }
     
-    public static func showCreateQuizAlert(on VC: UIViewController, with error: Error?) {
-        self.showBasicAlert(on: VC, with: "Test created successfully", and: nil)
+    public static func showLeaveCurrentQuizAlert(on VC: UIViewController, completion: @escaping() -> Void) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Exit", message: "Do you want to exit? You will lose the work you have done so far.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Exit", style: .destructive, handler: { _ in
+                completion()
+            }))
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
+            VC.present(alert, animated: true)
+        }
+    }
+    
+    public static func showFinishTestAlert(on VC: UIViewController, completion: @escaping() -> Void) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Finish test", message: "Would you like to finish creating your test?", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
+            alert.addAction(UIAlertAction(title: "Finish", style: .default, handler: { _ in
+                completion()
+            }))
+            VC.present(alert, animated: true)
+        }
+    }
+    
+    public static func showCreateQuizAlert(on VC: UIViewController, completion: @escaping() -> Void) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: "Test created successfully", message: nil, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: { _ in
+                completion()
+            }))
+            VC.present(alert, animated: true)
+        }
     }
     
     public static func showIncompleteQuizError(on VC: UIViewController, with title: String, and message: String) {
