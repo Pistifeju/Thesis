@@ -159,10 +159,10 @@ class QuizSettingsViewController: UIViewController {
         }
     }
     
-    public func createSettingsModel() -> QuizSettings? {
+    public func createSettingsModel() -> [String: Any]? {
         guard let name = testNameTextField.text, let code = testCodeTextField.text, let timeToComplete = completionTimeTextField.text, let timeToCompleteInt = Int(timeToComplete) else { return nil }
         
-        let quizSettings = QuizSettings(name: name, code: code, timeToComplete: timeToCompleteInt, enableARMode: allowARModeCheckBox.on, allowViewCompletedTest: allowViewCompletedTestCheckbox.on)
+        let quizSettings = ["name": name, "code": code, "timeToComplete": timeToCompleteInt, "enableARMode": allowARModeCheckBox.on, "allowViewCompletedTest": allowViewCompletedTestCheckbox.on] as [String: Any]
         
         return quizSettings
     }

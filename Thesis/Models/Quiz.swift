@@ -6,27 +6,19 @@
 //
 
 struct Quiz {
-    var settings: QuizSettings
-    var questions: [Question]
-    
-    init(settings: QuizSettings, questions: [Question]) {
-        self.settings = settings
-        self.questions = questions
-    }
-}
-
-struct QuizSettings {
     var name: String
     var code: String
     var timeToComplete: Int
     var enableARMode: Bool
     var allowViewCompletedTest: Bool
+    var questions: [Question]
     
-    init(name: String, code: String, timeToComplete: Int, enableARMode: Bool, allowViewCompletedTest: Bool) {
-        self.name = name
-        self.code = code
-        self.timeToComplete = timeToComplete
-        self.enableARMode = enableARMode
-        self.allowViewCompletedTest = allowViewCompletedTest
+    init(settings: [String: Any], questions: [Question]) {
+        self.name = settings["name"] as! String
+        self.code = settings["code"] as! String
+        self.timeToComplete = settings["timeToComplete"] as! Int
+        self.enableARMode = settings["enableARMode"] as! Bool
+        self.allowViewCompletedTest = settings["allowViewCompletedTest"] as! Bool
+        self.questions = questions
     }
 }

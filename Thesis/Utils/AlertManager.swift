@@ -9,6 +9,7 @@ import UIKit
 
 /// A singleton class for alerts.
 class AlertManager {
+    
     private static func showBasicAlert(on VC: UIViewController, with title: String, and message: String?) {
         
         DispatchQueue.main.async {
@@ -90,5 +91,25 @@ extension AlertManager {
     
     public static func showFetchingAllUsersErrorAlert(on VC: UIViewController, with error: Error) {
         self.showBasicAlert(on: VC, with: "User Fetching Error", and: (error.localizedDescription)) //Error is passed from Firebase
+    }
+}
+
+//MARK: - Creating Quiz Alerts
+extension AlertManager {
+    
+    public static func showQuizError(on VC: UIViewController, with title: String, and message: String) {
+        self.showBasicAlert(on: VC, with: title, and: message)
+    }
+    
+    public static func showCreateQuizError(on VC: UIViewController, with error: Error?) {
+        self.showBasicAlert(on: VC, with: "Creating Quiz Error", and: error?.localizedDescription ?? "")
+    }
+    
+    public static func showCreateQuizAlert(on VC: UIViewController, with error: Error?) {
+        self.showBasicAlert(on: VC, with: "Test created successfully", and: nil)
+    }
+    
+    public static func showIncompleteQuizError(on VC: UIViewController, with title: String, and message: String) {
+        self.showBasicAlert(on: VC, with: title, and: message)
     }
 }

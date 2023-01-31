@@ -92,6 +92,7 @@ class CreateQuizViewController: UIPageViewController {
     }
     
     // MARK: - Helpers
+    
     private func setupUI() {
         view.backgroundColor = .white
         
@@ -144,14 +145,6 @@ class CreateQuizViewController: UIPageViewController {
         return isReady
     }
     
-    private func showIncompleteError(with title: String, and message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: nil))
-    
-        present(alert, animated: true, completion: nil)
-    }
-    
     private func createQuiz() {
         let settings = settingsPage.createSettingsModel()
         var questions: [Question] = []
@@ -167,7 +160,18 @@ class CreateQuizViewController: UIPageViewController {
     }
     
     private func uploadQuizToFirebase(quiz: Quiz) {
-        // TODO: - Upload Quiz to
+        // TODO: - Upload Quiz to Firebase
+        QuizService.shared.uploadNewQuiz(quiz: quiz) { [weak self] error in
+            guard let strongSelf = self else { return }
+            
+            if let error = error {
+                AlertManager.showCreateQuizError(on: strongSelf, with: error)
+            }
+            
+            // TODO: - Show success alert and go to profile
+            AlertManager.showCreateQuizAlert(on: strongSelf, with: nil)
+            strongSelf.navigationController?.popViewController(animated: true)
+        }
     }
     
     // MARK: - Selectors
@@ -188,19 +192,17 @@ class CreateQuizViewController: UIPageViewController {
                 
                 present(alert, animated: true, completion: nil)
             } else {
-                showIncompleteError(with: "Test is incomplete", and: "Make sure to finish every question in the test")
+                AlertManager.showIncompleteQuizError(on: self, with: "Test is incomplete", and: "Make sure to finish every question in the test")
             }
             
         } else {
-            showIncompleteError(with: "Settings are incomplete", and: "Please fill in every field in the settings panel.")
+            AlertManager.showIncompleteQuizError(on: self, with: "Settings are incomplete", and: "Please fill in every field in the settings panel.")
         }
     }
     
     @objc private func didTapDeleteCurrentQuestionButton() {
         guard pages.count != 1 else {
-            let alert = UIAlertController(title: "", message: "You must have at least 1 question in your test", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
-            present(alert, animated: true)
+            AlertManager.showQuizError(on: self, with: "", and: "You must have at least 1 question in your test")
             return
         }
         
@@ -238,9 +240,7 @@ extension CreateQuizViewController: UIPageViewControllerDelegate, UIPageViewCont
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         guard pages.count != 1 else { return nil }
-        
-        print(currentIndex)
-        
+                
         if currentIndex == 0 {
             return nil              // wrap last
         } else {
@@ -251,9 +251,7 @@ extension CreateQuizViewController: UIPageViewControllerDelegate, UIPageViewCont
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         guard pages.count != 1 else { return nil }
-        
-        print(currentIndex)
-        
+                
         if currentIndex < pages.count - 1 {
             return pages[currentIndex + 1]  // go next
         } else {
