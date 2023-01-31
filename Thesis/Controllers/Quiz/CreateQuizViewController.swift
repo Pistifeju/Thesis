@@ -26,7 +26,7 @@ class CreateQuizViewController: UIPageViewController {
         let label = UILabel()
         label.text = "1/1"
         label.textColor = .black
-        label.font = UIFont.preferredFont(forTextStyle: .footnote).italic()
+        label.font = UIFont.preferredFont(forTextStyle: .callout).italic()
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -114,7 +114,7 @@ class CreateQuizViewController: UIPageViewController {
         
         NSLayoutConstraint.activate([
             addNewQuestionButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            view.bottomAnchor.constraint(equalToSystemSpacingBelow: addNewQuestionButton.bottomAnchor, multiplier: 2),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: addNewQuestionButton.bottomAnchor, multiplier: 2),
             addNewQuestionButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             
             deleteCurrentQuestionButton.centerYAnchor.constraint(equalTo: addNewQuestionButton.centerYAnchor),

@@ -12,7 +12,7 @@ class ModelViewController: UIViewController {
     // MARK: - Properties
     
     public var model: AnatomyModel?
-        
+    
     private var createNewTestButton = ModelControllerAddButton(title: "create test", imageName: "list.bullet.clipboard")
     private var startTestButton = ModelControllerAddButton(title: "start test", imageName: "plus")
     
@@ -101,6 +101,7 @@ class ModelViewController: UIViewController {
     @objc private func didTapStartTestButton() {
         let ac = UIAlertController(title: "Enter test code", message: "Enter the test code in order to start the test.", preferredStyle: .alert)
         ac.addTextField()
+        ac.textFields![0].placeholder = "A678GH-76DFRT"
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let submitAction = UIAlertAction(title: "Start", style: .default) { [unowned ac] _ in

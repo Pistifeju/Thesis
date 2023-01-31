@@ -41,11 +41,11 @@ class MainTabController: UITabBarController {
     // MARK: - Helpers
     
     private func configureUI() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         tabBar.isHidden = false
         tabBar.isTranslucent = false
-        tabBar.tintColor = .label
-        tabBar.backgroundColor = .systemBackground
+        tabBar.tintColor = .black
+        tabBar.backgroundColor = .white
     }
     
     private func configureViewControllers(with user: User) {
@@ -66,10 +66,10 @@ class MainTabController: UITabBarController {
         let nav = UINavigationController(rootViewController: rootViewController)
         nav.tabBarItem.image = unselectedImage
         nav.tabBarItem.selectedImage = selectedImage
-        nav.navigationBar.tintColor = .label
+        nav.navigationBar.tintColor = .black
         nav.navigationBar.isTranslucent = false
         nav.navigationBar.isHidden = false
-        nav.navigationBar.backgroundColor = .systemBackground
+        nav.navigationBar.backgroundColor = .white
         nav.navigationBar.tintColor = .black
         return nav
     }

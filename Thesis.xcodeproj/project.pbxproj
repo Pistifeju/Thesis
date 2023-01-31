@@ -60,6 +60,8 @@
 		B7EBEF5929883CCE00FB401B /* QuizSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF5829883CCE00FB401B /* QuizSettingsViewController.swift */; };
 		B7EBEF5B2988699500FB401B /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF5A2988699500FB401B /* MainTabController.swift */; };
 		B7EBEF5E29886A2800FB401B /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF5D29886A2800FB401B /* ProfileViewController.swift */; };
+		B7EBEF602988862700FB401B /* QuizSettingsCustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF5F2988862700FB401B /* QuizSettingsCustomLabel.swift */; };
+		B7EBEF6229897B8A00FB401B /* Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF6129897B8A00FB401B /* Quiz.swift */; };
 		B7EEAA6B296B6D5E00AAAC61 /* SkeletalJSON.json in Resources */ = {isa = PBXBuildFile; fileRef = B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */; };
 		B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */; };
 		B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */; };
@@ -131,6 +133,8 @@
 		B7EBEF5829883CCE00FB401B /* QuizSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSettingsViewController.swift; sourceTree = "<group>"; };
 		B7EBEF5A2988699500FB401B /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		B7EBEF5D29886A2800FB401B /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		B7EBEF5F2988862700FB401B /* QuizSettingsCustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSettingsCustomLabel.swift; sourceTree = "<group>"; };
+		B7EBEF6129897B8A00FB401B /* Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quiz.swift; sourceTree = "<group>"; };
 		B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = SkeletalJSON.json; sourceTree = "<group>"; };
 		B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -218,6 +222,7 @@
 				B79DC3C8297760AD00863A9A /* RegisterUserRequest.swift */,
 				B79DC3CA297760B300863A9A /* LoginUserRequest.swift */,
 				B79DC3CC2977619F00863A9A /* User.swift */,
+				B7EBEF6129897B8A00FB401B /* Quiz.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -380,6 +385,7 @@
 				B74DF719293ABBFA001C9643 /* QuestionView.swift */,
 				B7EBEF52298340B200FB401B /* NewQuestionCustomTextField.swift */,
 				B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */,
+				B7EBEF5F2988862700FB401B /* QuizSettingsCustomLabel.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -567,6 +573,7 @@
 				B71CFFD9293520F3005870E2 /* AnatomyModel.swift in Sources */,
 				B71CFFD729351CC0005870E2 /* Question.swift in Sources */,
 				B707B374297755A8001DB1E8 /* CustomAuthButton.swift in Sources */,
+				B7EBEF602988862700FB401B /* QuizSettingsCustomLabel.swift in Sources */,
 				B7302F072911CEBC0018272C /* ARViewController.swift in Sources */,
 				B73B6B7F29549DA600195D50 /* AREntity.swift in Sources */,
 				B7EBEF4B29809B4600FB401B /* ModelControllerAddButton.swift in Sources */,
@@ -576,6 +583,7 @@
 				B7136B702911D64200C6D54E /* ModelInformationView.swift in Sources */,
 				B707B376297755B0001DB1E8 /* CustomAuthTextField.swift in Sources */,
 				B79DC3CD2977619F00863A9A /* User.swift in Sources */,
+				B7EBEF6229897B8A00FB401B /* Quiz.swift in Sources */,
 				B7EBEF512983341C00FB401B /* CreateQuizViewController.swift in Sources */,
 				B7FDB48A29244ADB00B8A17D /* CategoryViewController.swift in Sources */,
 				B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */,
