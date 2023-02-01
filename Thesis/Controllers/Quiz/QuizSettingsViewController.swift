@@ -12,6 +12,8 @@ class QuizSettingsViewController: UIViewController {
     
     // MARK: - Properties
     
+    private var code: String? = nil
+    
     private let settingsTitle: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -32,14 +34,25 @@ class QuizSettingsViewController: UIViewController {
         return button
     }()
     
+    private let descriptionTextView: UITextView = {
+        let tv = UITextView()
+        tv.translatesAutoresizingMaskIntoConstraints = false
+        tv.backgroundColor = .white
+        tv.textColor = .black
+        tv.layer.borderColor = UIColor.systemGray.withAlphaComponent(0.8).cgColor
+        tv.layer.borderWidth = 2
+        tv.layer.cornerRadius = 12
+        tv.font = UIFont.preferredFont(forTextStyle: .callout)
+        return tv
+    }()
+    
     private let nameLabel = QuizSettingsCustomLabel(with: "Test Name")
-    private let codeLabel = QuizSettingsCustomLabel(with: "Test Code")
+    private let descriptionLabel = QuizSettingsCustomLabel(with: "Test Description")
     private let completionTimeLabel = QuizSettingsCustomLabel(with: "Time to Complete (Minutes)")
     private let allowARModeLabel = QuizSettingsCustomLabel(with: "Enable AR Mode During Test")
     private let allowViewCompletedTestLabel = QuizSettingsCustomLabel(with: "Allow Users to view the completed Test")
     
     private let testNameTextField = NewQuestionCustomTextField(with: "Test Name")
-    private let testCodeTextField = NewQuestionCustomTextField(with: "A678GH-76DFRT")
     private let completionTimeTextField = NewQuestionCustomTextField(with: "20")
     private let allowARModeCheckBox = BEMCheckBox()
     private let allowViewCompletedTestCheckbox = BEMCheckBox()
@@ -59,16 +72,7 @@ class QuizSettingsViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = .white
         
-        let generateCodeButton = UIButton(type: .system)
-        generateCodeButton.setImage(UIImage(systemName: "goforward.plus"), for: .normal)
-        generateCodeButton.tintColor = .black
-        generateCodeButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
-        generateCodeButton.addTarget(self, action: #selector(didPressGenerateCodeButton), for: .touchUpInside)
-        testCodeTextField.rightView = generateCodeButton
-        testCodeTextField.rightViewMode = .always
-        
         title = "Test Settings"
-        completionTimeTextField.text = "20"
         completionTimeTextField.leftViewMode = .never
         completionTimeTextField.textAlignment = .center
         completionTimeTextField.delegate = self
@@ -78,20 +82,21 @@ class QuizSettingsViewController: UIViewController {
         //Labels
         view.addSubview(settingsTitle)
         view.addSubview(nameLabel)
-        view.addSubview(codeLabel)
+        view.addSubview(descriptionLabel)
         view.addSubview(completionTimeLabel)
         view.addSubview(allowARModeLabel)
         view.addSubview(allowViewCompletedTestLabel)
         
         //Textfields
         view.addSubview(testNameTextField)
-        view.addSubview(testCodeTextField)
+        view.addSubview(descriptionTextView)
         view.addSubview(completionTimeTextField)
         
         //Checkboxes
         view.addSubview(allowARModeCheckBox)
         view.addSubview(allowViewCompletedTestCheckbox)
         
+        //Buttons
         view.addSubview(backButton)
         
         NSLayoutConstraint.activate([
@@ -111,21 +116,21 @@ class QuizSettingsViewController: UIViewController {
             testNameTextField.topAnchor.constraint(equalToSystemSpacingBelow: nameLabel.bottomAnchor, multiplier: 0.5),
             testNameTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
             
-            codeLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            codeLabel.topAnchor.constraint(equalToSystemSpacingBelow: testNameTextField.bottomAnchor, multiplier: 1),
+            descriptionLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            descriptionLabel.topAnchor.constraint(equalToSystemSpacingBelow: testNameTextField.bottomAnchor, multiplier: 1),
             
-            testCodeTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: testCodeTextField.trailingAnchor, multiplier: 2),
-            testCodeTextField.topAnchor.constraint(equalToSystemSpacingBelow: codeLabel.bottomAnchor, multiplier: 0.5),
-            testCodeTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
+            descriptionTextView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: descriptionTextView.trailingAnchor, multiplier: 2),
+            descriptionTextView.topAnchor.constraint(equalToSystemSpacingBelow: descriptionLabel.bottomAnchor, multiplier: 0.5),
+            descriptionTextView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
             
             completionTimeLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            completionTimeLabel.topAnchor.constraint(equalToSystemSpacingBelow: testCodeTextField.bottomAnchor, multiplier: 1),
+            completionTimeLabel.topAnchor.constraint(equalToSystemSpacingBelow: descriptionTextView.bottomAnchor, multiplier: 1),
             
             completionTimeTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             completionTimeTextField.topAnchor.constraint(equalToSystemSpacingBelow: completionTimeLabel.bottomAnchor, multiplier: 0.5),
             completionTimeTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
-            completionTimeTextField.trailingAnchor.constraint(equalTo: codeLabel.trailingAnchor),
+            completionTimeTextField.trailingAnchor.constraint(equalTo: descriptionLabel.trailingAnchor),
             
             allowARModeLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             allowARModeLabel.topAnchor.constraint(equalToSystemSpacingBelow: completionTimeTextField.bottomAnchor, multiplier: 4),
@@ -144,7 +149,7 @@ class QuizSettingsViewController: UIViewController {
             allowViewCompletedTestCheckbox.widthAnchor.constraint(equalTo: allowViewCompletedTestLabel.widthAnchor, multiplier: 1.25),
         ])
     }
-
+    
     private func createCheckBoxes() {
         let checkboxes: [BEMCheckBox] = [allowARModeCheckBox, allowViewCompletedTestCheckbox]
         
@@ -160,16 +165,19 @@ class QuizSettingsViewController: UIViewController {
     }
     
     public func createSettingsModel() -> [String: Any]? {
-        guard let name = testNameTextField.text, let code = testCodeTextField.text, let timeToComplete = completionTimeTextField.text, let timeToCompleteInt = Int(timeToComplete) else { return nil }
+        guard let name = testNameTextField.text, let timeToComplete = completionTimeTextField.text, let timeToCompleteInt = Int(timeToComplete) else {
+            return nil }
+                
+        let code = generateCodeForNewTest()
         
-        let quizSettings = ["name": name, "code": code, "timeToComplete": timeToCompleteInt, "enableARMode": allowARModeCheckBox.on, "allowViewCompletedTest": allowViewCompletedTestCheckbox.on] as [String: Any]
+        let quizSettings = ["name": name, "code": code, "quizDescription": descriptionTextView.text.description, "timeToComplete": timeToCompleteInt, "allowARMode": allowARModeCheckBox.on, "allowViewCompletedTest": allowViewCompletedTestCheckbox.on] as [String: Any]
         
         return quizSettings
     }
     
     public func areSettingsReady() -> Bool {
         var isReady = true
-        let textFields: [UITextField] = [testNameTextField, testCodeTextField, completionTimeTextField]
+        let textFields: [UITextField] = [testNameTextField, completionTimeTextField]
         for textField in textFields {
             if textField.text!.isEmpty {
                 isReady = false
@@ -182,13 +190,44 @@ class QuizSettingsViewController: UIViewController {
         return isReady
     }
     
-    // MARK: - Selectors
-    
-    @objc private func didPressGenerateCodeButton() {
-        // TODO: - Create code generation for test
-        //GENERATE CODE
-        //CHECK IF IT EXISTS IN FIREBASE
+    private func generateCodeForNewTest() -> String {
+        var code = ""
+        
+        QuizService.shared.fetchAllQuizzes { [weak self] quizzes, error in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                AlertManager.showQuizError(on: strongSelf, with: "Error Generating Code", and: error.localizedDescription)
+                return
+            }
+            
+            if let quizzes = quizzes {
+                var codesInUse = [String]()
+                for quiz in quizzes {
+                    let code = quiz.code
+                    codesInUse.append(code)
+                }
+                
+                let chars = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
+                
+                while true {
+                    code = ""
+                    for _ in 1...12 {
+                        code.append(chars.randomElement() ?? "A")
+                    }
+                    
+                    code.insert("-", at: code.index(code.startIndex, offsetBy: 6))
+                    
+                    if !codesInUse.contains(code) {
+                        break
+                    }
+                }
+            }
+        }
+        
+        return code
     }
+    
+    // MARK: - Selectors
     
     @objc private func didTapBackButton() {
         dismiss(animated: true)

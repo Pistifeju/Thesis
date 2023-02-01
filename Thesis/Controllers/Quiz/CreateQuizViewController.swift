@@ -146,7 +146,11 @@ class CreateQuizViewController: UIPageViewController {
     }
     
     private func createQuiz() {
-        let settings = settingsPage.createSettingsModel()
+        guard let settings = settingsPage.createSettingsModel() else {
+            AlertManager.showQuizError(on: self, with: "Error Creating Test", and: "An unknown error occurred")
+            return
+        }
+        
         var questions: [Question] = []
         for page in pages {
             let page = page as! NewQuestionViewController
@@ -155,12 +159,11 @@ class CreateQuizViewController: UIPageViewController {
             }
         }
         
-        let quiz = Quiz(settings: settings!, questions: questions)
+        let quiz = Quiz(settings: settings, questions: questions)
         uploadQuizToFirebase(quiz: quiz)
     }
     
     private func uploadQuizToFirebase(quiz: Quiz) {
-        // TODO: - Upload Quiz to Firebase
         QuizService.shared.uploadNewQuiz(quiz: quiz) { [weak self] error in
             guard let strongSelf = self else { return }
             
@@ -168,7 +171,6 @@ class CreateQuizViewController: UIPageViewController {
                 AlertManager.showCreateQuizError(on: strongSelf, with: error)
             }
             
-            // TODO: - Show success alert and go to profile
             AlertManager.showCreateQuizAlert(on: strongSelf) {
                 strongSelf.dismiss(animated: true)
             }
@@ -228,6 +230,8 @@ class CreateQuizViewController: UIPageViewController {
         present(settingsPage, animated: true)
     }
 }
+
+// MARK: - UIPageViewControllerDelegate, UIPageViewControllerDataSource
 
 extension CreateQuizViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     

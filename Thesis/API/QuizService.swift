@@ -30,8 +30,9 @@ class QuizService {
         let data: [String: Any] = [
             "name": quiz.name,
             "code": quiz.code,
+            "quizDescription": quiz.quizDescription,
             "timeToComplete": quiz.timeToComplete,
-            "allowARMode": quiz.enableARMode,
+            "allowARMode": quiz.allowARMode,
             "allowViewCompletedTest": quiz.allowViewCompletedTest,
             "questions": questions]
         
@@ -42,6 +43,52 @@ class QuizService {
             }
             
             completion(nil)
+        }
+    }
+    
+    public func fetchAllQuizzes(completion: @escaping([Quiz]?, Error?) -> Void) {
+        var quizzes = [Quiz]()
+        let query = Firestore.firestore().collection("quizzes")
+
+        query.addSnapshotListener { snapshot, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+                        
+            snapshot?.documentChanges.forEach({ change in
+                if change.type == .added {
+                    let data = change.document.data()
+                    
+                    let settings: [String: Any] = [
+                        "name": data["name"] as Any,
+                        "code": data["code"] as Any,
+                        "quizDescription": data["quizDescription"] as Any,
+                        "timeToComplete": data["timeToComplete"] as Any,
+                        "allowARMode": data["allowARMode"] as Any,
+                        "allowViewCompletedTest": data["allowViewCompletedTest"] as Any]
+                    
+                    let questionsAsData = data["questions"] as! [[String: Any]]
+                    var questions: [Question] = []
+                    
+                    for question in questionsAsData {
+                        let answers = [
+                            question["answer1"] as! String,
+                            question["answer2"] as! String,
+                            question["answer3"] as! String,
+                            question["answer4"] as! String,
+                        ]
+                        let innerQuestion = Question(question: question["question"] as! String, answers: answers)
+                        questions.append(innerQuestion)
+                    }
+                    
+                    let quiz = Quiz(settings: settings, questions: questions)
+                                        
+                    quizzes.append(quiz)
+                }
+            })
+            
+            completion(quizzes, nil)
         }
     }
 }

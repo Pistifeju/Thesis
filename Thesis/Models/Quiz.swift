@@ -8,16 +8,18 @@
 struct Quiz {
     var name: String
     var code: String
+    var quizDescription: String
     var timeToComplete: Int
-    var enableARMode: Bool
+    var allowARMode: Bool
     var allowViewCompletedTest: Bool
     var questions: [Question]
     
     init(settings: [String: Any], questions: [Question]) {
         self.name = settings["name"] as! String
         self.code = settings["code"] as! String
+        self.quizDescription = settings["quizDescription"] as! String
         self.timeToComplete = settings["timeToComplete"] as! Int
-        self.enableARMode = settings["enableARMode"] as! Bool
+        self.allowARMode = settings["allowARMode"] as! Bool
         self.allowViewCompletedTest = settings["allowViewCompletedTest"] as! Bool
         self.questions = questions
     }
