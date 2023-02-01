@@ -13,6 +13,11 @@ class QuizService {
     private init() {}
     private let db = Firestore.firestore()
     
+    /// A method to upload a new quiz to firebase firestore.
+    /// - Parameters:
+    ///   - quiz: The quiz which will be uploaded.
+    ///   - completion: A completion with one value (Error?).
+    ///   - Error?: An optinal error coming from firebase.
     public func uploadNewQuiz(quiz: Quiz, completion: @escaping(Error?) -> Void) {
         var questions: [[String: String]] = []
         
@@ -46,6 +51,10 @@ class QuizService {
         }
     }
     
+    /// A method to fetch every quiz from firebase firestore.
+    /// - Parameter completion: A completion with two value ([Quiz]?, Error?).
+    /// - [Quiz]?: An optinal quiz array coming from firebase.
+    /// - Error?: An optinal error coming from firebase.
     public func fetchAllQuizzes(completion: @escaping([Quiz]?, Error?) -> Void) {
         var quizzes = [Quiz]()
         let query = Firestore.firestore().collection("quizzes")
@@ -60,27 +69,10 @@ class QuizService {
                 if change.type == .added {
                     let data = change.document.data()
                     
-                    let settings: [String: Any] = [
-                        "name": data["name"] as Any,
-                        "code": data["code"] as Any,
-                        "quizDescription": data["quizDescription"] as Any,
-                        "timeToComplete": data["timeToComplete"] as Any,
-                        "allowARMode": data["allowARMode"] as Any,
-                        "allowViewCompletedTest": data["allowViewCompletedTest"] as Any]
+                    let settings = self.createSettings(data: data)
                     
                     let questionsAsData = data["questions"] as! [[String: Any]]
-                    var questions: [Question] = []
-                    
-                    for question in questionsAsData {
-                        let answers = [
-                            question["answer1"] as! String,
-                            question["answer2"] as! String,
-                            question["answer3"] as! String,
-                            question["answer4"] as! String,
-                        ]
-                        let innerQuestion = Question(question: question["question"] as! String, answers: answers)
-                        questions.append(innerQuestion)
-                    }
+                    let questions = self.createQuestions(questionsAsData: questionsAsData)
                     
                     let quiz = Quiz(settings: settings, questions: questions)
                                         
@@ -90,5 +82,67 @@ class QuizService {
             
             completion(quizzes, nil)
         }
+    }
+    
+    /// A method to fetch a quiz from firebase firestore.
+    /// - Parameters:
+    ///   - code: The code of the quiz which should be fetched.
+    ///   - completion: A completion with two value (Quiz?, Error?).
+    /// - Quiz?: An optinal quiz coming from firebase.
+    /// - Error?: An optinal error coming from firebase.
+    public func fetchQuiz(with code: String, completion: @escaping(Quiz?, Error?) -> Void) {
+        Firestore.firestore().collection("quizzes").whereField("code", isEqualTo: code).getDocuments { snapshot, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            if let snapshot = snapshot {
+                let data = snapshot.documents[0].data()
+                
+                let settings = self.createSettings(data: data)
+                
+                let questionsAsData = data["questions"] as! [[String: Any]]
+                let questions = self.createQuestions(questionsAsData: questionsAsData)
+                
+                let quiz = Quiz(settings: settings, questions: questions)
+                
+                completion(quiz, nil)
+            }
+            
+            completion(nil, nil)
+            return
+        }
+    }
+}
+
+extension QuizService {
+    private func createQuestions(questionsAsData: [[String: Any]]) -> [Question] {
+        var questions: [Question] = []
+        
+        for question in questionsAsData {
+            let answers = [
+                question["answer1"] as! String,
+                question["answer2"] as! String,
+                question["answer3"] as! String,
+                question["answer4"] as! String,
+            ]
+            let innerQuestion = Question(question: question["question"] as! String, answers: answers)
+            questions.append(innerQuestion)
+        }
+        
+        return questions
+    }
+    
+    private func createSettings(data: [String: Any]) -> [String: Any]{
+        let settings: [String: Any] = [
+            "name": data["name"] as Any,
+            "code": data["code"] as Any,
+            "quizDescription": data["quizDescription"] as Any,
+            "timeToComplete": data["timeToComplete"] as Any,
+            "allowARMode": data["allowARMode"] as Any,
+            "allowViewCompletedTest": data["allowViewCompletedTest"] as Any]
+        
+        return settings
     }
 }

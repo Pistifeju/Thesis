@@ -96,6 +96,26 @@ class ModelViewController: UIViewController {
         ])
     }
     
+    private func startTestCompletion(with code: String) {
+        QuizService.shared.fetchQuiz(with: code) { [weak self] quiz, error in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                AlertManager.showQuizError(on: strongSelf, with: "Error Starting Test", and: error.localizedDescription)
+                return
+            }
+            
+            guard let quiz = quiz else {
+                AlertManager.showQuizError(on: strongSelf, with: "Wrong Code", and: "There is no test with this code.")
+                return
+            }
+            
+            let vc = QuizViewController(quiz: quiz)
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            strongSelf.present(nav, animated: true)
+        }
+    }
+    
     // MARK: - Selectors
     
     @objc private func didTapStartTestButton() {
@@ -106,6 +126,8 @@ class ModelViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let submitAction = UIAlertAction(title: "Start", style: .default) { [unowned ac] _ in
             let code = ac.textFields![0].text
+            guard let code = code else { return }
+            self.startTestCompletion(with: code)
         }
         
         ac.addAction(cancelAction)

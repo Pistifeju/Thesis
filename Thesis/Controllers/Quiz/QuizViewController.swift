@@ -12,6 +12,12 @@ class QuizViewController: UIViewController {
     
     // MARK: - Properties
     
+    private var quiz: Quiz {
+        didSet {
+            self.questions = self.quiz.questions
+        }
+    }
+    
     public var questions: [Question] = []
     public var questionsIndex: Int = 0 {
         didSet {
@@ -94,6 +100,16 @@ class QuizViewController: UIViewController {
     }()
     
     // MARK: - Lifecycle
+    
+    init(quiz: Quiz) {
+        self.quiz = quiz
+        print(quiz)
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -237,7 +253,7 @@ extension QuizViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 }
 
-// MARK: -
+// MARK: - QuestionViewDelegate
 
 extension QuizViewController: QuestionViewDelegate {
     func didSelectAnswer(with question: Question) {
