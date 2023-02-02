@@ -19,7 +19,6 @@ class CreateQuizViewController: UIPageViewController {
     }
     
     private let settingsPage = QuizSettingsViewController()
-    public var model: AnatomyModel?
     var pages = [UIViewController]()
     
     private let numberOfQuestionsLabel: UILabel = {
@@ -146,21 +145,23 @@ class CreateQuizViewController: UIPageViewController {
     }
     
     private func createQuiz() {
-        guard let settings = settingsPage.createSettingsModel() else {
-            AlertManager.showQuizError(on: self, with: "Error Creating Test", and: "An unknown error occurred")
-            return
-        }
-        
-        var questions: [Question] = []
-        for page in pages {
-            let page = page as! NewQuestionViewController
-            if let question = page.createQuestion() {
-                questions.append(question)
+        settingsPage.createSettingsModel { [weak self] settings in
+            guard let strongSelf = self else { return }
+            guard let settings = settings else {
+                AlertManager.showQuizError(on: strongSelf, with: "Error Creating Test", and: "An unknown error occurred")
+                return }
+                        
+            var questions: [Question] = []
+            for page in strongSelf.pages {
+                let page = page as! NewQuestionViewController
+                if let question = page.createQuestion() {
+                    questions.append(question)
+                }
             }
+            
+            let quiz = Quiz(settings: settings, questions: questions)
+            strongSelf.uploadQuizToFirebase(quiz: quiz)
         }
-        
-        let quiz = Quiz(settings: settings, questions: questions)
-        uploadQuizToFirebase(quiz: quiz)
     }
     
     private func uploadQuizToFirebase(quiz: Quiz) {
@@ -194,7 +195,6 @@ class CreateQuizViewController: UIPageViewController {
             } else {
                 AlertManager.showIncompleteQuizError(on: self, with: "Test is incomplete", and: "Make sure to finish every question in the test")
             }
-            
         } else {
             AlertManager.showIncompleteQuizError(on: self, with: "Settings are incomplete", and: "Please fill in every field in the settings panel.")
         }

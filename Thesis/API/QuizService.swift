@@ -57,28 +57,27 @@ class QuizService {
     /// - Error?: An optinal error coming from firebase.
     public func fetchAllQuizzes(completion: @escaping([Quiz]?, Error?) -> Void) {
         var quizzes = [Quiz]()
-        let query = Firestore.firestore().collection("quizzes")
-
-        query.addSnapshotListener { snapshot, error in
+//        let query = Firestore.firestore().collection("quizzes")
+        
+        Firestore.firestore().collection("quizzes").getDocuments { snapshot, error in
             if let error = error {
                 completion(nil, error)
                 return
             }
+            
+            guard let snapshot = snapshot else { return }
                         
-            snapshot?.documentChanges.forEach({ change in
-                if change.type == .added {
-                    let data = change.document.data()
-                    
-                    let settings = self.createSettings(data: data)
-                    
-                    let questionsAsData = data["questions"] as! [[String: Any]]
-                    let questions = self.createQuestions(questionsAsData: questionsAsData)
-                    
-                    let quiz = Quiz(settings: settings, questions: questions)
-                                        
-                    quizzes.append(quiz)
-                }
-            })
+            snapshot.documents.forEach { document in
+                let data = document.data()
+                let settings = self.createSettings(data: data)
+                
+                let questionsAsData = data["questions"] as! [[String: Any]]
+                let questions = self.createQuestions(questionsAsData: questionsAsData)
+                
+                let quiz = Quiz(settings: settings, questions: questions)
+                
+                quizzes.append(quiz)
+            }
             
             completion(quizzes, nil)
         }

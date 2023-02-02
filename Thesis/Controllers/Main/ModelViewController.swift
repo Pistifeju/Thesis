@@ -109,7 +109,7 @@ class ModelViewController: UIViewController {
                 return
             }
             
-            let vc = QuizViewController(quiz: quiz)
+            let vc = QuizPageViewController(quiz: quiz)
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             strongSelf.present(nav, animated: true)
@@ -155,7 +155,6 @@ class ModelViewController: UIViewController {
     
     @objc private func didTapCreateNewTestButton() {
         let vc = CreateQuizViewController()
-        vc.model = model
         vc.title = "Create a New Test"
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen

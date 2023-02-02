@@ -12,8 +12,6 @@ class QuizSettingsViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var code: String? = nil
-    
     private let settingsTitle: UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -43,6 +41,7 @@ class QuizSettingsViewController: UIViewController {
         tv.layer.borderWidth = 2
         tv.layer.cornerRadius = 12
         tv.font = UIFont.preferredFont(forTextStyle: .callout)
+        tv.autocorrectionType = .no
         return tv
     }()
     
@@ -164,15 +163,57 @@ class QuizSettingsViewController: UIViewController {
         }
     }
     
-    public func createSettingsModel() -> [String: Any]? {
+    public func createSettingsModel(completion: @escaping([String: Any]?) -> Void ) {
         guard let name = testNameTextField.text, let timeToComplete = completionTimeTextField.text, let timeToCompleteInt = Int(timeToComplete) else {
-            return nil }
+            completion(nil)
+            return
+        }
+        
+        generateCodeForNewTest { [weak self] code in
+            guard let strongSelf = self else { return }
+            if let code = code {
+                let quizSettings = ["name": name, "code": code, "quizDescription": strongSelf.descriptionTextView.text.description, "timeToComplete": timeToCompleteInt, "allowARMode": strongSelf.allowARModeCheckBox.on, "allowViewCompletedTest": strongSelf.allowViewCompletedTestCheckbox.on] as [String: Any]
                 
-        let code = generateCodeForNewTest()
-        
-        let quizSettings = ["name": name, "code": code, "quizDescription": descriptionTextView.text.description, "timeToComplete": timeToCompleteInt, "allowARMode": allowARModeCheckBox.on, "allowViewCompletedTest": allowViewCompletedTestCheckbox.on] as [String: Any]
-        
-        return quizSettings
+                completion(quizSettings)
+            }
+        }
+    }
+    
+    private func generateCodeForNewTest(completion: @escaping(String?) -> Void) {
+        QuizService.shared.fetchAllQuizzes { [weak self] quizzes, error in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                AlertManager.showQuizError(on: strongSelf, with: "Error Generating Code", and: error.localizedDescription)
+                completion(nil)
+                return
+            }
+            
+            if let quizzes = quizzes {
+                
+                var codesInUse = [String]()
+                
+                for quiz in quizzes {
+                    let code = quiz.code
+                    codesInUse.append(code)
+                }
+                
+                let chars = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
+                
+                while true {
+                    var code = ""
+                    for _ in 1...12 {
+                        code.append(chars.randomElement() ?? "A")
+                    }
+                    
+                    code.insert("-", at: code.index(code.startIndex, offsetBy: 6))
+                    
+                    if !codesInUse.contains(code) {
+                        completion(code)
+                        break
+                    }
+                }
+            }
+        }
     }
     
     public func areSettingsReady() -> Bool {
@@ -188,43 +229,6 @@ class QuizSettingsViewController: UIViewController {
         }
         
         return isReady
-    }
-    
-    private func generateCodeForNewTest() -> String {
-        var code = ""
-        
-        QuizService.shared.fetchAllQuizzes { [weak self] quizzes, error in
-            guard let strongSelf = self else { return }
-            if let error = error {
-                AlertManager.showQuizError(on: strongSelf, with: "Error Generating Code", and: error.localizedDescription)
-                return
-            }
-            
-            if let quizzes = quizzes {
-                var codesInUse = [String]()
-                for quiz in quizzes {
-                    let code = quiz.code
-                    codesInUse.append(code)
-                }
-                
-                let chars = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-                
-                while true {
-                    code = ""
-                    for _ in 1...12 {
-                        code.append(chars.randomElement() ?? "A")
-                    }
-                    
-                    code.insert("-", at: code.index(code.startIndex, offsetBy: 6))
-                    
-                    if !codesInUse.contains(code) {
-                        break
-                    }
-                }
-            }
-        }
-        
-        return code
     }
     
     // MARK: - Selectors
