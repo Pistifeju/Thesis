@@ -26,7 +26,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         }
     }
         
-    public var model: AnatomyModel
+    private var model: AnatomyModel
+    private var fromTest: Bool
     private var modelAnchor: AnchorEntity = AnchorEntity()
     private let modelInformationView = ModelInformationView(frame: .zero)
     
@@ -100,8 +101,9 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     // MARK: - Lifecycle
     
-    init(with model: AnatomyModel) {
+    init(with model: AnatomyModel, fromTest: Bool) {
         self.model = model
+        self.fromTest = fromTest
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -276,11 +278,18 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     @objc private func dismissView() {
         let alert = UIAlertController(title: "Do you want to exit?", message: "", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
-            guard let strongSelf = self else { return }
-            strongSelf.navigationController?.popToRootViewController(animated: true)
+    
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: {action in
+            
         }))
-        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: {action in
+        alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { [weak self] action in
+            guard let strongSelf = self else { return }
+            
+            if strongSelf.fromTest {
+                strongSelf.navigationController?.popViewController(animated: true)
+            } else {
+                strongSelf.dismiss(animated: true)
+            }
             
         }))
         

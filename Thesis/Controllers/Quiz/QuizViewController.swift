@@ -169,7 +169,7 @@ class QuizViewController: UIViewController {
                 }
             }
             
-            let vc = ARViewController(with: model)
+            let vc = ARViewController(with: model, fromTest: true)
             navigationController?.pushViewController(vc, animated: true)
         }
                 

@@ -107,10 +107,10 @@ extension AlertManager {
     public static func showLeaveCurrentQuizAlert(on VC: UIViewController, completion: @escaping() -> Void) {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: "Exit", message: "Do you want to exit? You will lose the work you have done so far.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
             alert.addAction(UIAlertAction(title: "Exit", style: .destructive, handler: { _ in
                 completion()
             }))
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .default))
             VC.present(alert, animated: true)
         }
     }
@@ -119,8 +119,8 @@ extension AlertManager {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: "Finish test", message: "Would you like to finish creating your test?", preferredStyle: .alert)
             
-            alert.addAction(UIAlertAction(title: "Cancel", style: .destructive, handler: nil))
-            alert.addAction(UIAlertAction(title: "Finish", style: .default, handler: { _ in
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: "Finish", style: .destructive, handler: { _ in
                 completion()
             }))
             VC.present(alert, animated: true)

@@ -109,9 +109,7 @@ class ModelViewController: UIViewController {
                 return
             }
             
-            guard let modelName = strongSelf.model?.name else { return }
-            
-            let vc = QuizPageViewController(quiz: quiz, modelName: modelName)
+            let vc = QuizPageViewController(quiz: quiz, modelName: quiz.model)
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             strongSelf.present(nav, animated: true)
@@ -147,8 +145,10 @@ class ModelViewController: UIViewController {
             return
         }
         
-        let vc = ARViewController(with: model)
-        navigationController?.pushViewController(vc, animated: true)
+        let vc = ARViewController(with: model, fromTest: false)
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
     }
     
     @objc private func didTapHistoryButton() {
