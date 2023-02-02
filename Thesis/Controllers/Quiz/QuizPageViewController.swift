@@ -4,9 +4,8 @@
 //
 //  Created by István Juhász on 2022. 11. 28..
 //
-
+//7UYQ1Y-4I920G
 import UIKit
-import RealmSwift
 
 class QuizPageViewController: UIPageViewController {
     
@@ -22,13 +21,10 @@ class QuizPageViewController: UIPageViewController {
     
     private var quiz: Quiz {
         didSet {
-            self.questions = self.quiz.questions
             updateNumberOfQuestionsLabel(with: 1)
         }
     }
-    
-    private var questions: [Question] = []
-    
+        
     private var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
@@ -40,14 +36,12 @@ class QuizPageViewController: UIPageViewController {
     private lazy var questionsIndexLabel: UILabel = {
         let label = UILabel()
         label.textColor = .gray
-        label.font = UIFont.preferredFont(forTextStyle: .callout)
+        label.font = UIFont.preferredFont(forTextStyle: .title2)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "error"
         return label
     }()
     
-    private var backButton = QuizCustomNavigationButton(title: "Back")
-    private var nextButton = QuizCustomNavigationButton(title: "Next")
     private var submitButton = QuizCustomNavigationButton(title: "Submit")
     
     // MARK: - Lifecycle
@@ -70,8 +64,6 @@ class QuizPageViewController: UIPageViewController {
         createPages()
         
         submitButton.addTarget(self, action: #selector(didTapSubmit), for: .touchUpInside)
-        nextButton.addTarget(self, action: #selector(didTapNext), for: .touchUpInside)
-        backButton.addTarget(self, action: #selector(didTapBack), for: .touchUpInside)
         
         configureUI()
     }
@@ -79,14 +71,24 @@ class QuizPageViewController: UIPageViewController {
     // MARK: - Helpers
     
     private func createPages() {
-        for question in questions {
-            print(question.question)
+        for question in quiz.questions {
+            let vc = QuizViewController(question: question)
+            pages.append(vc)
         }
+        
+        setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
+        
+        updateNumberOfQuestionsLabel(with: 1)
     }
     
     private func configureUI() {
         navigationController?.navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(didPressExit))
-        navigationController?.navigationBar.topItem?.leftBarButtonItem?.tintColor = .black
+        
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        navigationItem.leftBarButtonItem?.tintColor = .black
+        
         view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = false
         
@@ -103,7 +105,7 @@ class QuizPageViewController: UIPageViewController {
             questionsIndexLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             questionsIndexLabel.centerYAnchor.constraint(equalTo: submitButton.centerYAnchor),
             
-            progressView.heightAnchor.constraint(equalToConstant: 5),
+            progressView.heightAnchor.constraint(equalTo: submitButton.heightAnchor, multiplier: 0.10),
             progressView.topAnchor.constraint(equalToSystemSpacingBelow: submitButton.bottomAnchor, multiplier: 2),
             progressView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: progressView.trailingAnchor, multiplier: 4),
@@ -111,21 +113,13 @@ class QuizPageViewController: UIPageViewController {
     }
     
     private func updateNumberOfQuestionsLabel(with index: Int) {
-        questionsIndexLabel.text = "\(index)/\(pages.count)"
+        questionsIndexLabel.text = "Question \(index)/\(pages.count)"
     }
     
     // MARK: - Selectors
     
     @objc private func didPressExit() {
         // TODO: - Finish DidPressExit
-    }
-    
-    @objc private func didTapNext() {
-        // TODO: - Finish didTapNext
-    }
-    
-    @objc private func didTapBack() {
-        // TODO: - Finish didTapBack
     }
     
     @objc private func didTapSubmit() {

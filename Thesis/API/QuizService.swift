@@ -97,6 +97,10 @@ class QuizService {
             }
             
             if let snapshot = snapshot {
+                if snapshot.documents.isEmpty {
+                    completion(nil, nil)
+                    return
+                }
                 let data = snapshot.documents[0].data()
                 
                 let settings = self.createSettings(data: data)
