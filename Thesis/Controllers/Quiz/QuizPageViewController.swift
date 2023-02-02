@@ -14,6 +14,8 @@ class QuizPageViewController: UIPageViewController {
     private let initialPage = 0
     private var pages = [UIViewController]()
     
+    private let modelName: String
+    
     var currentIndex: Int {
         guard let vc = viewControllers?.first else { return 0 }
         return pages.firstIndex(of: vc) ?? 0
@@ -46,8 +48,9 @@ class QuizPageViewController: UIPageViewController {
     
     // MARK: - Lifecycle
     
-    init(quiz: Quiz) {
+    init(quiz: Quiz, modelName: String) {
         self.quiz = quiz
+        self.modelName = modelName
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
@@ -61,6 +64,8 @@ class QuizPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
+        title = quiz.name
+        
         createPages()
         
         submitButton.addTarget(self, action: #selector(didTapSubmit), for: .touchUpInside)
@@ -72,7 +77,7 @@ class QuizPageViewController: UIPageViewController {
     
     private func createPages() {
         for question in quiz.questions {
-            let vc = QuizViewController(question: question)
+            let vc = QuizViewController(question: question, modelName: modelName)
             pages.append(vc)
         }
         

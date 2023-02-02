@@ -13,6 +13,8 @@ class QuizViewController: UIViewController {
     
     private let question: Question
     
+    private let modelName: String
+    
     private var goToARModeButton = QuizCustomNavigationButton(title: "Start AR Mode")
     private var answer1Button = CustomAnswerButton(answerLabel: "Answer 1")
     private var answer2Button = CustomAnswerButton(answerLabel: "Answer 2")
@@ -52,8 +54,9 @@ class QuizViewController: UIViewController {
     
     // MARK: - LifeCycle
     
-    init(question: Question) {
+    init(question: Question, modelName: String) {
         self.question = question
+        self.modelName = modelName
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -63,6 +66,9 @@ class QuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        goToARModeButton.addTarget(self, action: #selector(didTapGoToARMode), for: .touchUpInside)
+        
         setupUI()
         configureUI()
     }
@@ -149,4 +155,23 @@ class QuizViewController: UIViewController {
     }
     
     // MARK: - Selectors
+    
+    @objc private func didTapGoToARMode() {
+        if let encoded = UserDefaults.standard.data(forKey: "skeletalModels"), let anatomyModels = try? JSONDecoder().decode([AnatomyModel].self, from: encoded) {
+            
+            var model = AnatomyModel()
+            for anatomyModel in anatomyModels {
+                if let name = anatomyModel.name {
+                    if name == modelName {
+                        model = anatomyModel
+                        break
+                    }
+                }
+            }
+            
+            let vc = ARViewController(with: model)
+            navigationController?.pushViewController(vc, animated: true)
+        }
+                
+    }
 }

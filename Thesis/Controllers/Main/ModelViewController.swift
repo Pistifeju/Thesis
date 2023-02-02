@@ -109,7 +109,9 @@ class ModelViewController: UIViewController {
                 return
             }
             
-            let vc = QuizPageViewController(quiz: quiz)
+            guard let modelName = strongSelf.model?.name else { return }
+            
+            let vc = QuizPageViewController(quiz: quiz, modelName: modelName)
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             strongSelf.present(nav, animated: true)
@@ -154,8 +156,13 @@ class ModelViewController: UIViewController {
     }
     
     @objc private func didTapCreateNewTestButton() {
+        guard let model = model, let name = model.name else {
+            return
+        }
+        
         let vc = CreateQuizViewController()
         vc.title = "Create a New Test"
+        vc.model = name
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .fullScreen
         present(nav, animated: true)

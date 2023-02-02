@@ -35,6 +35,7 @@ class QuizService {
         let data: [String: Any] = [
             "name": quiz.name,
             "code": quiz.code,
+            "model": quiz.model,
             "quizDescription": quiz.quizDescription,
             "timeToComplete": quiz.timeToComplete,
             "allowARMode": quiz.allowARMode,
@@ -101,6 +102,7 @@ class QuizService {
                     completion(nil, nil)
                     return
                 }
+                
                 let data = snapshot.documents[0].data()
                 
                 let settings = self.createSettings(data: data)
@@ -111,6 +113,7 @@ class QuizService {
                 let quiz = Quiz(settings: settings, questions: questions)
                 
                 completion(quiz, nil)
+                return
             }
             
             completion(nil, nil)
@@ -141,6 +144,7 @@ extension QuizService {
         let settings: [String: Any] = [
             "name": data["name"] as Any,
             "code": data["code"] as Any,
+            "model": data["model"] as Any,
             "quizDescription": data["quizDescription"] as Any,
             "timeToComplete": data["timeToComplete"] as Any,
             "allowARMode": data["allowARMode"] as Any,

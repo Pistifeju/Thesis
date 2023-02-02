@@ -12,6 +12,7 @@ class CreateQuizViewController: UIPageViewController {
     // MARK: - Properties
     
     private let initialPage = 0
+    public var model: String?
     
     var currentIndex: Int {
         guard let vc = viewControllers?.first else { return 0 }
@@ -145,7 +146,9 @@ class CreateQuizViewController: UIPageViewController {
     }
     
     private func createQuiz() {
-        settingsPage.createSettingsModel { [weak self] settings in
+        guard let model = model else { return }
+        
+        settingsPage.createSettingsModel(model: model) { [weak self] settings in
             guard let strongSelf = self else { return }
             guard let settings = settings else {
                 AlertManager.showQuizError(on: strongSelf, with: "Error Creating Test", and: "An unknown error occurred")

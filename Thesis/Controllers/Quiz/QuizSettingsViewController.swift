@@ -163,7 +163,7 @@ class QuizSettingsViewController: UIViewController {
         }
     }
     
-    public func createSettingsModel(completion: @escaping([String: Any]?) -> Void ) {
+    public func createSettingsModel(model: String, completion: @escaping([String: Any]?) -> Void ) {
         guard let name = testNameTextField.text, let timeToComplete = completionTimeTextField.text, let timeToCompleteInt = Int(timeToComplete) else {
             completion(nil)
             return
@@ -172,7 +172,7 @@ class QuizSettingsViewController: UIViewController {
         generateCodeForNewTest { [weak self] code in
             guard let strongSelf = self else { return }
             if let code = code {
-                let quizSettings = ["name": name, "code": code, "quizDescription": strongSelf.descriptionTextView.text.description, "timeToComplete": timeToCompleteInt, "allowARMode": strongSelf.allowARModeCheckBox.on, "allowViewCompletedTest": strongSelf.allowViewCompletedTestCheckbox.on] as [String: Any]
+                let quizSettings = ["name": name, "code": code, "model": model, "quizDescription": strongSelf.descriptionTextView.text.description, "timeToComplete": timeToCompleteInt, "allowARMode": strongSelf.allowARModeCheckBox.on, "allowViewCompletedTest": strongSelf.allowViewCompletedTestCheckbox.on] as [String: Any]
                 
                 completion(quizSettings)
             }
