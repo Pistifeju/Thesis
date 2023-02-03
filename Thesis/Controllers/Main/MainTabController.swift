@@ -42,10 +42,19 @@ class MainTabController: UITabBarController {
     
     private func configureUI() {
         view.backgroundColor = .white
+        
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barTintColor = .white
+        
         tabBar.isHidden = false
         tabBar.isTranslucent = false
         tabBar.tintColor = .black
         tabBar.backgroundColor = .white
+        tabBar.barTintColor = .white
+        tabBar.layer.borderWidth = 0.3
+        tabBar.layer.borderColor = UIColor.systemGray.cgColor
+        tabBar.clipsToBounds = true
     }
     
     private func configureViewControllers(with user: User) {

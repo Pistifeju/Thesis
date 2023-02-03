@@ -30,7 +30,13 @@ class ProfileViewController: UIViewController {
     
     // MARK: - Helpers
     private func setupUI() {
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
+        
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.barTintColor = .white
+        
         title = "Profile"
         
         navigationController?.navigationBar.isTranslucent = true

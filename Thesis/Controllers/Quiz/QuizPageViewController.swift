@@ -64,8 +64,6 @@ class QuizPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
-        title = quiz.name
-        
         createPages()
         
         submitButton.addTarget(self, action: #selector(didTapSubmit), for: .touchUpInside)
@@ -87,6 +85,8 @@ class QuizPageViewController: UIPageViewController {
     }
     
     private func configureUI() {
+        title = quiz.name
+        
         navigationController?.navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(didPressExit))
         
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]

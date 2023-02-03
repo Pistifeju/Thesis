@@ -37,6 +37,8 @@ class MainViewController: UICollectionViewController {
         navigationItem.title = "Categories"
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationBar.backgroundColor = .white
+        navigationController?.navigationBar.barTintColor = .white
         
         view.backgroundColor = .white
         collectionView.backgroundColor = .white
