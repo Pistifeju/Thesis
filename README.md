@@ -13,13 +13,13 @@ My thesis is an iOS mobile learning application that helps students learn about 
 ## Screenshots (2023 Febr. 03)
 
 <p align="center">
-<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/signIn.png" width="200"/>
-<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/main.png" width="200"/>
-<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/model.png" width="200"/>
-<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/ar1.png" width="200"/>
-<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/ar2.png" width="200"/>
-<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/createQ.png" width="200"/>
-<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/settingsQ.png" width="200"/>
+<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/signIn.PNG" width="200"/>
+<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/main.PNG" width="200"/>
+<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/model.PNG" width="200"/>
+<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/ar1.PNG" width="200"/>
+<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/ar2.PNG" width="200"/>
+<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/createQ.PNG" width="200"/>
+<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/settingsQ.PNG" width="200"/>
 </p>
 
 ### Requirements
