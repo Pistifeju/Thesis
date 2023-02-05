@@ -30,7 +30,7 @@ class QuizPageViewController: UIPageViewController {
     private var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.progressTintColor = UIColor(red: 162/255, green: 210/255, blue: 255/255, alpha: 1)
+        progressView.progressTintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
         progressView.trackTintColor = .lightGray
         return progressView
     }()
@@ -44,6 +44,7 @@ class QuizPageViewController: UIPageViewController {
         return label
     }()
     
+    private var goToARModeButton = QuizCustomNavigationButton(title: "Start AR Mode")
     private var submitButton = QuizCustomNavigationButton(title: "Submit")
     
     // MARK: - Lifecycle
@@ -64,6 +65,8 @@ class QuizPageViewController: UIPageViewController {
         dataSource = self
         delegate = self
         
+        goToARModeButton.addTarget(self, action: #selector(didTapGoToARMode), for: .touchUpInside)
+        
         createPages()
         
         submitButton.addTarget(self, action: #selector(didTapSubmit), for: .touchUpInside)
@@ -76,6 +79,7 @@ class QuizPageViewController: UIPageViewController {
     private func createPages() {
         for question in quiz.questions {
             let vc = QuizViewController(question: question, modelName: modelName)
+            vc.delegate = self
             pages.append(vc)
         }
         
@@ -100,6 +104,7 @@ class QuizPageViewController: UIPageViewController {
         view.addSubview(submitButton)
         view.addSubview(questionsIndexLabel)
         view.addSubview(progressView)
+        view.addSubview(goToARModeButton)
         
         NSLayoutConstraint.activate([
             submitButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
@@ -114,7 +119,16 @@ class QuizPageViewController: UIPageViewController {
             progressView.topAnchor.constraint(equalToSystemSpacingBelow: submitButton.bottomAnchor, multiplier: 2),
             progressView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: progressView.trailingAnchor, multiplier: 4),
+            
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: goToARModeButton.bottomAnchor, multiplier: 1),
+            goToARModeButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: goToARModeButton.trailingAnchor, multiplier: 4),
+            goToARModeButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07),
         ])
+        
+        if !quiz.allowARMode {
+            goToARModeButton.isHidden = true
+        }
     }
     
     private func updateNumberOfQuestionsLabel(with index: Int) {
@@ -129,6 +143,30 @@ class QuizPageViewController: UIPageViewController {
     
     @objc private func didTapSubmit() {
         // TODO: - Finish didTapSubmit
+        for page in pages {
+            if page is QuizViewController { //may have other quiz types
+                let vc = page as! QuizViewController
+                print(vc.selectedButton)
+            }
+        }
+    }
+    
+    @objc private func didTapGoToARMode() {
+        if let encoded = UserDefaults.standard.data(forKey: "skeletalModels"), let anatomyModels = try? JSONDecoder().decode([AnatomyModel].self, from: encoded) {
+            
+            var model = AnatomyModel()
+            for anatomyModel in anatomyModels {
+                if let name = anatomyModel.name {
+                    if name == modelName {
+                        model = anatomyModel
+                        break
+                    }
+                }
+            }
+            
+            let vc = ARViewController(with: model, fromTest: true)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }
 
@@ -162,4 +200,20 @@ extension QuizPageViewController: UIPageViewControllerDelegate, UIPageViewContro
         }
     }
     
+}
+
+extension QuizPageViewController: QuizViewControllerDelegate {
+    func didSelectAnswer(selected: Bool?) {
+        guard let selected = selected else { return }
+        
+        UIView.animate(withDuration: 0.5) {
+            var progress: Float = 0.0
+            if selected {
+                progress = self.progressView.progress + 1.0 / Float(self.pages.count)
+            } else {
+                progress = self.progressView.progress - 1.0 / Float(self.pages.count)
+            }
+            self.progressView.setProgress(progress, animated: true)
+        }
+    }
 }

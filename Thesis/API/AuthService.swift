@@ -40,10 +40,6 @@ class AuthService {
             self.db.collection("users").document(resultUser.uid).setData([
                 "username": username,
                 "email": email,
-                "wins": 0,
-                "losses": 0,
-                "streak": 0,
-                "maxStreak": 0
             ]) { error in
                 if let error = error {
                     completion(false, error)

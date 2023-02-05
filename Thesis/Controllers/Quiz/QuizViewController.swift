@@ -7,15 +7,22 @@
 //7UYQ1Y-4I920G
 import UIKit
 
+protocol QuizViewControllerDelegate: AnyObject {
+    func didSelectAnswer(selected: Bool?)
+}
+
 class QuizViewController: UIViewController {
     
     // MARK: - Properties
     
+    weak var delegate: QuizViewControllerDelegate?
+    
     private let question: Question
+    public var selectedButton: UIButton?
     
     private let modelName: String
+    private let correctAnswerString: String
     
-    private var goToARModeButton = QuizCustomNavigationButton(title: "Start AR Mode")
     private var answer1Button = CustomAnswerButton(answerLabel: "Answer 1")
     private var answer2Button = CustomAnswerButton(answerLabel: "Answer 2")
     private var answer3Button = CustomAnswerButton(answerLabel: "Answer 3")
@@ -57,6 +64,7 @@ class QuizViewController: UIViewController {
     init(question: Question, modelName: String) {
         self.question = question
         self.modelName = modelName
+        self.correctAnswerString = question.answers[0]
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -67,10 +75,13 @@ class QuizViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        goToARModeButton.addTarget(self, action: #selector(didTapGoToARMode), for: .touchUpInside)
+        answer1Button.addTarget(self, action: #selector(didTapAnswerButton(_:)), for: .touchUpInside)
+        answer2Button.addTarget(self, action: #selector(didTapAnswerButton(_:)), for: .touchUpInside)
+        answer3Button.addTarget(self, action: #selector(didTapAnswerButton(_:)), for: .touchUpInside)
+        answer4Button.addTarget(self, action: #selector(didTapAnswerButton(_:)), for: .touchUpInside)
         
         setupUI()
-        configureUI()
+        configure()
     }
     
     // MARK: - Helpers
@@ -88,7 +99,6 @@ class QuizViewController: UIViewController {
         view.addSubview(answer2Button)
         view.addSubview(answer3Button)
         view.addSubview(answer4Button)
-        view.addSubview(goToARModeButton)
         
         NSLayoutConstraint.activate([
             labelForHeight.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: calculateHeightForTitleLabel()),
@@ -106,7 +116,6 @@ class QuizViewController: UIViewController {
             answer2Button.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
             answer3Button.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
             answer4Button.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
-            goToARModeButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07),
             
             questionTypeLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             questionTypeLabel.topAnchor.constraint(equalToSystemSpacingBelow: questionLabel.bottomAnchor, multiplier: 4),
@@ -126,20 +135,29 @@ class QuizViewController: UIViewController {
             answer4Button.topAnchor.constraint(equalToSystemSpacingBelow: answer3Button.bottomAnchor, multiplier: 1),
             answer4Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer4Button.trailingAnchor, multiplier: 4),
-            
-            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: goToARModeButton.bottomAnchor, multiplier: 1),
-            goToARModeButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: goToARModeButton.trailingAnchor, multiplier: 4),
         ])
         
     }
     
-    private func configureUI() {
+    private func configure() {
         questionLabel.text = question.question
-        answer1Button.setTitle(question.answers[0], for: .normal)
-        answer2Button.setTitle(question.answers[1], for: .normal)
-        answer3Button.setTitle(question.answers[2], for: .normal)
-        answer4Button.setTitle(question.answers[3], for: .normal)
+        
+        randomizeAnswerButtons()
+    }
+    
+    private func randomizeAnswerButtons() {
+        let buttons = [answer1Button, answer2Button, answer3Button, answer4Button]
+        let range = 0...3
+        var uniqueNumbers = Set<Int>()
+        var setLength = -1
+        while uniqueNumbers.count < 4 {
+            let randomNum = range.randomElement()!
+            uniqueNumbers.insert(randomNum)
+            if uniqueNumbers.count > setLength {
+                setLength = uniqueNumbers.count
+                buttons[setLength - 1].setTitle(question.answers[randomNum], for: .normal)
+            }
+        }
     }
     
     private func calculateHeightForTitleLabel() -> CGFloat {
@@ -156,22 +174,32 @@ class QuizViewController: UIViewController {
     
     // MARK: - Selectors
     
-    @objc private func didTapGoToARMode() {
-        if let encoded = UserDefaults.standard.data(forKey: "skeletalModels"), let anatomyModels = try? JSONDecoder().decode([AnatomyModel].self, from: encoded) {
-            
-            var model = AnatomyModel()
-            for anatomyModel in anatomyModels {
-                if let name = anatomyModel.name {
-                    if name == modelName {
-                        model = anatomyModel
-                        break
-                    }
-                }
+    @objc private func didTapAnswerButton(_ sender: UIButton) {
+        let buttons = [answer1Button, answer2Button, answer3Button, answer4Button]
+        
+        var alreadySelected = false
+        for button in buttons {
+            if button.isSelected {
+                alreadySelected = true
+                break
             }
-            
-            let vc = ARViewController(with: model, fromTest: true)
-            navigationController?.pushViewController(vc, animated: true)
         }
-                
+        
+        sender.isSelected.toggle()
+        for button in buttons where button != sender {
+            button.isSelected = false
+        }
+        
+        if sender.isSelected && alreadySelected {
+            delegate?.didSelectAnswer(selected: nil)
+        } else {
+            delegate?.didSelectAnswer(selected: sender.isSelected)
+        }
+        
+        if sender.isSelected {
+            self.selectedButton = sender
+        } else {
+            self.selectedButton = nil
+        }
     }
 }

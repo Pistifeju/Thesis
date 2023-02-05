@@ -24,7 +24,7 @@ class CreateQuizViewController: UIPageViewController {
     
     private let numberOfQuestionsLabel: UILabel = {
         let label = UILabel()
-        label.text = "1/1"
+        label.text = "Question: 1/1"
         label.textColor = .black
         label.font = UIFont.preferredFont(forTextStyle: .callout).italic()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -130,7 +130,7 @@ class CreateQuizViewController: UIPageViewController {
     }
     
     private func updateNumberOfQuestionsLabel(with index: Int) {
-        numberOfQuestionsLabel.text = "\(index)/\(pages.count)"
+        numberOfQuestionsLabel.text = "Question: \(index)/\(pages.count)"
     }
     
     private func isQuizReady() -> Bool {

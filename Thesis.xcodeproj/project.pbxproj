@@ -31,8 +31,6 @@
 		B74DF71A293ABBFA001C9643 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF719293ABBFA001C9643 /* QuestionView.swift */; };
 		B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */; };
 		B74DF720293BF0BC001C9643 /* EndOfQuizController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */; };
-		B77B697F2911DD9F004FDA40 /* Design.png in Resources */ = {isa = PBXBuildFile; fileRef = B77B697D2911DD9F004FDA40 /* Design.png */; };
-		B77B69802911DD9F004FDA40 /* Design.fig in Resources */ = {isa = PBXBuildFile; fileRef = B77B697E2911DD9F004FDA40 /* Design.fig */; };
 		B77FCACE2911D3C800E45438 /* Pelvic_Girdle.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC42911D3C800E45438 /* Pelvic_Girdle.usdz */; };
 		B77FCACF2911D3C800E45438 /* Hand.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC52911D3C800E45438 /* Hand.usdz */; };
 		B77FCAD02911D3C800E45438 /* Foot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC62911D3C800E45438 /* Foot.usdz */; };
@@ -107,8 +105,6 @@
 		B74DF719293ABBFA001C9643 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnswerButton.swift; sourceTree = "<group>"; };
 		B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfQuizController.swift; sourceTree = "<group>"; };
-		B77B697D2911DD9F004FDA40 /* Design.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Design.png; sourceTree = "<group>"; };
-		B77B697E2911DD9F004FDA40 /* Design.fig */ = {isa = PBXFileReference; lastKnownFileType = file; path = Design.fig; sourceTree = "<group>"; };
 		B77FCAC42911D3C800E45438 /* Pelvic_Girdle.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Pelvic_Girdle.usdz; sourceTree = "<group>"; };
 		B77FCAC52911D3C800E45438 /* Hand.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Hand.usdz; sourceTree = "<group>"; };
 		B77FCAC62911D3C800E45438 /* Foot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Foot.usdz; sourceTree = "<group>"; };
@@ -240,8 +236,6 @@
 				B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */,
 				B7A3E174296B584E009670FC /* .swiftlint.yml */,
 				B707B377297756EC001DB1E8 /* logo.png */,
-				B77B697E2911DD9F004FDA40 /* Design.fig */,
-				B77B697D2911DD9F004FDA40 /* Design.png */,
 				B7302F012911CEBC0018272C /* Thesis */,
 				B7302F002911CEBC0018272C /* Products */,
 				0F1241F11490A3EA94FEF860 /* Pods */,
@@ -492,8 +486,6 @@
 				B77FCAD52911D3C800E45438 /* Arm.usdz in Resources */,
 				B7D05E24291FD51900439680 /* Skull.usdz in Resources */,
 				B7EEAA6B296B6D5E00AAAC61 /* SkeletalJSON.json in Resources */,
-				B77B697F2911DD9F004FDA40 /* Design.png in Resources */,
-				B77B69802911DD9F004FDA40 /* Design.fig in Resources */,
 				B707B378297756EC001DB1E8 /* logo.png in Resources */,
 				B77FCAD42911D3C800E45438 /* Vertebral_Column.usdz in Resources */,
 				B77FCACF2911D3C800E45438 /* Hand.usdz in Resources */,

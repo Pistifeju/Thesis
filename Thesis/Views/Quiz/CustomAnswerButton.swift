@@ -9,6 +9,13 @@ import UIKit
 
 class CustomAnswerButton: UIButton {
     
+    override var isSelected: Bool {
+        didSet {
+            let green = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1).cgColor
+            layer.borderColor = isSelected ? green : UIColor.gray.cgColor
+        }
+    }
+    
     init(answerLabel: String) {
         super.init(frame: .zero)
         setTitleColor(UIColor.black, for: .normal)
@@ -16,9 +23,9 @@ class CustomAnswerButton: UIButton {
         contentEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
         contentHorizontalAlignment = .left
         layer.cornerRadius = 8
-        layer.borderColor = UIColor.gray.cgColor
         layer.borderWidth = 2
         translatesAutoresizingMaskIntoConstraints = false
+        isSelected = false
     }
     
     required init?(coder: NSCoder) {
