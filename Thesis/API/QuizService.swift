@@ -19,16 +19,17 @@ class QuizService {
     ///   - completion: A completion with one value (Error?).
     ///   - Error?: An optinal error coming from firebase.
     public func uploadNewQuiz(quiz: Quiz, completion: @escaping(Error?) -> Void) {
-        var questions: [[String: String]] = []
+        var questions: [[String: Any]] = []
         
         for question in quiz.questions {
-            let questionMap = [
+            
+            let questionMap: [String: Any] = [
                 "question": question.question,
-                "answer1": question.answers[0],
-                "answer2": question.answers[1],
-                "answer3": question.answers[2],
-                "answer4": question.answers[3]
+                "answers": question.answers,
+                "correctAnswers": question.correctAnswers,
+                "type": question.type.rawValue
             ]
+            
             questions.append(questionMap)
         }
         
@@ -127,14 +128,13 @@ extension QuizService {
         var questions: [Question] = []
         
         for question in questionsAsData {
-            let answers = [
-                question["answer1"] as! String,
-                question["answer2"] as! String,
-                question["answer3"] as! String,
-                question["answer4"] as! String,
-            ]
-//            let innerQuestion = Question(question: question["question"] as! String, answers: answers)
-//            questions.append(innerQuestion)
+            let answers: [String] = question["answers"] as! [String]
+            let questionText: String = question["question"] as! String
+            let type: String = question["type"] as! String
+            let correctAnswers: [String] = question["correctAnswers"] as! [String]
+
+            let innerQuestion = Question(question: questionText, answers: answers, correctAnswers: correctAnswers, type: QuestionType(rawValue: type) ?? .singleChoice)
+            questions.append(innerQuestion)
         }
         
         return questions

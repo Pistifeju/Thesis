@@ -157,6 +157,7 @@ class CreateQuizViewController: UIPageViewController {
             var questions: [Question] = []
             for page in strongSelf.pages {
                 let page = page as! NewQuestionViewController
+                
                 if let question = page.createQuestion() {
                     questions.append(question)
                 }
@@ -199,7 +200,7 @@ class CreateQuizViewController: UIPageViewController {
                 AlertManager.showIncompleteQuizError(on: self, with: "Test is incomplete", and: "Make sure to finish every question in the test")
             }
         } else {
-            AlertManager.showIncompleteQuizError(on: self, with: "Settings are incomplete", and: "Please fill in every field in the settings panel.")
+            AlertManager.showIncompleteQuizError(on: self, with: "Settings are incomplete", and: "Please fill in the necessary fields in the settings panel.")
         }
     }
     

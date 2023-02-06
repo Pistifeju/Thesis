@@ -132,15 +132,16 @@ class NewQuestionViewController: UIViewController {
     
     private func setupCheckBoxes() {
         let boxes = [answer1CheckBox, answer2CheckBox, answer3CheckBox, answer4CheckBox]
-        for box in boxes {
-            box.translatesAutoresizingMaskIntoConstraints = false
-            box.onAnimationType = .fade
-            box.offAnimationType = .fade
-            box.onTintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
-            box.tintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
-            box.onFillColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
-            box.onCheckColor = .white
-            box.animationDuration = 0
+        for i in 0...boxes.count - 1 {
+            boxes[i].translatesAutoresizingMaskIntoConstraints = false
+            boxes[i].onAnimationType = .fade
+            boxes[i].offAnimationType = .fade
+            boxes[i].onTintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+            boxes[i].tintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+            boxes[i].onFillColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+            boxes[i].onCheckColor = .white
+            boxes[i].animationDuration = 0
+            boxes[i].tag = i
         }
     }
     
@@ -196,12 +197,34 @@ class NewQuestionViewController: UIViewController {
         guard let questionLabel = questionTextField.text, let answer1 = answer1TextField.text, let answer2 = answer2TextField.text, let answer3 = answer3TextField.text, let answer4 = answer4TextField.text else { return nil }
         
         let answers = [answer1, answer2, answer3, answer4]
-        let question = Question(question: questionLabel, answers: answers, type: questionType)
+        let boxes = [answer1CheckBox, answer2CheckBox, answer3CheckBox, answer4CheckBox]
+        let selectedBoxes = boxes.filter({ $0.on })
+        var correctAnswers: [String] = []
+        
+        for box in selectedBoxes {
+            correctAnswers.append(answers[box.tag])
+        }
+        
+        var question = Question(question: questionLabel, answers: answers, correctAnswers: correctAnswers, type: questionType)
+        
+        if questionType == .TrueFalse {
+            question.answers = []
+            question.correctAnswers = [trueFalseSelector.titleForSegment(at: trueFalseSelector.selectedSegmentIndex)!]
+        }
         
         return question
     }
     
     public func areQuestionsReady() -> Bool {
+        if questionType == .TrueFalse {
+            if questionTextField.text!.isEmpty {
+                questionTextField.layer.borderColor = UIColor.red.cgColor
+                return false
+            }
+            
+            return true
+        }
+        
         var isReady = true
         let textFields: [UITextField] = [questionTextField, answer1TextField, answer2TextField, answer3TextField, answer4TextField]
         for textField in textFields {
