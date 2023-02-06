@@ -31,5 +31,3 @@ class QuizCustomNavigationButton: UIButton {
     // MARK: - Selectors
     
 }
-
-

@@ -32,6 +32,7 @@ class QuizPageViewController: UIPageViewController {
         progressView.translatesAutoresizingMaskIntoConstraints = false
         progressView.progressTintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
         progressView.trackTintColor = .lightGray
+        progressView.progressViewStyle = .bar
         return progressView
     }()
     
@@ -146,9 +147,14 @@ class QuizPageViewController: UIPageViewController {
         for page in pages {
             if page is QuizViewController { //may have other quiz types
                 let vc = page as! QuizViewController
-                print(vc.selectedButton)
+                
             }
         }
+        
+//        let vc = EndOfQuizController()
+//        let nav = UINavigationController(rootViewController: vc)
+//        nav.modalPresentationStyle = .fullScreen
+//        present(nav, animated: true)
     }
     
     @objc private func didTapGoToARMode() {

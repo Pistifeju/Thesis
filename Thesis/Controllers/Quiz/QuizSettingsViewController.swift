@@ -160,6 +160,7 @@ class QuizSettingsViewController: UIViewController {
             checkbox.tintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
             checkbox.onFillColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
             checkbox.onCheckColor = .white
+            checkbox.animationDuration = 0
         }
     }
     

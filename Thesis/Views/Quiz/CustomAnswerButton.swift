@@ -13,6 +13,7 @@ class CustomAnswerButton: UIButton {
         didSet {
             let green = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1).cgColor
             layer.borderColor = isSelected ? green : UIColor.gray.cgColor
+            layer.borderWidth = isSelected ? 3 : 2
         }
     }
     

@@ -6,24 +6,69 @@
 //
 
 import UIKit
+import BEMCheckBox
 
 class NewQuestionViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var answerLabels: [UILabel] = []
+    private var questionTextFieldTopAnchor: NSLayoutConstraint!
+    
+    private let questionTypeSelector: UISegmentedControl = {
+        let sc = UISegmentedControl()
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        sc.backgroundColor = .clear
+        sc.insertSegment(withTitle: "Single Choice", at: 0, animated: true)
+        sc.insertSegment(withTitle: "Multiple Choice", at: 1, animated: true)
+        sc.insertSegment(withTitle: "True/False", at: 2, animated: true)
+        return sc
+    }()
+    
+    private let trueFalseSelector: UISegmentedControl = {
+        let sc = UISegmentedControl()
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        sc.backgroundColor = .clear
+        sc.insertSegment(withTitle: "True", at: 0, animated: true)
+        sc.insertSegment(withTitle: "False", at: 1, animated: true)
+        sc.isHidden = true
+        return sc
+    }()
+    
     private var questionTextField = NewQuestionCustomTextField(with: "Question")
     private var answer1TextField = NewQuestionCustomTextField(with: "Answer 1")
     private var answer2TextField = NewQuestionCustomTextField(with: "Answer 2")
     private var answer3TextField = NewQuestionCustomTextField(with: "Answer 3")
     private var answer4TextField = NewQuestionCustomTextField(with: "Answer 4")
     
-    private let mainTitle: UILabel = {
+    private let answer1CheckBox = BEMCheckBox()
+    private let answer2CheckBox = BEMCheckBox()
+    private let answer3CheckBox = BEMCheckBox()
+    private let answer4CheckBox = BEMCheckBox()
+        
+    private var questionType: QuestionType = .singleChoice {
+        didSet {
+            switch questionType {
+            case .singleChoice:
+                configureSingleChoiceUI()
+                whatToDoLabel.text = "Add a question and select one answer as the correct answer."
+            case .multipleChoice:
+                configureSingleChoiceUI()
+                whatToDoLabel.text = "Add a question and select the correct answers."
+            case .TrueFalse:
+                whatToDoLabel.text = "Add a question and select true or false as the correct answer."
+                configureTrueFalseUI()
+            }
+        }
+    }
+    
+    private let whatToDoLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.font = UIFont.preferredFont(forTextStyle: .headline).bold()
-        label.text = "Add a question and answer options"
+        label.text = "Add a question and select one answer as the correct answer."
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        label.textAlignment = .center
         return label
     }()
     
@@ -31,62 +76,127 @@ class NewQuestionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupUI()
+        
+        questionTypeSelector.addTarget(self, action: #selector(handleTypeChange), for: .valueChanged)
+        questionTypeSelector.selectedSegmentIndex = 0
+        
+        answer1CheckBox.addTarget(self, action: #selector(didTapCheckbox(_:)), for: .valueChanged)
+        answer2CheckBox.addTarget(self, action: #selector(didTapCheckbox(_:)), for: .valueChanged)
+        answer3CheckBox.addTarget(self, action: #selector(didTapCheckbox(_:)), for: .valueChanged)
+        answer4CheckBox.addTarget(self, action: #selector(didTapCheckbox(_:)), for: .valueChanged)
+        
+        trueFalseSelector.selectedSegmentIndex = 0
+        
+        setupUI()
     }
     
     // MARK: - Helpers
     private func setupUI() {
-        self.view.backgroundColor = .white
+        view.backgroundColor = .white
         
-        view.addSubview(mainTitle)
+        view.addSubview(questionTypeSelector)
+        view.addSubview(trueFalseSelector)
+        view.addSubview(whatToDoLabel)
+        
         view.addSubview(questionTextField)
         view.addSubview(answer1TextField)
         view.addSubview(answer2TextField)
         view.addSubview(answer3TextField)
         view.addSubview(answer4TextField)
-        generateAnswerLabels()
+        
+        view.addSubview(answer1CheckBox)
+        view.addSubview(answer2CheckBox)
+        view.addSubview(answer3CheckBox)
+        view.addSubview(answer4CheckBox)
+        
+        answer1CheckBox.on = true
+        
+        setupCheckBoxes()
+        configureSingleChoiceUI()
         
         NSLayoutConstraint.activate([
-            mainTitle.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 1),
-            mainTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            questionTypeSelector.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
+            questionTypeSelector.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            questionTextField.topAnchor.constraint(equalToSystemSpacingBelow: mainTitle.bottomAnchor, multiplier: 2),
+            whatToDoLabel.topAnchor.constraint(equalToSystemSpacingBelow: questionTypeSelector.bottomAnchor, multiplier: 2),
+            whatToDoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            whatToDoLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: whatToDoLabel.leadingAnchor, multiplier: 2),
+            
+            trueFalseSelector.topAnchor.constraint(equalToSystemSpacingBelow: questionTextField.bottomAnchor, multiplier: 2),
+            trueFalseSelector.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            trueFalseSelector.heightAnchor.constraint(equalTo: questionTextField.heightAnchor, multiplier: 0.75),
+            trueFalseSelector.widthAnchor.constraint(equalTo: questionTextField.heightAnchor, multiplier: 2)
+        ])
+    }
+    
+    private func setupCheckBoxes() {
+        let boxes = [answer1CheckBox, answer2CheckBox, answer3CheckBox, answer4CheckBox]
+        for box in boxes {
+            box.translatesAutoresizingMaskIntoConstraints = false
+            box.onAnimationType = .fade
+            box.offAnimationType = .fade
+            box.onTintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+            box.tintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+            box.onFillColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+            box.onCheckColor = .white
+            box.animationDuration = 0
+        }
+    }
+    
+    private func configureTrueFalseUI() {
+        answer1TextField.isHidden = true
+        answer2TextField.isHidden = true
+        answer3TextField.isHidden = true
+        answer4TextField.isHidden = true
+        answer1CheckBox.isHidden = true
+        answer2CheckBox.isHidden = true
+        answer3CheckBox.isHidden = true
+        answer4CheckBox.isHidden = true
+        trueFalseSelector.isHidden = false
+    }
+    
+    private func configureSingleChoiceUI() {
+        trueFalseSelector.isHidden = true
+        
+        let boxes = [answer1CheckBox, answer2CheckBox, answer3CheckBox, answer4CheckBox]
+        let textfields = [answer1TextField, answer2TextField, answer3TextField, answer4TextField]
+        
+        whatToDoLabel.topAnchor.constraint(equalToSystemSpacingBelow: questionTypeSelector.bottomAnchor, multiplier: 2).isActive = true
+
+        NSLayoutConstraint.activate([
+            questionTextField.topAnchor.constraint(equalToSystemSpacingBelow: whatToDoLabel.bottomAnchor, multiplier: 2),
+            questionTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
             questionTextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: questionTextField.trailingAnchor, multiplier: 2),
-            
-            questionTextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
-            answer1TextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
-            answer2TextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
-            answer3TextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
-            answer4TextField.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
-            
-            answer1TextField.topAnchor.constraint(equalToSystemSpacingBelow: questionTextField.bottomAnchor, multiplier: 1.5),
-            answer1TextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer1TextField.trailingAnchor, multiplier: 2),
-            answerLabels[0].topAnchor.constraint(equalToSystemSpacingBelow: answer1TextField.bottomAnchor, multiplier: 0.5),
-            
-            answer2TextField.topAnchor.constraint(equalToSystemSpacingBelow: answerLabels[0].bottomAnchor, multiplier: 1),
-            answer2TextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer2TextField.trailingAnchor, multiplier: 2),
-            answerLabels[1].topAnchor.constraint(equalToSystemSpacingBelow: answer2TextField.bottomAnchor, multiplier: 0.5),
-            
-            answer3TextField.topAnchor.constraint(equalToSystemSpacingBelow: answerLabels[1].bottomAnchor, multiplier: 1),
-            answer3TextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer3TextField.trailingAnchor, multiplier: 2),
-            answerLabels[2].topAnchor.constraint(equalToSystemSpacingBelow: answer3TextField.bottomAnchor, multiplier: 0.5),
-            
-            answer4TextField.topAnchor.constraint(equalToSystemSpacingBelow: answerLabels[2].bottomAnchor, multiplier: 1),
-            answer4TextField.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer4TextField.trailingAnchor, multiplier: 2),
-            answerLabels[3].topAnchor.constraint(equalToSystemSpacingBelow: answer4TextField.bottomAnchor, multiplier: 0.5),
         ])
+        
+        answer1TextField.topAnchor.constraint(equalToSystemSpacingBelow: questionTextField.bottomAnchor, multiplier: 1.5).isActive = true
+        
+        for i in 0...textfields.count - 1 {
+            textfields[i].isHidden = false
+            boxes[i].isHidden = false
+            if i != 0 {
+                textfields[i].topAnchor.constraint(equalToSystemSpacingBelow: textfields[i - 1].bottomAnchor, multiplier: 1).isActive = true
+            }
+            textfields[i].heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09).isActive = true
+            textfields[i].leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2).isActive = true
+            boxes[i].centerYAnchor.constraint(equalTo: textfields[i].centerYAnchor).isActive = true
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: boxes[i].trailingAnchor, multiplier: 2).isActive = true
+            boxes[i].heightAnchor.constraint(equalTo: textfields[i].heightAnchor, multiplier: 0.5).isActive = true
+            boxes[i].widthAnchor.constraint(equalTo: textfields[i].heightAnchor, multiplier: 0.5).isActive = true
+            boxes[i].leadingAnchor.constraint(equalToSystemSpacingAfter: textfields[i].trailingAnchor, multiplier: 2).isActive = true
+        }
+        
+        self.view.layoutSubviews()
+        self.view.layoutIfNeeded()
     }
     
     public func createQuestion() -> Question? {
         guard let questionLabel = questionTextField.text, let answer1 = answer1TextField.text, let answer2 = answer2TextField.text, let answer3 = answer3TextField.text, let answer4 = answer4TextField.text else { return nil }
         
         let answers = [answer1, answer2, answer3, answer4]
-        let question = Question(question: questionLabel, answers: answers)
+        let question = Question(question: questionLabel, answers: answers, type: questionType)
         
         return question
     }
@@ -106,19 +216,27 @@ class NewQuestionViewController: UIViewController {
         return isReady
     }
     
-    private func generateAnswerLabels() {
-        for _ in 0...3 {
-            let label = UILabel(frame: .zero)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.text = "Incorrect Answer"
-            label.font = UIFont.preferredFont(forTextStyle: .callout).withTraits(traits: .traitItalic)
-            label.textColor = .black
-            answerLabels.append(label)
-            view.addSubview(label)
-            label.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2).isActive = true
+    // MARK: - Selectors
+    
+    @objc private func handleTypeChange() {
+        switch questionTypeSelector.selectedSegmentIndex {
+        case 0:
+            self.questionType = .singleChoice
+        case 1:
+            self.questionType = .multipleChoice
+        case 2:
+            self.questionType = .TrueFalse
+        default:
+            break
         }
-        answerLabels[0].text = "Correct Answer"
     }
     
-    // MARK: - Selectors
+    @objc private func didTapCheckbox(_ sender: BEMCheckBox) {
+        if questionType == .singleChoice {
+            let boxes = [answer1CheckBox, answer2CheckBox, answer3CheckBox, answer4CheckBox]
+            for box in boxes where box != sender {
+                box.on = false
+            }
+        }
+    }
 }

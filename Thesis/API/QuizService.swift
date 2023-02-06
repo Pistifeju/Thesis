@@ -133,8 +133,8 @@ extension QuizService {
                 question["answer3"] as! String,
                 question["answer4"] as! String,
             ]
-            let innerQuestion = Question(question: question["question"] as! String, answers: answers)
-            questions.append(innerQuestion)
+//            let innerQuestion = Question(question: question["question"] as! String, answers: answers)
+//            questions.append(innerQuestion)
         }
         
         return questions
