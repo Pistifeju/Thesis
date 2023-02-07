@@ -33,7 +33,7 @@ class ModelViewController: UIViewController {
         button.setTitle("Go to AR Learning Mode", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+        button.backgroundColor = UIColor.greenButton
         button.layer.cornerRadius = 8
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return button
@@ -122,7 +122,7 @@ class ModelViewController: UIViewController {
         let ac = UIAlertController(title: "Enter test code", message: "Enter the test code in order to start the test.", preferredStyle: .alert)
         ac.addTextField()
         ac.textFields![0].placeholder = "A678GH-76DFRT"
-        ac.textFields![0].text = "7UYQ1Y-4I920G"
+        ac.textFields![0].text = "CSQKZZ-SCHOBE"
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let submitAction = UIAlertAction(title: "Start", style: .default) { [unowned ac] _ in

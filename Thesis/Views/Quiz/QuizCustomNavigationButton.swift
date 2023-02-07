@@ -18,7 +18,8 @@ class QuizCustomNavigationButton: UIButton {
         super.setTitle(title, for: .normal)
         translatesAutoresizingMaskIntoConstraints = false
         setTitleColor(.white, for: .normal)
-        backgroundColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+        setTitleColor(UIColor.init(white: 1, alpha: 0.3), for: .highlighted)
+        backgroundColor = UIColor.greenButton
         layer.cornerRadius = 8
     }
     

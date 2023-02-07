@@ -11,13 +11,13 @@ import BEMCheckBox
 class NewQuestionViewController: UIViewController {
     
     // MARK: - Properties
-    
-    private var questionTextFieldTopAnchor: NSLayoutConstraint!
-    
+        
     private let questionTypeSelector: UISegmentedControl = {
         let sc = UISegmentedControl()
         sc.translatesAutoresizingMaskIntoConstraints = false
-        sc.backgroundColor = .clear
+        sc.backgroundColor = .lightGray.withAlphaComponent(0.3)
+        sc.selectedSegmentTintColor = .white
+        sc.tintColor = .black
         sc.insertSegment(withTitle: "Single Choice", at: 0, animated: true)
         sc.insertSegment(withTitle: "Multiple Choice", at: 1, animated: true)
         sc.insertSegment(withTitle: "True/False", at: 2, animated: true)
@@ -27,7 +27,9 @@ class NewQuestionViewController: UIViewController {
     private let trueFalseSelector: UISegmentedControl = {
         let sc = UISegmentedControl()
         sc.translatesAutoresizingMaskIntoConstraints = false
-        sc.backgroundColor = .clear
+        sc.backgroundColor = .lightGray.withAlphaComponent(0.3)
+        sc.selectedSegmentTintColor = .white
+        sc.tintColor = .black
         sc.insertSegment(withTitle: "True", at: 0, animated: true)
         sc.insertSegment(withTitle: "False", at: 1, animated: true)
         sc.isHidden = true
@@ -136,9 +138,9 @@ class NewQuestionViewController: UIViewController {
             boxes[i].translatesAutoresizingMaskIntoConstraints = false
             boxes[i].onAnimationType = .fade
             boxes[i].offAnimationType = .fade
-            boxes[i].onTintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
-            boxes[i].tintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
-            boxes[i].onFillColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+            boxes[i].onTintColor = UIColor.greenButton
+            boxes[i].tintColor = UIColor.greenButton
+            boxes[i].onFillColor = UIColor.greenButton
             boxes[i].onCheckColor = .white
             boxes[i].animationDuration = 0
             boxes[i].tag = i

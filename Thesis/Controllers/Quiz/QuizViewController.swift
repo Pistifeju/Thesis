@@ -7,26 +7,29 @@
 //7UYQ1Y-4I920G
 import UIKit
 
-protocol QuizViewControllerDelegate: AnyObject {
-    func didSelectAnswer(selected: Bool?)
-}
-
 class QuizViewController: UIViewController {
     
     // MARK: - Properties
-    
-    weak var delegate: QuizViewControllerDelegate?
-    
-    private let question: Question
-    public var selectedButton: UIButton?
+    private var question: Question
     
     private let modelName: String
-    private let correctAnswerString: String
     
     private var answer1Button = CustomAnswerButton(answerLabel: "Answer 1")
     private var answer2Button = CustomAnswerButton(answerLabel: "Answer 2")
     private var answer3Button = CustomAnswerButton(answerLabel: "Answer 3")
     private var answer4Button = CustomAnswerButton(answerLabel: "Answer 4")
+    
+    private let trueFalseSelector: UISegmentedControl = {
+        let sc = UISegmentedControl()
+        sc.translatesAutoresizingMaskIntoConstraints = false
+        sc.backgroundColor = .lightGray.withAlphaComponent(0.3)
+        sc.selectedSegmentTintColor = .white
+        sc.tintColor = .black
+        sc.insertSegment(withTitle: "True", at: 0, animated: true)
+        sc.insertSegment(withTitle: "False", at: 1, animated: true)
+        sc.isHidden = true
+        return sc
+    }()
     
     private lazy var questionTypeLabel: UILabel = {
         let label = UILabel()
@@ -34,6 +37,7 @@ class QuizViewController: UIViewController {
         label.font = UIFont.preferredFont(forTextStyle: .title3)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Сhoose 1 from multiple answers"
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -56,6 +60,7 @@ class QuizViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 3
         label.textAlignment = .center
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -64,7 +69,6 @@ class QuizViewController: UIViewController {
     init(question: Question, modelName: String) {
         self.question = question
         self.modelName = modelName
-        self.correctAnswerString = question.answers[0]
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -100,6 +104,8 @@ class QuizViewController: UIViewController {
         view.addSubview(answer3Button)
         view.addSubview(answer4Button)
         
+        view.addSubview(trueFalseSelector)
+        
         NSLayoutConstraint.activate([
             labelForHeight.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: calculateHeightForTitleLabel()),
             labelForHeight.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -117,8 +123,8 @@ class QuizViewController: UIViewController {
             answer3Button.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
             answer4Button.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.09),
             
-            questionTypeLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             questionTypeLabel.topAnchor.constraint(equalToSystemSpacingBelow: questionLabel.bottomAnchor, multiplier: 4),
+            questionTypeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             answer1Button.topAnchor.constraint(equalToSystemSpacingBelow: questionTypeLabel.bottomAnchor, multiplier: 1),
             answer1Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
@@ -135,6 +141,11 @@ class QuizViewController: UIViewController {
             answer4Button.topAnchor.constraint(equalToSystemSpacingBelow: answer3Button.bottomAnchor, multiplier: 1),
             answer4Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer4Button.trailingAnchor, multiplier: 4),
+            
+            trueFalseSelector.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            trueFalseSelector.topAnchor.constraint(equalToSystemSpacingBelow: questionTypeLabel.bottomAnchor, multiplier: 2),
+            trueFalseSelector.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.45),
+            trueFalseSelector.heightAnchor.constraint(equalTo: trueFalseSelector.widthAnchor, multiplier: 0.35),
         ])
         
     }
@@ -142,21 +153,28 @@ class QuizViewController: UIViewController {
     private func configure() {
         questionLabel.text = question.question
         
-        randomizeAnswerButtons()
+        switch question.type {
+        case .singleChoice:
+            setButtonTitles()
+            questionTypeLabel.text = "Сhoose 1 from multiple answers"
+        case .multipleChoice:
+            setButtonTitles()
+            questionTypeLabel.text = "Сhoose the correct answers"
+        case .TrueFalse:
+            questionTypeLabel.text = "Select True or False"
+            trueFalseSelector.isHidden = false
+            answer1Button.isHidden = true
+            answer2Button.isHidden = true
+            answer3Button.isHidden = true
+            answer4Button.isHidden = true
+        }
+        
     }
     
-    private func randomizeAnswerButtons() {
+    private func setButtonTitles() {
         let buttons = [answer1Button, answer2Button, answer3Button, answer4Button]
-        let range = 0...3
-        var uniqueNumbers = Set<Int>()
-        var setLength = -1
-        while uniqueNumbers.count < 4 {
-            let randomNum = range.randomElement()!
-            uniqueNumbers.insert(randomNum)
-            if uniqueNumbers.count > setLength {
-                setLength = uniqueNumbers.count
-                buttons[setLength - 1].setTitle(question.answers[randomNum], for: .normal)
-            }
+        for i in 0...buttons.count - 1 {
+            buttons[i].setTitle(question.answers[i], for: .normal)
         }
     }
     
@@ -170,6 +188,32 @@ class QuizViewController: UIViewController {
         let submitButtonHeight = view.frame.size.width / 9
         let height = 16 + 16 + 16 + 16 + submitButtonHeight + submitButtonHeight / 10
         return height
+    }
+    
+    public func returnUserAnswers() -> [String] {
+        let buttons = [answer1Button, answer2Button, answer3Button, answer4Button]
+        let userAnswerButtons = buttons.filter({$0.isSelected})
+        
+        switch question.type {
+        case .singleChoice:
+            for button in userAnswerButtons {
+                return [button.titleLabel!.text!]
+            }
+        case .multipleChoice:
+            var answers = [String]()
+            for button in userAnswerButtons {
+                answers.append(button.titleLabel!.text!)
+            }
+            return answers
+        case .TrueFalse:
+            guard trueFalseSelector.selectedSegmentIndex != -1 else {
+                return []
+            }
+            
+            return [trueFalseSelector.titleForSegment(at: trueFalseSelector.selectedSegmentIndex)!]
+        }
+        
+        return []
     }
     
     // MARK: - Selectors
@@ -186,20 +230,11 @@ class QuizViewController: UIViewController {
         }
         
         sender.isSelected.toggle()
-        for button in buttons where button != sender {
-            button.isSelected = false
-        }
         
-        if sender.isSelected && alreadySelected {
-            delegate?.didSelectAnswer(selected: nil)
-        } else {
-            delegate?.didSelectAnswer(selected: sender.isSelected)
-        }
-        
-        if sender.isSelected {
-            self.selectedButton = sender
-        } else {
-            self.selectedButton = nil
+        if question.type == .singleChoice {
+            for button in buttons where button != sender {
+                button.isSelected = false
+            }
         }
     }
 }

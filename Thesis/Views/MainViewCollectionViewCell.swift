@@ -66,7 +66,7 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         
         addSubview(labelsStackView)
         
-        backgroundColor = Colors.mainControllerCells
+        backgroundColor = UIColor.lightCyan
         layer.cornerRadius = 12
         
         NSLayoutConstraint.activate([

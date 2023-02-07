@@ -115,12 +115,12 @@ extension AlertManager {
         }
     }
     
-    public static func showFinishTestAlert(on VC: UIViewController, completion: @escaping() -> Void) {
+    public static func showFinishTestAlert(on VC: UIViewController, title: String, message: String, secondaryAction: String,completion: @escaping() -> Void) {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: "Finish test", message: "Would you like to finish creating your test?", preferredStyle: .alert)
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
-            alert.addAction(UIAlertAction(title: "Finish", style: .destructive, handler: { _ in
+            alert.addAction(UIAlertAction(title: secondaryAction, style: .destructive, handler: { _ in
                 completion()
             }))
             VC.present(alert, animated: true)

@@ -6,6 +6,7 @@
 //
 
 import FirebaseFirestore
+import FirebaseAuth
 
 class QuizService {
     
@@ -42,14 +43,29 @@ class QuizService {
             "allowARMode": quiz.allowARMode,
             "allowViewCompletedTest": quiz.allowViewCompletedTest,
             "questions": questions]
+                
+        let ref = Firestore.firestore().collection("quizzes").addDocument(data: data) { error in
+            if let error = error {
+                completion(error)
+                return
+            }
+        }
         
-        Firestore.firestore().collection("quizzes").addDocument(data: data) { error in
+        let refID = ref.documentID
+        
+        let userID = Auth.auth().currentUser?.uid
+        guard let id = userID else {
+            return
+        }
+        
+        Firestore.firestore().collection("users").document(id).collection("quizCreated").document(refID).setData([:]) { error in
             if let error = error {
                 completion(error)
                 return
             }
             
             completion(nil)
+            return
         }
     }
     
@@ -59,7 +75,6 @@ class QuizService {
     /// - Error?: An optinal error coming from firebase.
     public func fetchAllQuizzes(completion: @escaping([Quiz]?, Error?) -> Void) {
         var quizzes = [Quiz]()
-//        let query = Firestore.firestore().collection("quizzes")
         
         Firestore.firestore().collection("quizzes").getDocuments { snapshot, error in
             if let error = error {

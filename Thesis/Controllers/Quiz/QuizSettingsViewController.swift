@@ -26,7 +26,7 @@ class QuizSettingsViewController: UIViewController {
         button.setTitle("Back", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+        button.backgroundColor = UIColor.greenButton
         button.layer.cornerRadius = 12
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return button
@@ -156,9 +156,9 @@ class QuizSettingsViewController: UIViewController {
             checkbox.translatesAutoresizingMaskIntoConstraints = false
             checkbox.onAnimationType = .fade
             checkbox.offAnimationType = .fade
-            checkbox.onTintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
-            checkbox.tintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
-            checkbox.onFillColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+            checkbox.onTintColor = UIColor.greenButton
+            checkbox.tintColor = UIColor.greenButton
+            checkbox.onFillColor = UIColor.greenButton
             checkbox.onCheckColor = .white
             checkbox.animationDuration = 0
         }

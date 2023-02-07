@@ -38,7 +38,7 @@ class CategoryViewCollectionViewCell: UICollectionViewCell {
     private func configureUI() {
         addSubview(modelName)
         
-        backgroundColor = Colors.mainControllerCells
+        backgroundColor = UIColor.lightCyan
         layer.cornerRadius = 8
         
         NSLayoutConstraint.activate([

@@ -35,6 +35,8 @@ class NewQuestionCustomTextField: UITextField {
         autocorrectionType = .no
         textColor = .black
         leftViewMode = .always
+        rightViewMode = .always
+        rightView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 1))
         leftView = UIView(frame: CGRect(x: 0, y: 0, width: 12, height: 1))
     }
     

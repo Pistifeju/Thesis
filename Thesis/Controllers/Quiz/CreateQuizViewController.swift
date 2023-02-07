@@ -56,7 +56,7 @@ class CreateQuizViewController: UIPageViewController {
         button.setTitle("Add a new question", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+        button.backgroundColor = UIColor.greenButton
         button.layer.cornerRadius = 12
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return button
@@ -193,7 +193,7 @@ class CreateQuizViewController: UIPageViewController {
     @objc private func didTapFinishButton() {
         if settingsPage.areSettingsReady() {
             if isQuizReady() {
-                AlertManager.showFinishTestAlert(on: self) {
+                AlertManager.showFinishTestAlert(on: self, title: "Finish test", message: "Would you like to finish creating your test?", secondaryAction: "Finish") {
                     self.createQuiz()
                 }
             } else {

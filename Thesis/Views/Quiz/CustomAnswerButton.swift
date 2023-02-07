@@ -11,8 +11,7 @@ class CustomAnswerButton: UIButton {
     
     override var isSelected: Bool {
         didSet {
-            let green = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1).cgColor
-            layer.borderColor = isSelected ? green : UIColor.gray.cgColor
+            layer.borderColor = isSelected ? UIColor.greenButton.cgColor : UIColor.gray.cgColor
             layer.borderWidth = isSelected ? 3 : 2
         }
     }
@@ -25,6 +24,8 @@ class CustomAnswerButton: UIButton {
         contentHorizontalAlignment = .left
         layer.cornerRadius = 8
         layer.borderWidth = 2
+        titleLabel?.adjustsFontSizeToFitWidth = true
+        titleLabel?.numberOfLines = 2
         translatesAutoresizingMaskIntoConstraints = false
         isSelected = false
     }

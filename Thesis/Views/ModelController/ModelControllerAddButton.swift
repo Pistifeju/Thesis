@@ -22,7 +22,7 @@ class ModelControllerAddButton: UIButton {
         layer.cornerRadius = 14
         let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .regular, scale: .medium)
         let image = UIImage(systemName: imageName, withConfiguration: config)
-        tintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+        tintColor = UIColor.greenButton
         setImage(image, for: .normal)
         alignTextBelow()
         contentVerticalAlignment = .center

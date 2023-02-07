@@ -22,8 +22,8 @@ class OnboardingPageViewController: UIPageViewController {
     private lazy var continueButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = Colors.buttonBlue
-        button.setTitleColor(UIColor.black, for: .normal)
+        button.backgroundColor = UIColor.greenButton
+        button.setTitleColor(UIColor.white, for: .normal)
         button.setTitle("CONTINUE", for: .normal)
         button.addTarget(self, action: #selector(continueTapped(_:)), for: .touchUpInside)
         button.layer.cornerRadius = 16

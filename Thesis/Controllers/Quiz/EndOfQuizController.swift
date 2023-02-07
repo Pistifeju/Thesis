@@ -12,15 +12,13 @@ class EndOfQuizController: UIViewController {
     // MARK: - Properties
     
     private let quiz: Quiz
-    private let percent: Double
-    private let score: Int
+    private let userAnswers: [[String]]
     
     // MARK: - Lifecycle
     
-    init(quiz: Quiz, percent: Double, score: Int) {
+    init(quiz: Quiz, userAnswers: [[String]]) {
         self.quiz = quiz
-        self.percent = percent
-        self.score = score
+        self.userAnswers = userAnswers
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -37,7 +35,7 @@ class EndOfQuizController: UIViewController {
     // MARK: - Helpers
     
     private func configureUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = .yellow
         navigationItem.setHidesBackButton(true, animated: true)
         
         NSLayoutConstraint.activate([

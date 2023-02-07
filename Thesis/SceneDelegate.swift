@@ -35,7 +35,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
-    private func goToController(with viewController: UIViewController, withNav: Bool) {
+    public func goToController(with viewController: UIViewController, withNav: Bool) {
             DispatchQueue.main.async { [weak self] in
                 UIView.animate(withDuration: 0.25) {
                     self?.window?.layer.opacity = 0

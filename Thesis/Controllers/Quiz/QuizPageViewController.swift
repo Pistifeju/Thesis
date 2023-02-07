@@ -23,14 +23,14 @@ class QuizPageViewController: UIPageViewController {
     
     private var quiz: Quiz {
         didSet {
-            updateNumberOfQuestionsLabel(with: 1)
+            updateUI(with: 1)
         }
     }
-        
+    
     private var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.progressTintColor = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
+        progressView.progressTintColor = UIColor.greenButton
         progressView.trackTintColor = .lightGray
         progressView.progressViewStyle = .bar
         return progressView
@@ -62,7 +62,7 @@ class QuizPageViewController: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+        
         dataSource = self
         delegate = self
         
@@ -80,13 +80,12 @@ class QuizPageViewController: UIPageViewController {
     private func createPages() {
         for question in quiz.questions {
             let vc = QuizViewController(question: question, modelName: modelName)
-            vc.delegate = self
             pages.append(vc)
         }
         
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
         
-        updateNumberOfQuestionsLabel(with: 1)
+        updateUI(with: 1)
     }
     
     private func configureUI() {
@@ -132,8 +131,15 @@ class QuizPageViewController: UIPageViewController {
         }
     }
     
-    private func updateNumberOfQuestionsLabel(with index: Int) {
+    private func updateUI(with index: Int) {
         questionsIndexLabel.text = "Question \(index)/\(pages.count)"
+        updateProgressView()
+    }
+    
+    private func updateProgressView() {
+        UIView.animate(withDuration: 0.5) {
+            self.progressView.setProgress(Float(self.currentIndex + 1) / Float(self.quiz.questions.count), animated: true)
+        }
     }
     
     // MARK: - Selectors
@@ -144,17 +150,20 @@ class QuizPageViewController: UIPageViewController {
     
     @objc private func didTapSubmit() {
         // TODO: - Finish didTapSubmit
+        var userAnswers: [[String]] = []
+        
         for page in pages {
-            if page is QuizViewController { //may have other quiz types
+            if page is QuizViewController {
                 let vc = page as! QuizViewController
-                
+                userAnswers.append(vc.returnUserAnswers())
             }
         }
         
-//        let vc = EndOfQuizController()
-//        let nav = UINavigationController(rootViewController: vc)
-//        nav.modalPresentationStyle = .fullScreen
-//        present(nav, animated: true)
+        AlertManager.showFinishTestAlert(on: self, title: "Submit test", message: "Would you like to submit your test?", secondaryAction: "Submit") {
+            
+            let vc = EndOfQuizController(quiz: self.quiz, userAnswers: userAnswers)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     @objc private func didTapGoToARMode() {
@@ -181,13 +190,13 @@ class QuizPageViewController: UIPageViewController {
 extension QuizPageViewController: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        updateNumberOfQuestionsLabel(with: currentIndex + 1)
+        updateUI(with: currentIndex + 1)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         guard pages.count != 1 else { return nil }
-                
+        
         if currentIndex == 0 {
             return nil              // wrap last
         } else {
@@ -198,7 +207,7 @@ extension QuizPageViewController: UIPageViewControllerDelegate, UIPageViewContro
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let currentIndex = pages.firstIndex(of: viewController) else { return nil }
         guard pages.count != 1 else { return nil }
-                
+        
         if currentIndex < pages.count - 1 {
             return pages[currentIndex + 1]  // go next
         } else {
@@ -206,20 +215,4 @@ extension QuizPageViewController: UIPageViewControllerDelegate, UIPageViewContro
         }
     }
     
-}
-
-extension QuizPageViewController: QuizViewControllerDelegate {
-    func didSelectAnswer(selected: Bool?) {
-        guard let selected = selected else { return }
-        
-        UIView.animate(withDuration: 0.5) {
-            var progress: Float = 0.0
-            if selected {
-                progress = self.progressView.progress + 1.0 / Float(self.pages.count)
-            } else {
-                progress = self.progressView.progress - 1.0 / Float(self.pages.count)
-            }
-            self.progressView.setProgress(progress, animated: true)
-        }
-    }
 }

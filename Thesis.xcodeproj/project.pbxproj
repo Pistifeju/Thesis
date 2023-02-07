@@ -49,7 +49,6 @@
 		B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E27291FDA9E00439680 /* Laryngeal.usdz */; };
 		B7EBEF402977636E00FB401B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7EBEF3F2977636E00FB401B /* GoogleService-Info.plist */; };
 		B7EBEF432978B5BF00FB401B /* ModelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF422978B5BF00FB401B /* ModelViewController.swift */; };
-		B7EBEF49298029E500FB401B /* ModelControllerSegmentationControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF48298029E500FB401B /* ModelControllerSegmentationControl.swift */; };
 		B7EBEF4B29809B4600FB401B /* ModelControllerAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */; };
 		B7EBEF4F29809FAB00FB401B /* PopUpViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */; };
 		B7EBEF512983341C00FB401B /* CreateQuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF502983341C00FB401B /* CreateQuizViewController.swift */; };
@@ -67,7 +66,6 @@
 		B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */; };
 		B7F64EFE291FFCB000652A9E /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */; };
 		B7F64F00291FFCCF00652A9E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64EFF291FFCCF00652A9E /* MainViewController.swift */; };
-		B7F64F0229204C3D00652A9E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F64F0129204C3D00652A9E /* Constants.swift */; };
 		B7F8C91F295A2D070091C68E /* ColorPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7F8C91E295A2D070091C68E /* ColorPickerView.swift */; };
 		B7FDB44C2923B55000B8A17D /* MainViewCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */; };
 		B7FDB4882924402500B8A17D /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FDB4872924402500B8A17D /* DatabaseManager.swift */; };
@@ -123,7 +121,6 @@
 		B7D05E27291FDA9E00439680 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
 		B7EBEF3F2977636E00FB401B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B7EBEF422978B5BF00FB401B /* ModelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelViewController.swift; sourceTree = "<group>"; };
-		B7EBEF48298029E500FB401B /* ModelControllerSegmentationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelControllerSegmentationControl.swift; sourceTree = "<group>"; };
 		B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelControllerAddButton.swift; sourceTree = "<group>"; };
 		B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewButton.swift; sourceTree = "<group>"; };
 		B7EBEF502983341C00FB401B /* CreateQuizViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateQuizViewController.swift; sourceTree = "<group>"; };
@@ -141,7 +138,6 @@
 		B7F64EF4291FE10100652A9E /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		B7F64EFD291FFCB000652A9E /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		B7F64EFF291FFCCF00652A9E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		B7F64F0129204C3D00652A9E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		B7F8C91E295A2D070091C68E /* ColorPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerView.swift; sourceTree = "<group>"; };
 		B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewCollectionViewCell.swift; sourceTree = "<group>"; };
 		B7FDB4872924402500B8A17D /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -299,7 +295,6 @@
 			isa = PBXGroup;
 			children = (
 				B707B37A29775B4D001DB1E8 /* Validator.swift */,
-				B7F64F0129204C3D00652A9E /* Constants.swift */,
 				B7FDB4872924402500B8A17D /* DatabaseManager.swift */,
 				B7AACAD429247125008A850B /* Extensions.swift */,
 				B707B37C29775B83001DB1E8 /* AlertManager.swift */,
@@ -374,7 +369,6 @@
 		B7EBEF47298029C800FB401B /* ModelController */ = {
 			isa = PBXGroup;
 			children = (
-				B7EBEF48298029E500FB401B /* ModelControllerSegmentationControl.swift */,
 				B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */,
 				B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */,
 			);
@@ -615,8 +609,6 @@
 				B74DF71A293ABBFA001C9643 /* QuestionView.swift in Sources */,
 				B7EBEF5929883CCE00FB401B /* QuizSettingsViewController.swift in Sources */,
 				B7EBEF5E29886A2800FB401B /* ProfileViewController.swift in Sources */,
-				B7F64F0229204C3D00652A9E /* Constants.swift in Sources */,
-				B7EBEF49298029E500FB401B /* ModelControllerSegmentationControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
