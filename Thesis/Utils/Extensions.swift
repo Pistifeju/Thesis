@@ -25,6 +25,7 @@ extension UIFont {
 extension UIColor {
     static var greenButton = UIColor(red: 1/255, green: 130/255, blue: 110/255, alpha: 1)
     static var lightCyan = UIColor(red: 203/255, green: 238/255, blue: 243/255, alpha: 1)
+    static var exitRed = UIColor(red: 219/255, green: 84/255, blue: 97/255, alpha: 1)
 }
 
 extension UIButton {

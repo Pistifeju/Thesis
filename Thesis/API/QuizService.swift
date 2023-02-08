@@ -23,14 +23,14 @@ class QuizService {
         var questions: [[String: Any]] = []
         
         for question in quiz.questions {
-            
+
             let questionMap: [String: Any] = [
                 "question": question.question,
                 "answers": question.answers,
                 "correctAnswers": question.correctAnswers,
                 "type": question.type.rawValue
             ]
-            
+
             questions.append(questionMap)
         }
         

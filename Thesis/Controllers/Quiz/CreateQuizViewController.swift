@@ -56,7 +56,7 @@ class CreateQuizViewController: UIPageViewController {
         button.setTitle("Add a new question", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = UIColor.greenButton
+        button.backgroundColor = .greenButton
         button.layer.cornerRadius = 12
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
         return button

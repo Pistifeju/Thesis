@@ -31,6 +31,7 @@
 		B74DF71A293ABBFA001C9643 /* QuestionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF719293ABBFA001C9643 /* QuestionView.swift */; };
 		B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */; };
 		B74DF720293BF0BC001C9643 /* EndOfQuizController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */; };
+		B75137BE2994622600ACD3F7 /* EndOfQuizStatLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75137BD2994622600ACD3F7 /* EndOfQuizStatLabel.swift */; };
 		B77FCACE2911D3C800E45438 /* Pelvic_Girdle.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC42911D3C800E45438 /* Pelvic_Girdle.usdz */; };
 		B77FCACF2911D3C800E45438 /* Hand.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC52911D3C800E45438 /* Hand.usdz */; };
 		B77FCAD02911D3C800E45438 /* Foot.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B77FCAC62911D3C800E45438 /* Foot.usdz */; };
@@ -103,6 +104,7 @@
 		B74DF719293ABBFA001C9643 /* QuestionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionView.swift; sourceTree = "<group>"; };
 		B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAnswerButton.swift; sourceTree = "<group>"; };
 		B74DF71F293BF0BC001C9643 /* EndOfQuizController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfQuizController.swift; sourceTree = "<group>"; };
+		B75137BD2994622600ACD3F7 /* EndOfQuizStatLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndOfQuizStatLabel.swift; sourceTree = "<group>"; };
 		B77FCAC42911D3C800E45438 /* Pelvic_Girdle.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Pelvic_Girdle.usdz; sourceTree = "<group>"; };
 		B77FCAC52911D3C800E45438 /* Hand.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Hand.usdz; sourceTree = "<group>"; };
 		B77FCAC62911D3C800E45438 /* Foot.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Foot.usdz; sourceTree = "<group>"; };
@@ -383,6 +385,7 @@
 				B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */,
 				B7EBEF5F2988862700FB401B /* QuizSettingsCustomLabel.swift */,
 				B7EBEF65298B2E6C00FB401B /* QuizCustomNavigationButton.swift */,
+				B75137BD2994622600ACD3F7 /* EndOfQuizStatLabel.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -582,6 +585,7 @@
 				B79DC3CD2977619F00863A9A /* User.swift in Sources */,
 				B7EBEF6229897B8A00FB401B /* Quiz.swift in Sources */,
 				B7EBEF512983341C00FB401B /* CreateQuizViewController.swift in Sources */,
+				B75137BE2994622600ACD3F7 /* EndOfQuizStatLabel.swift in Sources */,
 				B7FDB48A29244ADB00B8A17D /* CategoryViewController.swift in Sources */,
 				B7F64EF5291FE10100652A9E /* OnboardingPageViewController.swift in Sources */,
 				B79DC3C72977604C00863A9A /* AuthService.swift in Sources */,

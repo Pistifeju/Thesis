@@ -141,3 +141,9 @@ extension AlertManager {
         self.showBasicAlert(on: VC, with: title, and: message)
     }
 }
+
+extension AlertManager {
+    public static func showBasicAlert(on VC: UIViewController, with title: String, and message: String) {
+        self.showBasicAlert(on: VC, with: title, and: message)
+    }
+}

@@ -190,30 +190,30 @@ class QuizViewController: UIViewController {
         return height
     }
     
-    public func returnUserAnswers() -> [String] {
+    public func returnUserAnswers() -> AnsweredQuestion {
+        let answeredQuestion = AnsweredQuestion(question: question, userAnswers: [])
+        
+        if question.type == .TrueFalse {
+            guard trueFalseSelector.selectedSegmentIndex != -1 else {
+                return answeredQuestion
+            }
+            
+            answeredQuestion.userAnswers = [trueFalseSelector.titleForSegment(at: trueFalseSelector.selectedSegmentIndex)!]
+            return answeredQuestion
+        }
+        
         let buttons = [answer1Button, answer2Button, answer3Button, answer4Button]
         let userAnswerButtons = buttons.filter({$0.isSelected})
         
-        switch question.type {
-        case .singleChoice:
-            for button in userAnswerButtons {
-                return [button.titleLabel!.text!]
-            }
-        case .multipleChoice:
-            var answers = [String]()
-            for button in userAnswerButtons {
-                answers.append(button.titleLabel!.text!)
-            }
-            return answers
-        case .TrueFalse:
-            guard trueFalseSelector.selectedSegmentIndex != -1 else {
-                return []
-            }
-            
-            return [trueFalseSelector.titleForSegment(at: trueFalseSelector.selectedSegmentIndex)!]
+        var answers = [String]()
+        
+        for button in userAnswerButtons {
+            answers.append(button.titleLabel!.text!)
         }
         
-        return []
+        answeredQuestion.userAnswers = answers
+        
+        return answeredQuestion
     }
     
     // MARK: - Selectors

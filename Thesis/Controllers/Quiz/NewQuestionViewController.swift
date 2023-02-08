@@ -138,9 +138,9 @@ class NewQuestionViewController: UIViewController {
             boxes[i].translatesAutoresizingMaskIntoConstraints = false
             boxes[i].onAnimationType = .fade
             boxes[i].offAnimationType = .fade
-            boxes[i].onTintColor = UIColor.greenButton
-            boxes[i].tintColor = UIColor.greenButton
-            boxes[i].onFillColor = UIColor.greenButton
+            boxes[i].onTintColor = .greenButton
+            boxes[i].tintColor = .greenButton
+            boxes[i].onFillColor = .greenButton
             boxes[i].onCheckColor = .white
             boxes[i].animationDuration = 0
             boxes[i].tag = i

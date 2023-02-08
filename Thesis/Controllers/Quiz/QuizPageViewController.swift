@@ -30,7 +30,7 @@ class QuizPageViewController: UIPageViewController {
     private var progressView: UIProgressView = {
         let progressView = UIProgressView(progressViewStyle: .bar)
         progressView.translatesAutoresizingMaskIntoConstraints = false
-        progressView.progressTintColor = UIColor.greenButton
+        progressView.progressTintColor = .greenButton
         progressView.trackTintColor = .lightGray
         progressView.progressViewStyle = .bar
         return progressView
@@ -150,18 +150,21 @@ class QuizPageViewController: UIPageViewController {
     
     @objc private func didTapSubmit() {
         // TODO: - Finish didTapSubmit
-        var userAnswers: [[String]] = []
+        var answeredQuestions = [AnsweredQuestion]()
         
         for page in pages {
             if page is QuizViewController {
                 let vc = page as! QuizViewController
-                userAnswers.append(vc.returnUserAnswers())
+                answeredQuestions.append(vc.returnUserAnswers())
             }
         }
         
         AlertManager.showFinishTestAlert(on: self, title: "Submit test", message: "Would you like to submit your test?", secondaryAction: "Submit") {
             
-            let vc = EndOfQuizController(quiz: self.quiz, userAnswers: userAnswers)
+            var answeredQuiz = self.quiz
+            answeredQuiz.questions = answeredQuestions
+            
+            let vc = EndOfQuizController(answeredQuiz: answeredQuiz)
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -169,18 +172,14 @@ class QuizPageViewController: UIPageViewController {
     @objc private func didTapGoToARMode() {
         if let encoded = UserDefaults.standard.data(forKey: "skeletalModels"), let anatomyModels = try? JSONDecoder().decode([AnatomyModel].self, from: encoded) {
             
-            var model = AnatomyModel()
-            for anatomyModel in anatomyModels {
-                if let name = anatomyModel.name {
-                    if name == modelName {
-                        model = anatomyModel
-                        break
-                    }
-                }
-            }
+            var model = anatomyModels.first(where: {$0.name == modelName })
             
-            let vc = ARViewController(with: model, fromTest: true)
-            navigationController?.pushViewController(vc, animated: true)
+            if let model = model {
+                let vc = ARViewController(with: model, fromTest: true)
+                navigationController?.pushViewController(vc, animated: true)
+            } else {
+                AlertManager.showBasicAlert(on: self, with: "Unknown Error", and: "An unknown error occured. AR Mode is not available. ")
+            }
         }
     }
 }

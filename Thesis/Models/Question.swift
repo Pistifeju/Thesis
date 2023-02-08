@@ -31,3 +31,17 @@ class Question {
         self.type = .singleChoice
     }
 }
+
+class AnsweredQuestion: Question {
+    var userAnswers: [String]
+    
+    init(question: String, answers: [String], correctAnswers: [String], type: QuestionType, userAnswers: [String]) {
+        self.userAnswers = userAnswers
+        super.init(question: question, answers: answers, correctAnswers: correctAnswers, type: type)
+    }
+    
+    init(question: Question, userAnswers: [String]) {
+        self.userAnswers = userAnswers
+        super.init(question: question.question, answers: question.answers, correctAnswers: question.correctAnswers, type: question.type)
+    }
+}
