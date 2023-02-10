@@ -13,8 +13,8 @@ class QuizPageViewController: UIPageViewController {
     
     private let initialPage = 0
     private var pages = [UIViewController]()
-    
-    private let modelName: String
+    private let user: User
+    private let quizCode: String
     
     var currentIndex: Int {
         guard let vc = viewControllers?.first else { return 0 }
@@ -50,9 +50,10 @@ class QuizPageViewController: UIPageViewController {
     
     // MARK: - Lifecycle
     
-    init(quiz: Quiz, modelName: String) {
+    init(quiz: Quiz, user: User, quizCode: String) {
         self.quiz = quiz
-        self.modelName = modelName
+        self.user = user
+        self.quizCode = quizCode
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
@@ -79,7 +80,7 @@ class QuizPageViewController: UIPageViewController {
     
     private func createPages() {
         for question in quiz.questions {
-            let vc = QuizViewController(question: question, modelName: modelName)
+            let vc = QuizViewController(question: question, modelName: quiz.model)
             pages.append(vc)
         }
         
@@ -91,12 +92,9 @@ class QuizPageViewController: UIPageViewController {
     private func configureUI() {
         title = quiz.name
         
-        navigationController?.navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(title: "Exit", style: .plain, target: self, action: #selector(didPressExit))
-        
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         
         navigationController?.navigationBar.titleTextAttributes = textAttributes
-        navigationItem.leftBarButtonItem?.tintColor = .black
         
         view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = false
@@ -142,14 +140,8 @@ class QuizPageViewController: UIPageViewController {
         }
     }
     
-    // MARK: - Selectors
-    
-    @objc private func didPressExit() {
-        // TODO: - Finish DidPressExit
-    }
-    
-    @objc private func didTapSubmit() {
-        // TODO: - Finish didTapSubmit
+    private func createCompletedQuiz() -> CompletedQuiz {
+        let settings: [String: Any] = ["name": quiz.name, "quizDescription": quiz.quizDescription, "allowViewCompletedTest": quiz.allowViewCompletedTest]
         var answeredQuestions = [AnsweredQuestion]()
         
         for page in pages {
@@ -159,20 +151,34 @@ class QuizPageViewController: UIPageViewController {
             }
         }
         
+        let completedQuiz = CompletedQuiz(settings: settings, answeredQuestions: answeredQuestions)
+        return completedQuiz
+    }
+    
+    // MARK: - Selectors
+    
+    @objc private func didTapSubmit() {
         AlertManager.showFinishTestAlert(on: self, title: "Submit test", message: "Would you like to submit your test?", secondaryAction: "Submit") {
             
-            var answeredQuiz = self.quiz
-            answeredQuiz.questions = answeredQuestions
+            let completedQuiz = self.createCompletedQuiz()
             
-            let vc = EndOfQuizController(answeredQuiz: answeredQuiz)
-            self.navigationController?.pushViewController(vc, animated: true)
+            QuizService.shared.uploadFinishingQuiz(user: self.user, quizID: self.quizCode, completedQuiz: completedQuiz) { [weak self] error in
+                guard let strongSelf = self else { return }
+                if let uploadError = error {
+                    AlertManager.showBasicAlert(on: strongSelf, with: "Error submitting test", and: uploadError.localizedDescription)
+                    return
+                }
+                
+                let vc = EndOfQuizController(completedQuiz: strongSelf.createCompletedQuiz())
+                strongSelf.navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     
     @objc private func didTapGoToARMode() {
         if let encoded = UserDefaults.standard.data(forKey: "skeletalModels"), let anatomyModels = try? JSONDecoder().decode([AnatomyModel].self, from: encoded) {
             
-            var model = anatomyModels.first(where: {$0.name == modelName })
+            let model = anatomyModels.first(where: {$0.name == quiz.model })
             
             if let model = model {
                 let vc = ARViewController(with: model, fromTest: true)

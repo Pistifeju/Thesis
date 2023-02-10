@@ -14,7 +14,7 @@ class QuizService {
     private init() {}
     private let db = Firestore.firestore()
     
-    /// A method to upload a new quiz to firebase firestore.
+    /// A method to upload a newly created quiz to firebase firestore.
     /// - Parameters:
     ///   - quiz: The quiz which will be uploaded.
     ///   - completion: A completion with one value (Error?).
@@ -106,34 +106,71 @@ class QuizService {
     ///   - completion: A completion with two value (Quiz?, Error?).
     /// - Quiz?: An optinal quiz coming from firebase.
     /// - Error?: An optinal error coming from firebase.
-    public func fetchQuiz(with code: String, completion: @escaping(Quiz?, Error?) -> Void) {
+    public func fetchQuiz(with code: String, completion: @escaping(Quiz?, String?, Error?) -> Void) {
         Firestore.firestore().collection("quizzes").whereField("code", isEqualTo: code).getDocuments { snapshot, error in
             if let error = error {
-                completion(nil, error)
+                completion(nil, nil, error)
                 return
             }
             
-            if let snapshot = snapshot {
-                if snapshot.documents.isEmpty {
-                    completion(nil, nil)
+            guard let snapshot = snapshot, !snapshot.documents.isEmpty else {
+                completion(nil, nil, nil)
+                return
+            }
+            
+            let data = snapshot.documents[0].data()
+            let quizID = snapshot.documents[0].documentID
+            
+            let settings = self.createSettings(data: data)
+            
+            let questionsAsData = data["questions"] as! [[String: Any]]
+            let questions = self.createQuestions(questionsAsData: questionsAsData)
+            
+            let quiz = Quiz(settings: settings, questions: questions)
+            
+            completion(quiz, quizID, nil)
+        }
+    }
+    
+    public func uploadFinishingQuiz(user: User, quizID: String, completedQuiz: CompletedQuiz, completion: @escaping(Error?) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        Firestore.firestore().collection("quizzes").document(quizID).collection("quizTakenBy").document(uid).setData(["username": user.username, "score": completedQuiz.score, "percent": completedQuiz.percent]) { error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            
+            var questions: [[String: Any]] = []
+            
+            for completedQuestion in completedQuiz.answeredQuestions {
+
+                let questionMap: [String: Any] = [
+                    "question": completedQuestion.question,
+                    "answers": completedQuestion.answers,
+                    "userAnswers": completedQuestion.userAnswers,
+                    "correctAnswers": completedQuestion.correctAnswers,
+                    "type": completedQuestion.type.rawValue
+                ]
+
+                questions.append(questionMap)
+            }
+            
+            let completedQuizData: [String: Any] = [
+                "name": completedQuiz.name,
+                "quizDescription": completedQuiz.quizDescription,
+                "allowViewCompletedTest": completedQuiz.allowViewCompletedTest,
+                "questions": questions]
+            
+            Firestore.firestore().collection("users").document(uid).collection("takenQuizzes").document(quizID).setData(completedQuizData) { error in
+                if let error = error {
+                    completion(error)
                     return
                 }
                 
-                let data = snapshot.documents[0].data()
-                
-                let settings = self.createSettings(data: data)
-                
-                let questionsAsData = data["questions"] as! [[String: Any]]
-                let questions = self.createQuestions(questionsAsData: questionsAsData)
-                
-                let quiz = Quiz(settings: settings, questions: questions)
-                
-                completion(quiz, nil)
+                completion(nil)
                 return
             }
-            
-            completion(nil, nil)
-            return
         }
     }
 }

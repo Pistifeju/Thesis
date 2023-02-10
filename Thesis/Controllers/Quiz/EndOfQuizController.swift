@@ -11,7 +11,7 @@ class EndOfQuizController: UIViewController {
     
     // MARK: - Properties
     
-    private let answeredQuiz: Quiz
+    private let completedQuiz: CompletedQuiz
     
     // MARK: - Lifecycle
     
@@ -55,15 +55,15 @@ class EndOfQuizController: UIViewController {
         return divider
     }()
     
-    private let achievedScoreLabel = EndOfQuizStatLabel(text: "Achieved Score: 8/9 point(s)")
-    private let achievedPercentLabel = EndOfQuizStatLabel(text: "Achieved percent: 88.58%")
-    private let timeUsedLabel = EndOfQuizStatLabel(text: "Time used for completion: 2 minute(s).")
+    private let achievedScoreLabel = EndOfQuizStatLabel(text: "Achieved Score: Error/Error point(s)")
+    private let achievedPercentLabel = EndOfQuizStatLabel(text: "Achieved percent: Error%")
+    private let timeUsedLabel = EndOfQuizStatLabel(text: "Time used for completion: Error minute(s).")
     
     private var reviewQuizButton = QuizCustomNavigationButton(title: "Review Test")
     private var exitButton = QuizCustomNavigationButton(title: "Exit")
     
-    init(answeredQuiz: Quiz) {
-        self.answeredQuiz = answeredQuiz
+    init(completedQuiz: CompletedQuiz) {
+        self.completedQuiz = completedQuiz
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -74,6 +74,10 @@ class EndOfQuizController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        exitButton.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
+        
+        calculateScore()
+        
         configureUI()
     }
     
@@ -82,8 +86,8 @@ class EndOfQuizController: UIViewController {
     private func configureUI() {
         view.backgroundColor = .white
         
-        titleLabel.text = answeredQuiz.name
-        self.descriptionTextView.text = answeredQuiz.quizDescription
+        titleLabel.text = completedQuiz.name
+        descriptionTextView.text = completedQuiz.quizDescription
         navigationController?.navigationBar.isHidden = true
         
         navigationItem.setHidesBackButton(true, animated: true)
@@ -97,22 +101,32 @@ class EndOfQuizController: UIViewController {
         view.addSubview(achievedScoreLabel)
         view.addSubview(achievedPercentLabel)
         
-        view.addSubview(descriptionTextView)
         view.addSubview(divider)
         view.addSubview(reviewQuizButton)
         view.addSubview(exitButton)
+        
+        if !descriptionTextView.text.isEmpty {
+            view.addSubview(descriptionTextView)
+            descriptionTextView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4).isActive = true
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: descriptionTextView.trailingAnchor, multiplier: 4).isActive = true
+            descriptionTextView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 2).isActive = true
+            divider.topAnchor.constraint(equalToSystemSpacingBelow: descriptionTextView.bottomAnchor, multiplier: 2).isActive = true
+            
+            view.layoutSubviews()
+            if descriptionTextView.contentSize.height > view.frame.height / 2.5 {
+                descriptionTextView.isScrollEnabled = true
+                descriptionTextView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4).isActive = true
+            }
+        } else {
+            divider.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 2).isActive = true
+        }
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
             titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             
-            descriptionTextView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: descriptionTextView.trailingAnchor, multiplier: 4),
-            descriptionTextView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 2),
-            
             divider.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: divider.trailingAnchor, multiplier: 4),
-            divider.topAnchor.constraint(equalToSystemSpacingBelow: descriptionTextView.bottomAnchor, multiplier: 2),
             divider.heightAnchor.constraint(equalToConstant: 2),
             
             completionLabel.topAnchor.constraint(equalToSystemSpacingBelow: divider.bottomAnchor, multiplier: 1),
@@ -139,13 +153,30 @@ class EndOfQuizController: UIViewController {
             reviewQuizButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07),
         ])
         
-        view.layoutSubviews()
-        if descriptionTextView.contentSize.height > view.frame.height / 2.5 {
-            descriptionTextView.isScrollEnabled = true
-            descriptionTextView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4).isActive = true
+        if !completedQuiz.allowViewCompletedTest {
+            reviewQuizButton.isHidden = true
+        }
+    }
+    
+    private func calculateScore() {
+        for question in completedQuiz.answeredQuestions {
+            switch question.type {
+            case .singleChoice:
+                print("")
+            case .multipleChoice:
+                print("")
+            case .TrueFalse:
+                print("")
+            }
         }
     }
     
     // MARK: - Selectors
     
+    @objc private func didTapExit() {
+        let defaults = UserDefaults.standard
+        for (key, value) in defaults.dictionaryRepresentation() {
+            print("\(key) = \(value)")
+        }
+    }
 }

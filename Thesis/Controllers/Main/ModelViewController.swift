@@ -97,22 +97,26 @@ class ModelViewController: UIViewController {
     }
     
     private func startTestCompletion(with code: String) {
-        QuizService.shared.fetchQuiz(with: code) { [weak self] quiz, error in
+        QuizService.shared.fetchQuiz(with: code) { [weak self] quiz, quizCode, error in
             guard let strongSelf = self else { return }
             if let error = error {
                 AlertManager.showQuizError(on: strongSelf, with: "Error Starting Test", and: error.localizedDescription)
                 return
             }
             
-            guard let quiz = quiz else {
+            guard let quiz = quiz, let quizCode = quizCode else {
                 AlertManager.showQuizError(on: strongSelf, with: "Wrong Code", and: "There is no test with this code.")
                 return
             }
             
-            let vc = QuizPageViewController(quiz: quiz, modelName: quiz.model)
-            let nav = UINavigationController(rootViewController: vc)
-            nav.modalPresentationStyle = .fullScreen
-            strongSelf.present(nav, animated: true)
+            if let customTabBarController = strongSelf.tabBarController as? MainTabController {
+                if let user = customTabBarController.user {
+                    let vc = QuizPageViewController(quiz: quiz, user: user, quizCode: quizCode)
+                    let nav = UINavigationController(rootViewController: vc)
+                    nav.modalPresentationStyle = .fullScreen
+                    strongSelf.present(nav, animated: true)
+                }
+            }
         }
     }
     

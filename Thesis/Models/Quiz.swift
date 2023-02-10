@@ -26,3 +26,62 @@ struct Quiz {
         self.questions = questions
     }
 }
+
+struct CompletedQuiz {
+    var name: String
+    var quizDescription: String
+    var allowViewCompletedTest: Bool
+    var answeredQuestions: [AnsweredQuestion]
+    
+    var score: Float {
+        var score: Float = 0
+        
+        for question in answeredQuestions {
+            let correctAnswers = question.correctAnswers
+            let userAnswers = question.userAnswers
+            
+            switch question.type {
+            case .singleChoice:
+                if userAnswers == correctAnswers {
+                    score += 1
+                }
+            case .multipleChoice:
+                var multipleChoiceScore = 0.0
+                
+                if userAnswers == correctAnswers {
+                    multipleChoiceScore = 1
+                } else if !correctAnswers.isEmpty && userAnswers.isEmpty {
+                    multipleChoiceScore = 0
+                } else {
+                    for userAnswer in userAnswers {
+                        if correctAnswers.contains(userAnswer) {
+                            multipleChoiceScore += 0.25
+                        } else {
+                            multipleChoiceScore -= 0.25
+                        }
+                    }
+                }
+                
+                score += Float(max(multipleChoiceScore, 0.0))
+            case .TrueFalse:
+                if userAnswers == correctAnswers {
+                    score += 1
+                }
+            }
+            
+        }
+        
+        return score
+    }
+    
+    var percent: Float {
+        return (self.score / Float(answeredQuestions.count)) * 100.0
+    }
+    
+    init(settings: [String: Any], answeredQuestions: [AnsweredQuestion]) {
+        self.name = settings["name"] as! String
+        self.quizDescription = settings["quizDescription"] as! String
+        self.allowViewCompletedTest = settings["allowViewCompletedTest"] as! Bool
+        self.answeredQuestions = answeredQuestions
+    }
+}

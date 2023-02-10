@@ -105,13 +105,9 @@ class OnboardingPageViewController: UIPageViewController {
         UserDefaults.standard.set(true, forKey: "hasOnboarded")
         DatabaseManager.loadData()
         
-        let layout = UICollectionViewFlowLayout()
-        let controller = MainViewController(collectionViewLayout: layout)
-        let nav = UINavigationController(rootViewController: controller)
-        nav.modalTransitionStyle = .coverVertical
-        nav.modalPresentationStyle = .fullScreen
-        
-        self.present(nav, animated: true)
+        if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
+            sceneDelegate.checkAuthentication(registered: false)
+        }
     }
 }
 

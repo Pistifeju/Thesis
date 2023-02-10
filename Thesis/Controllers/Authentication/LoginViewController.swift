@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
     
@@ -86,6 +87,16 @@ class LoginViewController: UIViewController {
         ])
     }
     
+    private func createNewUserFieldToUserDefaultsIfItDoesntExist() {
+        let defaults = UserDefaults.standard
+        let id = Auth.auth().currentUser?.uid
+        
+        if defaults.object(forKey: id!) == nil {
+            let user: [String: Any] = ["notes": []]
+            defaults.set(user, forKey: id!)
+        }
+    }
+    
     // MARK: - Selectors
     
     @objc private func didTapSignIn() {
@@ -106,6 +117,7 @@ class LoginViewController: UIViewController {
             }
             
             if let sceneDelegate = strongSelf.view.window?.windowScene?.delegate as? SceneDelegate {
+                strongSelf.createNewUserFieldToUserDefaultsIfItDoesntExist()
                 sceneDelegate.checkAuthentication()
             }
         }
