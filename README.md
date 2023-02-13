@@ -19,6 +19,7 @@ My thesis is an iOS mobile learning application that helps students learn about 
 <img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/ar1.PNG" width="200"/>
 <img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/ar2.PNG" width="200"/>
 <img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/createQ.PNG" width="200"/>
+<img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/endOfQ.png" width="200"/>
 <img src="https://github.com/Pistifeju/Thesis/blob/main/Screenshots/settingsQ.PNG" width="200"/>
 </p>
 
