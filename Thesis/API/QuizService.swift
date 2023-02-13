@@ -135,7 +135,13 @@ class QuizService {
     public func uploadFinishingQuiz(user: User, quizID: String, completedQuiz: CompletedQuiz, completion: @escaping(Error?) -> Void) {
         guard let uid = Auth.auth().currentUser?.uid else { return }
         
-        Firestore.firestore().collection("quizzes").document(quizID).collection("quizTakenBy").document(uid).setData(["username": user.username, "score": completedQuiz.score, "percent": completedQuiz.percent]) { error in
+        var userAnswers: [String: [String]] = [:]
+        for i in 0...completedQuiz.answeredQuestions.count - 1 {
+            let answer = completedQuiz.answeredQuestions[i].userAnswers
+            userAnswers["question\(i+1)"] = answer
+        }
+        
+        Firestore.firestore().collection("quizzes").document(quizID).collection("quizTakenBy").document(uid).setData(["username": user.username, "score": completedQuiz.score, "percent": completedQuiz.percent, "userAnswers": userAnswers]) { error in
             if let error = error {
                 completion(error)
                 return

@@ -28,6 +28,7 @@ class QuizViewController: UIViewController {
         sc.insertSegment(withTitle: "True", at: 0, animated: true)
         sc.insertSegment(withTitle: "False", at: 1, animated: true)
         sc.isHidden = true
+        sc.layer.borderColor = UIColor.black.cgColor
         return sc
     }()
     
@@ -214,6 +215,9 @@ class QuizViewController: UIViewController {
         answeredQuestion.userAnswers = answers
         
         return answeredQuestion
+    }
+    
+    public func colorAnswerButtonsForReviewMode(userAnswers: [String]) {
     }
     
     // MARK: - Selectors

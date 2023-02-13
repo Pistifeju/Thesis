@@ -74,20 +74,27 @@ class EndOfQuizController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        reviewQuizButton.addTarget(self, action: #selector(didTapReviewButton), for: .touchUpInside)
         exitButton.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
-        
-        calculateScore()
-        
+                
         configureUI()
     }
     
     // MARK: - Helpers
     
+    private func updateStatLabels() {
+        achievedScoreLabel.text = "Achieved Score: \(completedQuiz.score)/\(completedQuiz.answeredQuestions.count) point(s)"
+        achievedPercentLabel.text = "Achieved percent: \(completedQuiz.percent) %"
+        // TODO: - TimeUsedLabel
+    }
+    
     private func configureUI() {
         view.backgroundColor = .white
         
+        updateStatLabels()
         titleLabel.text = completedQuiz.name
         descriptionTextView.text = completedQuiz.quizDescription
+        
         navigationController?.navigationBar.isHidden = true
         
         navigationItem.setHidesBackButton(true, animated: true)
@@ -107,8 +114,8 @@ class EndOfQuizController: UIViewController {
         
         if !descriptionTextView.text.isEmpty {
             view.addSubview(descriptionTextView)
-            descriptionTextView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4).isActive = true
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: descriptionTextView.trailingAnchor, multiplier: 4).isActive = true
+            descriptionTextView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2).isActive = true
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: descriptionTextView.trailingAnchor, multiplier: 2).isActive = true
             descriptionTextView.topAnchor.constraint(equalToSystemSpacingBelow: titleLabel.bottomAnchor, multiplier: 2).isActive = true
             divider.topAnchor.constraint(equalToSystemSpacingBelow: descriptionTextView.bottomAnchor, multiplier: 2).isActive = true
             
@@ -123,24 +130,24 @@ class EndOfQuizController: UIViewController {
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
+            titleLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             
-            divider.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: divider.trailingAnchor, multiplier: 4),
+            divider.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: divider.trailingAnchor, multiplier: 2),
             divider.heightAnchor.constraint(equalToConstant: 2),
             
             completionLabel.topAnchor.constraint(equalToSystemSpacingBelow: divider.bottomAnchor, multiplier: 1),
-            completionLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
+            completionLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             
             timeUsedLabel.topAnchor.constraint(equalToSystemSpacingBelow: completionLabel.bottomAnchor, multiplier: 2),
-            timeUsedLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: timeUsedLabel.trailingAnchor, multiplier: 4),
+            timeUsedLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: timeUsedLabel.trailingAnchor, multiplier: 2),
             
             achievedScoreLabel.topAnchor.constraint(equalToSystemSpacingBelow: timeUsedLabel.bottomAnchor, multiplier: 1),
-            achievedScoreLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
+            achievedScoreLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             
             achievedPercentLabel.topAnchor.constraint(equalToSystemSpacingBelow: achievedScoreLabel.bottomAnchor, multiplier: 1),
-            achievedPercentLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
+            achievedPercentLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: exitButton.bottomAnchor, multiplier: 2),
             exitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -158,25 +165,19 @@ class EndOfQuizController: UIViewController {
         }
     }
     
-    private func calculateScore() {
-        for question in completedQuiz.answeredQuestions {
-            switch question.type {
-            case .singleChoice:
-                print("")
-            case .multipleChoice:
-                print("")
-            case .TrueFalse:
-                print("")
+    // MARK: - Selectors
+    
+    @objc private func didTapReviewButton() {
+        if let _ = navigationController?.popViewController(animated: true) {
+            if let quizPageViewController = navigationController?.topViewController as? QuizPageViewController{
+                quizPageViewController.reviewMode = true
             }
         }
     }
     
-    // MARK: - Selectors
-    
     @objc private func didTapExit() {
-        let defaults = UserDefaults.standard
-        for (key, value) in defaults.dictionaryRepresentation() {
-            print("\(key) = \(value)")
+        if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
+            sceneDelegate.checkAuthentication()
         }
     }
 }

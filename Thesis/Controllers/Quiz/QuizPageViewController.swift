@@ -15,8 +15,17 @@ class QuizPageViewController: UIPageViewController {
     private var pages = [UIViewController]()
     private let user: User
     private let quizCode: String
+    private var completedQuiz: CompletedQuiz?
     
-    var currentIndex: Int {
+    public var reviewMode: Bool {
+        didSet {
+            if reviewMode {
+                setPageViewControllerAsReviewMode()
+            }
+        }
+    }
+    
+    private var currentIndex: Int {
         guard let vc = viewControllers?.first else { return 0 }
         return pages.firstIndex(of: vc) ?? 0
     }
@@ -54,6 +63,7 @@ class QuizPageViewController: UIPageViewController {
         self.quiz = quiz
         self.user = user
         self.quizCode = quizCode
+        self.reviewMode = false
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
@@ -77,6 +87,22 @@ class QuizPageViewController: UIPageViewController {
     }
     
     // MARK: - Helpers
+    
+    private func setPageViewControllerAsReviewMode() {
+        // TODO: - setPageViewControllerAsReviewMode
+        submitButton.setTitle("Exit", for: .normal)
+        goToARModeButton.isHidden = true
+        
+        guard let completedQuiz = completedQuiz else { return }
+        
+        for i in 0...pages.count - 1 {
+            let page = pages[i]
+            if page is QuizViewController {
+                let vc = page as! QuizViewController
+                vc.colorAnswerButtonsForReviewMode(userAnswers: completedQuiz.answeredQuestions[i].userAnswers)
+            }
+        }
+    }
     
     private func createPages() {
         for question in quiz.questions {
@@ -152,26 +178,31 @@ class QuizPageViewController: UIPageViewController {
         }
         
         let completedQuiz = CompletedQuiz(settings: settings, answeredQuestions: answeredQuestions)
+        self.completedQuiz = completedQuiz
         return completedQuiz
     }
     
     // MARK: - Selectors
     
     @objc private func didTapSubmit() {
-        AlertManager.showFinishTestAlert(on: self, title: "Submit test", message: "Would you like to submit your test?", secondaryAction: "Submit") {
-            
-            let completedQuiz = self.createCompletedQuiz()
-            
-            QuizService.shared.uploadFinishingQuiz(user: self.user, quizID: self.quizCode, completedQuiz: completedQuiz) { [weak self] error in
+        if submitButton.titleLabel?.text == "Submit" {
+            AlertManager.showFinishTestAlert(on: self, title: "Submit test", message: "Would you like to submit your test?", secondaryAction: "Submit") { [weak self] in
                 guard let strongSelf = self else { return }
-                if let uploadError = error {
-                    AlertManager.showBasicAlert(on: strongSelf, with: "Error submitting test", and: uploadError.localizedDescription)
-                    return
-                }
+
+                let completedQuiz = strongSelf.createCompletedQuiz()
                 
-                let vc = EndOfQuizController(completedQuiz: strongSelf.createCompletedQuiz())
-                strongSelf.navigationController?.pushViewController(vc, animated: true)
+                QuizService.shared.uploadFinishingQuiz(user: strongSelf.user, quizID: strongSelf.quizCode, completedQuiz: completedQuiz) { error in
+                    if let uploadError = error {
+                        AlertManager.showBasicAlert(on: strongSelf, with: "Error submitting test", and: uploadError.localizedDescription)
+                        return
+                    }
+                    
+                    let vc = EndOfQuizController(completedQuiz: strongSelf.createCompletedQuiz())
+                    strongSelf.navigationController?.pushViewController(vc, animated: true)
+                }
             }
+        } else {
+            // TODO: - Finish Exit button
         }
     }
     

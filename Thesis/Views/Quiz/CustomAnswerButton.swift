@@ -9,10 +9,17 @@ import UIKit
 
 class CustomAnswerButton: UIButton {
     
+    var correctAnswer: Bool? {
+        didSet {
+            guard let correctAnswer = correctAnswer else { return }
+            layer.borderColor = correctAnswer ? UIColor.greenButton.cgColor : UIColor.exitRed.cgColor
+        }
+    }
+    
     override var isSelected: Bool {
         didSet {
-            layer.borderColor = isSelected ? UIColor.greenButton.cgColor : UIColor.gray.cgColor
-            layer.borderWidth = isSelected ? 3 : 2
+            layer.borderColor = isSelected ? UIColor.black.cgColor : UIColor.gray.cgColor
+            layer.borderWidth = isSelected ? 3.5 : 2
         }
     }
     
