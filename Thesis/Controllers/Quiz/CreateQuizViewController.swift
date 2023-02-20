@@ -176,7 +176,7 @@ class CreateQuizViewController: UIPageViewController {
                 AlertManager.showCreateQuizError(on: strongSelf, with: error)
             }
             
-            AlertManager.showCreateQuizAlert(on: strongSelf) {
+            AlertManager.showCreateQuizAlert(on: strongSelf, code: quiz.code) {
                 strongSelf.dismiss(animated: true)
             }
         }

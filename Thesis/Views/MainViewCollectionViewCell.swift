@@ -85,23 +85,23 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         self.cellImageView.image = UIImage(named: categoryName)
         self.cellImageView.layer.opacity = 0.7
         self.system = system
+        self.sectionCount = system.count
         
         switch categoryName {
         case "Skeletal_System":
             self.categoryLabel.text = "I. Skeletal System"
-            self.sectionCount = system.count
             self.sectionLabel.text = "\(sectionCount) sections"
         case "Visceral_System":
             self.categoryLabel.text = "II. Visceral System"
-            self.sectionCount = system.count
-            self.sectionLabel.text = "\(sectionCount) sections"
+            self.sectionLabel.text = "Under Development" //TODO: - Finish this
         case "Muscular_System":
             self.categoryLabel.text = "III. Muscular System"
-            self.sectionCount = system.count
-            self.sectionLabel.text = "\(sectionCount) sections"
+            self.sectionLabel.text = "Under Development" //TODO: - Finish this
         default:
             break
         }
+        
+                
     }
     // MARK: - Selectors
 }

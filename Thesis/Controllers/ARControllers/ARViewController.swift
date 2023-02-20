@@ -36,15 +36,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     private lazy var focusSquare: FocusEntity = FocusEntity(on: self.arView, focus: .classic)
     
-    private lazy var placeButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "checkmark.circle.fill"), for: .normal)
-        button.addTarget(self, action: #selector(placeObject), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        
-        return button
-    }()
-    
     private lazy var arView: ARView = {
         let arview = ARView()
         arview.translatesAutoresizingMaskIntoConstraints = false
@@ -55,10 +46,27 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         return arview
     }()
     
+    private lazy var placeButton: UIButton = {
+        let button = UIButton(type: .system)
+        
+        let viewWidth = view.frame.size.width
+        
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: viewWidth / 9, weight: .medium, scale: .large)
+        let largeImage = UIImage(systemName: "checkmark.circle.fill", withConfiguration: largeConfig)
+        
+        button.setImage(largeImage, for: .normal)
+        button.addTarget(self, action: #selector(placeObject), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
     private lazy var resetButton: UIButton = {
         let button = UIButton(type: .system)
         
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .medium, scale: .large)
+        let viewWidth = view.frame.size.width
+        
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: viewWidth / 9, weight: .medium, scale: .large)
         let largeImage = UIImage(systemName: "gobackward", withConfiguration: largeConfig)
         
         button.setImage(largeImage, for: .normal)
@@ -73,7 +81,9 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     private lazy var colourButton: UIButton = {
         let button = UIButton(type: .system)
         
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .medium, scale: .large)
+        let viewWidth = view.frame.size.width
+        
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: viewWidth / 9, weight: .medium, scale: .large)
         let largeImage = UIImage(systemName: "paintpalette.fill", withConfiguration: largeConfig)
         
         button.setImage(largeImage, for: .normal)
@@ -88,7 +98,9 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     private lazy var exitButton: UIButton = {
         let button = UIButton(type: .system)
         
-        let largeConfig = UIImage.SymbolConfiguration(pointSize: 25, weight: .medium, scale: .large)
+        let viewWidth = view.frame.size.width
+        
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: viewWidth / 9, weight: .medium, scale: .large)
         let largeImage = UIImage(systemName: "x.square", withConfiguration: largeConfig)
         
         button.setImage(largeImage, for: .normal)
@@ -126,6 +138,9 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        arView.scene.removeAnchor(modelAnchor)
+        entities = [AREntity]()
+        selectedEntity = AREntity()
         navigationController?.navigationBar.isHidden = false
     }
     
@@ -145,6 +160,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         view.addSubview(colourButton)
         view.addSubview(colorPickerView)
         
+        let viewWidth = view.frame.size.width
+        
         NSLayoutConstraint.activate([
             arView.topAnchor.constraint(equalTo: view.topAnchor),
             arView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -153,10 +170,10 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         ])
         
         NSLayoutConstraint.activate([
-            placeButton.widthAnchor.constraint(equalToConstant: 50),
-            placeButton.heightAnchor.constraint(equalToConstant: 50),
+            placeButton.widthAnchor.constraint(equalToConstant: viewWidth / 9),
+            placeButton.heightAnchor.constraint(equalToConstant: viewWidth / 9),
             placeButton.centerXAnchor.constraint(equalTo: arView.centerXAnchor),
-            placeButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            placeButton.bottomAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.bottomAnchor, multiplier: 2),
         ])
         
         modelInformationView.translatesAutoresizingMaskIntoConstraints = false
@@ -167,22 +184,22 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         ])
         
         NSLayoutConstraint.activate([
-            resetButton.heightAnchor.constraint(equalToConstant: 50),
-            resetButton.widthAnchor.constraint(equalToConstant: 50),
+            resetButton.heightAnchor.constraint(equalToConstant: viewWidth / 9),
+            resetButton.widthAnchor.constraint(equalToConstant: viewWidth / 9),
             resetButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
             arView.trailingAnchor.constraint(equalToSystemSpacingAfter: resetButton.trailingAnchor, multiplier: 2),
         ])
         
         NSLayoutConstraint.activate([
-            colourButton.heightAnchor.constraint(equalToConstant: 50),
-            colourButton.widthAnchor.constraint(equalToConstant: 50),
+            colourButton.heightAnchor.constraint(equalToConstant: viewWidth / 9),
+            colourButton.widthAnchor.constraint(equalToConstant: viewWidth / 9),
             colourButton.topAnchor.constraint(equalToSystemSpacingBelow: resetButton.bottomAnchor, multiplier: 2),
             arView.trailingAnchor.constraint(equalToSystemSpacingAfter: colourButton.trailingAnchor, multiplier: 2),
         ])
         
         NSLayoutConstraint.activate([
-            exitButton.heightAnchor.constraint(equalToConstant: 50),
-            exitButton.widthAnchor.constraint(equalToConstant: 50),
+            exitButton.heightAnchor.constraint(equalToConstant: viewWidth / 9),
+            exitButton.widthAnchor.constraint(equalToConstant: viewWidth / 9),
             exitButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
             exitButton.leadingAnchor.constraint(equalToSystemSpacingAfter: arView.leadingAnchor, multiplier: 2),
         ])
@@ -191,7 +208,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         self.colorPickerHeight.isActive = true
         colorPickerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            colorPickerView.widthAnchor.constraint(equalToConstant: 50),
+            colorPickerView.widthAnchor.constraint(equalToConstant: viewWidth / 9),
             colorPickerView.topAnchor.constraint(equalToSystemSpacingBelow: colourButton.bottomAnchor, multiplier: 2),
             colorPickerView.centerXAnchor.constraint(equalTo: self.colourButton.centerXAnchor),
         ])
@@ -268,8 +285,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         for children in childrens! {
             let childModelEntity = children as! ModelEntity
             childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
-            let informationText = self.model.subModels?[childModelEntity.name]
-            let arEntity = AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false, informationText: informationText!)
+            let informationText = self.model.subModels?[childModelEntity.name] ?? "Under Development"
+            let arEntity = AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false, informationText: informationText)
             self.entities.append(arEntity)
         }
     }
@@ -321,14 +338,13 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         let entity = try! Entity.load(named: modelName)
         
-        let geomChildrens = entity.findEntity(named: "Geom")
+        var geomChildrens = entity.findEntity(named: "Geom")
         
-        if !(geomChildrens?.children.first is ModelEntity) {
-            let childrens = geomChildrens?.children.first?.children.first?.children.first?.children.first!.children // just dont, please
-            self.loadEntities(from: childrens)
-        } else {
-            self.loadEntities(from: geomChildrens?.children)
+        while !(geomChildrens?.children.first is ModelEntity) {
+            geomChildrens = geomChildrens?.children.first
         }
+
+        self.loadEntities(from: geomChildrens?.children)
         
         let modelEntity = ModelEntity()
         modelEntity.addChild(entity)
@@ -407,7 +423,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         let entityForText = self.entities.first(where: { $0.entity.name == entity.name })
         
-        modelInformationView.configure(nameLabel: entity.name.replacingOccurrences(of: "_", with: " "), textViewString: entityForText!.informationText)
+        modelInformationView.configure(nameLabel: entity.name.replacingOccurrences(of: "_", with: " "), textViewString: entityForText?.informationText ?? "Error")
         self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
     }
     
@@ -529,7 +545,6 @@ extension ARViewController: ColorPickerViewDelegate {
             self.colorPickerHeight.constant = 0
             UIView.animate(withDuration: 0.5) {
                 
-                // request layout on the *superview*
                 self.view.layoutIfNeeded()
             }
             return

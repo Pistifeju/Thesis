@@ -14,7 +14,7 @@ class MainViewController: UICollectionViewController {
     
     // MARK: - Properties
     
-    private var systems: [AnatomyModel] = []
+    private var systems: [[AnatomyModel]] = []
     private var systemsName: [String] = ["Skeletal_System", "Visceral_System", "Muscular_System"]
     
     // MARK: - Lifecycle
@@ -25,7 +25,9 @@ class MainViewController: UICollectionViewController {
 
         if let encoded = UserDefaults.standard.data(forKey: "skeletalModels"), let anatomyModels = try? JSONDecoder().decode([AnatomyModel].self, from: encoded) {
             // Use the retrieved anatomy models
-            self.systems = anatomyModels
+            self.systems.append(anatomyModels)
+            self.systems.append([])
+            self.systems.append([]) //TODO: - Load the other models as well
         }
         
         configureUI()
@@ -91,8 +93,8 @@ class MainViewController: UICollectionViewController {
 extension MainViewController {
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! MainViewCollectionViewCell
-        cell.configureCell(withCategory: systemsName[indexPath.row], withSystems: systems)
-        
+        cell.configureCell(withCategory: systemsName[indexPath.row], withSystems: systems[indexPath.row])
+                
         return cell
     }
     

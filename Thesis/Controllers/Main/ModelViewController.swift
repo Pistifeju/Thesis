@@ -105,7 +105,7 @@ class ModelViewController: UIViewController {
             }
             
             guard let quiz = quiz, let quizCode = quizCode else {
-                AlertManager.showQuizError(on: strongSelf, with: "Wrong Code", and: "There is no test with this code.")
+                AlertManager.showQuizError(on: strongSelf, with: "Wrong Code", and: "Sorry, we couldn't find a test with that code.")
                 return
             }
             
@@ -126,7 +126,7 @@ class ModelViewController: UIViewController {
         let ac = UIAlertController(title: "Enter test code", message: "Enter the test code in order to start the test.", preferredStyle: .alert)
         ac.addTextField()
         ac.textFields![0].placeholder = "A678GH-76DFRT"
-        ac.textFields![0].text = "CSQKZZ-SCHOBE"
+        ac.textFields![0].text = "CSQKZZ-SCHOBE" //TODO: - This is for debugging, remove this later.
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let submitAction = UIAlertAction(title: "Start", style: .default) { [unowned ac] _ in

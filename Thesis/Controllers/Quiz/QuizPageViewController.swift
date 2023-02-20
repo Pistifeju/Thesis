@@ -193,7 +193,7 @@ class QuizPageViewController: UIPageViewController {
                 
                 QuizService.shared.uploadFinishingQuiz(user: strongSelf.user, quizID: strongSelf.quizCode, completedQuiz: completedQuiz) { error in
                     if let uploadError = error {
-                        AlertManager.showBasicAlert(on: strongSelf, with: "Error submitting test", and: uploadError.localizedDescription)
+                        AlertManager.showQuizError(on: strongSelf, with: "Error submitting test", and: uploadError.localizedDescription)
                         return
                     }
                     
@@ -215,7 +215,7 @@ class QuizPageViewController: UIPageViewController {
                 let vc = ARViewController(with: model, fromTest: true)
                 navigationController?.pushViewController(vc, animated: true)
             } else {
-                AlertManager.showBasicAlert(on: self, with: "Unknown Error", and: "An unknown error occured. AR Mode is not available. ")
+                AlertManager.showQuizError(on: self, with: "Unknown Error", and: "An unknown error occured. AR Mode is not available. ")
             }
         }
     }

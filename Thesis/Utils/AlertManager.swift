@@ -115,7 +115,7 @@ extension AlertManager {
         }
     }
     
-    public static func showFinishTestAlert(on VC: UIViewController, title: String, message: String, secondaryAction: String,completion: @escaping() -> Void) {
+    public static func showFinishTestAlert(on VC: UIViewController, title: String, message: String, secondaryAction: String, completion: @escaping() -> Void) {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             
@@ -127,9 +127,9 @@ extension AlertManager {
         }
     }
     
-    public static func showCreateQuizAlert(on VC: UIViewController, completion: @escaping() -> Void) {
+    public static func showCreateQuizAlert(on VC: UIViewController, code: String, completion: @escaping() -> Void) {
         DispatchQueue.main.async {
-            let alert = UIAlertController(title: "Test created successfully", message: nil, preferredStyle: .alert)
+            let alert = UIAlertController(title: "Test created successfully", message: "Code for the created quiz:\n\(code)", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .default, handler: { _ in
                 completion()
             }))
@@ -143,7 +143,7 @@ extension AlertManager {
 }
 
 extension AlertManager {
-    public static func showBasicAlert(on VC: UIViewController, with title: String, and message: String) {
-        self.showBasicAlert(on: VC, with: title, and: message)
+    public static func showBasicErrorAlert(on VC: UIViewController, with title: String, and message: String) {
+        AlertManager.showBasicAlert(on: VC, with: title, and: message)
     }
 }

@@ -108,16 +108,6 @@ class ModelInformationView: UIView {
         return label
     }()
     
-    private var latinNameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.preferredFont(forTextStyle: .footnote)
-        label.textColor = .white
-        label.text = "latin name"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        return label
-    }()
-    
     private let informationTextView: UITextView = {
         let textView = UITextView(frame: .zero)
         textView.textColor = .white
@@ -183,7 +173,6 @@ class ModelInformationView: UIView {
         addSubview(containerViewForTextView)
         containerViewForTextView.addSubview(informationTextView)
         containerViewForTextView.addSubview(notesTextView)
-        addSubview(latinNameLabel)
         
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalToSystemSpacingBelow: self.topAnchor, multiplier: 1),
@@ -193,11 +182,6 @@ class ModelInformationView: UIView {
         NSLayoutConstraint.activate([
             nameLabel.centerYAnchor.constraint(equalTo: closeButton.centerYAnchor),
             nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-        ])
-        
-        NSLayoutConstraint.activate([
-            latinNameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            latinNameLabel.topAnchor.constraint(equalToSystemSpacingBelow: nameLabel.bottomAnchor, multiplier: 0),
         ])
         
         NSLayoutConstraint.activate([
@@ -214,7 +198,7 @@ class ModelInformationView: UIView {
         containerViewHeightConstraint = containerViewForTextView.heightAnchor.constraint(equalToConstant: 0)
         containerViewHeightConstraint?.isActive = true
         NSLayoutConstraint.activate([
-            containerViewForTextView.topAnchor.constraint(equalToSystemSpacingBelow: latinNameLabel.bottomAnchor, multiplier: 1),
+            containerViewForTextView.topAnchor.constraint(equalToSystemSpacingBelow: nameLabel.bottomAnchor, multiplier: 1),
             containerViewForTextView.leadingAnchor.constraint(equalToSystemSpacingAfter: self.leadingAnchor, multiplier: 2),
             self.trailingAnchor.constraint(equalToSystemSpacingAfter: containerViewForTextView.trailingAnchor, multiplier: 2),
             containerViewForTextView.bottomAnchor.constraint(equalToSystemSpacingBelow: optionButtons.topAnchor, multiplier: -2),
