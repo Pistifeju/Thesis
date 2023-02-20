@@ -100,8 +100,6 @@ class MainViewCollectionViewCell: UICollectionViewCell {
         default:
             break
         }
-        
-                
     }
     // MARK: - Selectors
 }
