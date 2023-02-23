@@ -116,34 +116,36 @@ class RegistrationViewController: UIViewController {
             return
         }
         
-        Validator.validateRegistration(email: emailField, password: password, passwordAgain: passwordAgain, VC: self)
+        let validRegistration = Validator.validateRegistration(email: emailField, password: password, passwordAgain: passwordAgain, VC: self)
         
-        let registerUserRequest = RegisterUserRequest(username: username, password: password, email: email)
-        
-        AuthService.shared.registerUser(with: registerUserRequest) { [weak self] wasRegistered, error in
-            guard let strongSelf = self else { return }
+        if validRegistration {
+            let registerUserRequest = RegisterUserRequest(username: username, password: password, email: email)
             
-            if let error = error {
-                AlertManager.showRegistrationErrorAlert(on: strongSelf, with: error)
-                return
-            }
-            
-            if wasRegistered {
-                if let sceneDelegate = strongSelf.view.window?.windowScene?.delegate as? SceneDelegate {
-                    
-                    strongSelf.createNewUserFieldToUserDefaults()
-                    sceneDelegate.checkAuthentication(registered: true)
+            AuthService.shared.registerUser(with: registerUserRequest) { [weak self] wasRegistered, error in
+                guard let strongSelf = self else { return }
+                
+                if let error = error {
+                    AlertManager.showRegistrationErrorAlert(on: strongSelf, with: error)
+                    return
                 }
-            } else {
-                AlertManager.showRegistrationErrorAlert(on: strongSelf)
-                return
+                
+                if wasRegistered {
+                    if let sceneDelegate = strongSelf.view.window?.windowScene?.delegate as? SceneDelegate {
+                        
+                        strongSelf.createNewUserFieldToUserDefaults()
+                        sceneDelegate.checkAuthentication(registered: true)
+                    }
+                } else {
+                    AlertManager.showRegistrationErrorAlert(on: strongSelf)
+                    return
+                }
             }
+            
+            emailField.text = ""
+            passwordField.text = ""
+            passwordAgainField.text = ""
+            usernameField.text = ""
         }
-        
-        emailField.text = ""
-        passwordField.text = ""
-        passwordAgainField.text = ""
-        usernameField.text = ""
     }
     
     @objc private func didTapForgotPassword() {

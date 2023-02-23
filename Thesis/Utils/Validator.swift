@@ -13,28 +13,30 @@ final class Validator {
             return
         }
         
-        if(!isPasswordValid(for: password)) {
+        if(password.count < 6) {
             AlertManager.showInvalidPasswordAlert(on: VC)
             return
         }
     }
     
-    static func validateRegistration(email: UITextField, password: String, passwordAgain: String, VC: UIViewController) {
+    static func validateRegistration(email: UITextField, password: String, passwordAgain: String, VC: UIViewController) -> Bool {
         
         if(!isValidEmail(field: email)) {
             AlertManager.showInvalidEmailAlert(on: VC)
-            return
+            return false
         }
         
-        if(!isPasswordValid(for: password)) {
+        if(password.count < 6) {
             AlertManager.showInvalidPasswordAlert(on: VC)
-            return
+            return false
         }
         
         if(password != passwordAgain) {
             AlertManager.showPasswordDontMatchAlert(on: VC)
-            return
+            return false
         }
+        
+        return true
     }
     
     static func isValidEmail(field: UITextField) -> Bool {
@@ -58,12 +60,5 @@ final class Validator {
         }
         
         return false
-    }
-    
-    static func isPasswordValid(for password: String) -> Bool {
-        let password = password.trimmingCharacters(in: .whitespacesAndNewlines)
-        let passwordRegEx = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$#!%*?&]).{6,32}$"
-        let passwordPred = NSPredicate(format: "SELF MATCHES %@", passwordRegEx)
-        return passwordPred.evaluate(with: password)
     }
 }
