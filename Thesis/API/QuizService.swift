@@ -141,7 +141,7 @@ class QuizService {
             userAnswers["question\(i+1)"] = answer
         }
         
-        Firestore.firestore().collection("quizzes").document(quizID).collection("quizTakenBy").document(uid).setData(["username": user.username, "score": completedQuiz.score, "percent": completedQuiz.percent, "userAnswers": userAnswers]) { error in
+        Firestore.firestore().collection("quizzes").document(quizID).collection("quizTakenBy").document(uid).setData(["username": user.username, "score": completedQuiz.score, "percent": completedQuiz.percent, "userAnswers": userAnswers, "timeToComplete": completedQuiz.timeToComplete]) { error in
             if let error = error {
                 completion(error)
                 return
@@ -166,7 +166,9 @@ class QuizService {
                 "name": completedQuiz.name,
                 "quizDescription": completedQuiz.quizDescription,
                 "allowViewCompletedTest": completedQuiz.allowViewCompletedTest,
-                "questions": questions]
+                "timeToComplete": completedQuiz.timeToComplete,
+                "questions": questions
+            ]
             
             Firestore.firestore().collection("users").document(uid).collection("takenQuizzes").document(quizID).setData(completedQuizData) { error in
                 if let error = error {

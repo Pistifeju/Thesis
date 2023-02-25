@@ -4,12 +4,14 @@
 //
 //  Created by István Juhász on 2023. 02. 02..
 //
-//7UYQ1Y-4I920G
+//
 import UIKit
 
 class QuizViewController: UIViewController {
     
     // MARK: - Properties
+    var inReviewMode = false
+    
     private var question: Question
     
     private let modelName: String
@@ -89,6 +91,13 @@ class QuizViewController: UIViewController {
         configure()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if inReviewMode {
+            setUpViewControllerForViewMode()
+        }
+    }
+    
     // MARK: - Helpers
     
     private func setupUI() {
@@ -128,20 +137,20 @@ class QuizViewController: UIViewController {
             questionTypeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             answer1Button.topAnchor.constraint(equalToSystemSpacingBelow: questionTypeLabel.bottomAnchor, multiplier: 1),
-            answer1Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer1Button.trailingAnchor, multiplier: 4),
+            answer1Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer1Button.trailingAnchor, multiplier: 2),
             
             answer2Button.topAnchor.constraint(equalToSystemSpacingBelow: answer1Button.bottomAnchor, multiplier: 1),
-            answer2Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer2Button.trailingAnchor, multiplier: 4),
+            answer2Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer2Button.trailingAnchor, multiplier: 2),
             
             answer3Button.topAnchor.constraint(equalToSystemSpacingBelow: answer2Button.bottomAnchor, multiplier: 1),
-            answer3Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer3Button.trailingAnchor, multiplier: 4),
+            answer3Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer3Button.trailingAnchor, multiplier: 2),
             
             answer4Button.topAnchor.constraint(equalToSystemSpacingBelow: answer3Button.bottomAnchor, multiplier: 1),
-            answer4Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer4Button.trailingAnchor, multiplier: 4),
+            answer4Button.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: answer4Button.trailingAnchor, multiplier: 2),
             
             trueFalseSelector.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             trueFalseSelector.topAnchor.constraint(equalToSystemSpacingBelow: questionTypeLabel.bottomAnchor, multiplier: 2),
@@ -169,7 +178,6 @@ class QuizViewController: UIViewController {
             answer3Button.isHidden = true
             answer4Button.isHidden = true
         }
-        
     }
     
     private func setButtonTitles() {
@@ -217,7 +225,61 @@ class QuizViewController: UIViewController {
         return answeredQuestion
     }
     
-    public func colorAnswerButtonsForReviewMode(userAnswers: [String]) {
+    private func setUpViewControllerForViewMode() {
+        let buttons = [answer1Button, answer2Button, answer3Button, answer4Button]
+        buttons.map({$0}).forEach({$0.isUserInteractionEnabled = false})
+        trueFalseSelector.isUserInteractionEnabled = false
+                
+        for correctAnswer in question.correctAnswers {
+            for button in buttons {
+                if button.titleLabel?.text == correctAnswer {
+                    button.backgroundColor = .greenButton.withAlphaComponent(0.8)
+                } else {
+                    button.backgroundColor = .exitRed.withAlphaComponent(0.8)
+                }
+            }
+        }
+        
+        if question.type == .TrueFalse {
+            let correctAnswer = question.correctAnswers.first
+            let selectedIndex = trueFalseSelector.selectedSegmentIndex
+            if selectedIndex != -1 {
+                if trueFalseSelector.titleForSegment(at: selectedIndex) == correctAnswer {
+                    trueFalseSelector.backgroundColor = .greenButton.withAlphaComponent(0.8)
+                } else {
+                    trueFalseSelector.backgroundColor = .exitRed.withAlphaComponent(0.8)
+                }
+            } else {
+                trueFalseSelector.backgroundColor = .exitRed.withAlphaComponent(0.8)
+            }
+        }
+    }
+    
+    private func colorSegmentedControl(with color: UIColor, x1: Double, x2: Double) {
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = [color]
+
+        // Set the gradient layer's frame to the segmented control's bounds
+        gradientLayer.frame = trueFalseSelector.bounds
+
+        // Set the gradient layer's start and end points to create a horizontal gradient
+        gradientLayer.startPoint = CGPoint(x: x1, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: x2, y: 0.5)
+
+        // Create a new image context with the same size as the segmented control
+        UIGraphicsBeginImageContextWithOptions(trueFalseSelector.bounds.size, false, 0.0)
+
+        // Draw the gradient layer into the image context
+        gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
+
+        // Get the resulting image from the image context
+        let backgroundImage = UIGraphicsGetImageFromCurrentImageContext()
+
+        // End the image context
+        UIGraphicsEndImageContext()
+
+        // Set the segmented control's background image to the resulting image
+        trueFalseSelector.setBackgroundImage(backgroundImage, for: .normal, barMetrics: .default)
     }
     
     // MARK: - Selectors

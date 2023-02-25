@@ -22,6 +22,7 @@
 		B71CFFD729351CC0005870E2 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CFFD629351CC0005870E2 /* Question.swift */; };
 		B71CFFD9293520F3005870E2 /* AnatomyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CFFD8293520F3005870E2 /* AnatomyModel.swift */; };
 		B71F902D29AA2F9100A6F94E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B71F902C29AA2F9100A6F94E /* GoogleService-Info.plist */; };
+		B71F902F29AA3CA700A6F94E /* TimerBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71F902E29AA3CA700A6F94E /* TimerBarButtonItem.swift */; };
 		B7302F032911CEBC0018272C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7302F022911CEBC0018272C /* AppDelegate.swift */; };
 		B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7302F042911CEBC0018272C /* SceneDelegate.swift */; };
 		B7302F072911CEBC0018272C /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7302F062911CEBC0018272C /* ARViewController.swift */; };
@@ -93,6 +94,7 @@
 		B71CFFD629351CC0005870E2 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		B71CFFD8293520F3005870E2 /* AnatomyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnatomyModel.swift; sourceTree = "<group>"; };
 		B71F902C29AA2F9100A6F94E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B71F902E29AA3CA700A6F94E /* TimerBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerBarButtonItem.swift; sourceTree = "<group>"; };
 		B7302EFF2911CEBC0018272C /* Thesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7302F022911CEBC0018272C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B7302F042911CEBC0018272C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -386,6 +388,7 @@
 				B7EBEF5F2988862700FB401B /* QuizSettingsCustomLabel.swift */,
 				B7EBEF65298B2E6C00FB401B /* QuizCustomNavigationButton.swift */,
 				B75137BD2994622600ACD3F7 /* EndOfQuizStatLabel.swift */,
+				B71F902E29AA3CA700A6F94E /* TimerBarButtonItem.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -576,6 +579,7 @@
 				B7EBEF642989B6EE00FB401B /* QuizService.swift in Sources */,
 				B7302F072911CEBC0018272C /* ARViewController.swift in Sources */,
 				B73B6B7F29549DA600195D50 /* AREntity.swift in Sources */,
+				B71F902F29AA3CA700A6F94E /* TimerBarButtonItem.swift in Sources */,
 				B7EBEF4B29809B4600FB401B /* ModelControllerAddButton.swift in Sources */,
 				B707B36F29775503001DB1E8 /* ForgotPasswordViewControlelr.swift in Sources */,
 				B7EBEF4F29809FAB00FB401B /* PopUpViewButton.swift in Sources */,

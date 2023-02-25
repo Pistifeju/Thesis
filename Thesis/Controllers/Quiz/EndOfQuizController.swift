@@ -85,7 +85,7 @@ class EndOfQuizController: UIViewController {
     private func updateStatLabels() {
         achievedScoreLabel.text = "Achieved Score: \(completedQuiz.score)/\(completedQuiz.answeredQuestions.count) point(s)"
         achievedPercentLabel.text = "Achieved percent: \(completedQuiz.percent) %"
-        // TODO: - TimeUsedLabel
+        timeUsedLabel.text = "Time used for completion: \(completedQuiz.timeToComplete) minute(s)."
     }
     
     private func configureUI() {
@@ -95,7 +95,7 @@ class EndOfQuizController: UIViewController {
         titleLabel.text = completedQuiz.name
         descriptionTextView.text = completedQuiz.quizDescription
         
-        navigationController?.navigationBar.isHidden = true
+        navigationController?.navigationBar.isHidden = false
         
         navigationItem.setHidesBackButton(true, animated: true)
         

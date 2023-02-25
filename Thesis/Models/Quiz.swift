@@ -32,6 +32,7 @@ struct CompletedQuiz {
     var quizDescription: String
     var allowViewCompletedTest: Bool
     var answeredQuestions: [AnsweredQuestion]
+    var timeToComplete: Int
     
     var score: Float {
         var score: Float = 0
@@ -68,7 +69,6 @@ struct CompletedQuiz {
                     score += 1
                 }
             }
-            
         }
         
         return score
@@ -83,5 +83,6 @@ struct CompletedQuiz {
         self.quizDescription = settings["quizDescription"] as! String
         self.allowViewCompletedTest = settings["allowViewCompletedTest"] as! Bool
         self.answeredQuestions = answeredQuestions
+        self.timeToComplete = settings["timeToComplete"] as! Int
     }
 }

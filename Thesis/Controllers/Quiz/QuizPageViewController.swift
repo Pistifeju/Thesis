@@ -54,6 +54,7 @@ class QuizPageViewController: UIPageViewController {
         return label
     }()
     
+    private var timerLabel: TimerBarButtonItem
     private var goToARModeButton = QuizCustomNavigationButton(title: "Start AR Mode")
     private var submitButton = QuizCustomNavigationButton(title: "Submit")
     
@@ -64,6 +65,7 @@ class QuizPageViewController: UIPageViewController {
         self.user = user
         self.quizCode = quizCode
         self.reviewMode = false
+        self.timerLabel = TimerBarButtonItem(secondsLeft: quiz.timeToComplete * 60)
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
     }
     
@@ -76,30 +78,31 @@ class QuizPageViewController: UIPageViewController {
         
         dataSource = self
         delegate = self
+        timerLabel.delegate = self
         
         goToARModeButton.addTarget(self, action: #selector(didTapGoToARMode), for: .touchUpInside)
-        
-        createPages()
-        
         submitButton.addTarget(self, action: #selector(didTapSubmit), for: .touchUpInside)
-        
+        navigationItem.leftBarButtonItem = timerLabel
+
+        createPages()
         configureUI()
     }
     
     // MARK: - Helpers
     
     private func setPageViewControllerAsReviewMode() {
-        // TODO: - setPageViewControllerAsReviewMode
         submitButton.setTitle("Exit", for: .normal)
         goToARModeButton.isHidden = true
+        timerLabel.timer?.invalidate()
+        timerLabel.timerLabel.isHidden = true
         
-        guard let completedQuiz = completedQuiz else { return }
+        guard completedQuiz != nil else { return }
         
         for i in 0...pages.count - 1 {
             let page = pages[i]
             if page is QuizViewController {
                 let vc = page as! QuizViewController
-                vc.colorAnswerButtonsForReviewMode(userAnswers: completedQuiz.answeredQuestions[i].userAnswers)
+                vc.inReviewMode = true
             }
         }
     }
@@ -132,21 +135,21 @@ class QuizPageViewController: UIPageViewController {
         
         NSLayoutConstraint.activate([
             submitButton.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: submitButton.trailingAnchor, multiplier: 4),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: submitButton.trailingAnchor, multiplier: 2),
             submitButton.widthAnchor.constraint(equalToConstant: view.frame.size.width / 4),
             submitButton.heightAnchor.constraint(equalToConstant: view.frame.size.width / 9),
             
-            questionsIndexLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
+            questionsIndexLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             questionsIndexLabel.centerYAnchor.constraint(equalTo: submitButton.centerYAnchor),
             
             progressView.heightAnchor.constraint(equalTo: submitButton.heightAnchor, multiplier: 0.10),
             progressView.topAnchor.constraint(equalToSystemSpacingBelow: submitButton.bottomAnchor, multiplier: 2),
-            progressView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: progressView.trailingAnchor, multiplier: 4),
+            progressView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: progressView.trailingAnchor, multiplier: 2),
             
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: goToARModeButton.bottomAnchor, multiplier: 1),
-            goToARModeButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 4),
-            view.trailingAnchor.constraint(equalToSystemSpacingAfter: goToARModeButton.trailingAnchor, multiplier: 4),
+            goToARModeButton.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
+            view.trailingAnchor.constraint(equalToSystemSpacingAfter: goToARModeButton.trailingAnchor, multiplier: 2),
             goToARModeButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.07),
         ])
         
@@ -167,7 +170,9 @@ class QuizPageViewController: UIPageViewController {
     }
     
     private func createCompletedQuiz() -> CompletedQuiz {
-        let settings: [String: Any] = ["name": quiz.name, "quizDescription": quiz.quizDescription, "allowViewCompletedTest": quiz.allowViewCompletedTest]
+        let calculateTimeToComplete = quiz.timeToComplete - Int(timerLabel.secondsLeft / 60)
+        
+        let settings: [String: Any] = ["name": quiz.name, "quizDescription": quiz.quizDescription, "allowViewCompletedTest": quiz.allowViewCompletedTest, "timeToComplete": calculateTimeToComplete]
         var answeredQuestions = [AnsweredQuestion]()
         
         for page in pages {
@@ -182,6 +187,20 @@ class QuizPageViewController: UIPageViewController {
         return completedQuiz
     }
     
+    private func submitQuiz(strongSelf: QuizPageViewController) {
+        let completedQuiz = strongSelf.createCompletedQuiz()
+        
+        QuizService.shared.uploadFinishingQuiz(user: strongSelf.user, quizID: strongSelf.quizCode, completedQuiz: completedQuiz) { error in
+            if let uploadError = error {
+                AlertManager.showQuizError(on: strongSelf, with: "Error submitting test", and: uploadError.localizedDescription)
+                return
+            }
+            
+            let vc = EndOfQuizController(completedQuiz: strongSelf.createCompletedQuiz())
+            strongSelf.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    
     // MARK: - Selectors
     
     @objc private func didTapSubmit() {
@@ -189,20 +208,10 @@ class QuizPageViewController: UIPageViewController {
             AlertManager.showFinishTestAlert(on: self, title: "Submit test", message: "Would you like to submit your test?", secondaryAction: "Submit") { [weak self] in
                 guard let strongSelf = self else { return }
 
-                let completedQuiz = strongSelf.createCompletedQuiz()
-                
-                QuizService.shared.uploadFinishingQuiz(user: strongSelf.user, quizID: strongSelf.quizCode, completedQuiz: completedQuiz) { error in
-                    if let uploadError = error {
-                        AlertManager.showQuizError(on: strongSelf, with: "Error submitting test", and: uploadError.localizedDescription)
-                        return
-                    }
-                    
-                    let vc = EndOfQuizController(completedQuiz: strongSelf.createCompletedQuiz())
-                    strongSelf.navigationController?.pushViewController(vc, animated: true)
-                }
+                strongSelf.submitQuiz(strongSelf: strongSelf)
             }
         } else {
-            // TODO: - Finish Exit button
+            dismiss(animated: true)
         }
     }
     
@@ -251,4 +260,12 @@ extension QuizPageViewController: UIPageViewControllerDelegate, UIPageViewContro
         }
     }
     
+}
+
+// MARK: - TimerBarButtonItemDelegate
+
+extension QuizPageViewController: TimerBarButtonItemDelegate {
+    func timerDidEnd() {
+        self.submitQuiz(strongSelf: self)
+    }
 }
