@@ -21,6 +21,7 @@
 		B71CFFD42934DD0D005870E2 /* QuizPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CFFD32934DD0D005870E2 /* QuizPageViewController.swift */; };
 		B71CFFD729351CC0005870E2 /* Question.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CFFD629351CC0005870E2 /* Question.swift */; };
 		B71CFFD9293520F3005870E2 /* AnatomyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B71CFFD8293520F3005870E2 /* AnatomyModel.swift */; };
+		B71F902D29AA2F9100A6F94E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B71F902C29AA2F9100A6F94E /* GoogleService-Info.plist */; };
 		B7302F032911CEBC0018272C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7302F022911CEBC0018272C /* AppDelegate.swift */; };
 		B7302F052911CEBC0018272C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7302F042911CEBC0018272C /* SceneDelegate.swift */; };
 		B7302F072911CEBC0018272C /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7302F062911CEBC0018272C /* ARViewController.swift */; };
@@ -48,7 +49,6 @@
 		B7D05E24291FD51900439680 /* Skull.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E23291FD51900439680 /* Skull.usdz */; };
 		B7D05E26291FDA9400439680 /* Chest.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E25291FDA9400439680 /* Chest.usdz */; };
 		B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E27291FDA9E00439680 /* Laryngeal.usdz */; };
-		B7EBEF402977636E00FB401B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B7EBEF3F2977636E00FB401B /* GoogleService-Info.plist */; };
 		B7EBEF432978B5BF00FB401B /* ModelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF422978B5BF00FB401B /* ModelViewController.swift */; };
 		B7EBEF4B29809B4600FB401B /* ModelControllerAddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */; };
 		B7EBEF4F29809FAB00FB401B /* PopUpViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */; };
@@ -92,6 +92,7 @@
 		B71CFFD32934DD0D005870E2 /* QuizPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizPageViewController.swift; sourceTree = "<group>"; };
 		B71CFFD629351CC0005870E2 /* Question.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Question.swift; sourceTree = "<group>"; };
 		B71CFFD8293520F3005870E2 /* AnatomyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnatomyModel.swift; sourceTree = "<group>"; };
+		B71F902C29AA2F9100A6F94E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B7302EFF2911CEBC0018272C /* Thesis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Thesis.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B7302F022911CEBC0018272C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B7302F042911CEBC0018272C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,7 +122,6 @@
 		B7D05E23291FD51900439680 /* Skull.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Skull.usdz; sourceTree = "<group>"; };
 		B7D05E25291FDA9400439680 /* Chest.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Chest.usdz; sourceTree = "<group>"; };
 		B7D05E27291FDA9E00439680 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
-		B7EBEF3F2977636E00FB401B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B7EBEF422978B5BF00FB401B /* ModelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelViewController.swift; sourceTree = "<group>"; };
 		B7EBEF4A29809B4600FB401B /* ModelControllerAddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelControllerAddButton.swift; sourceTree = "<group>"; };
 		B7EBEF4E29809FAB00FB401B /* PopUpViewButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewButton.swift; sourceTree = "<group>"; };
@@ -231,6 +231,7 @@
 		B7302EF62911CEBC0018272C = {
 			isa = PBXGroup;
 			children = (
+				B71F902C29AA2F9100A6F94E /* GoogleService-Info.plist */,
 				B7EEAA6A296B6D5E00AAAC61 /* SkeletalJSON.json */,
 				B7A3E174296B584E009670FC /* .swiftlint.yml */,
 				B707B377297756EC001DB1E8 /* logo.png */,
@@ -252,7 +253,6 @@
 		B7302F012911CEBC0018272C /* Thesis */ = {
 			isa = PBXGroup;
 			children = (
-				B7EBEF3F2977636E00FB401B /* GoogleService-Info.plist */,
 				B7302F1B2911D1EA0018272C /* USDZFiles */,
 				B707B37929775B44001DB1E8 /* API */,
 				B7302F1A2911CF710018272C /* Utils */,
@@ -489,7 +489,7 @@
 				B77FCAD22911D3C800E45438 /* Shoulder_Girdle.usdz in Resources */,
 				B7302F0F2911CEBD0018272C /* LaunchScreen.storyboard in Resources */,
 				B7A3E175296B584E009670FC /* .swiftlint.yml in Resources */,
-				B7EBEF402977636E00FB401B /* GoogleService-Info.plist in Resources */,
+				B71F902D29AA2F9100A6F94E /* GoogleService-Info.plist in Resources */,
 				B7302F0C2911CEBD0018272C /* Assets.xcassets in Resources */,
 				B77FCAD32911D3C800E45438 /* Leg.usdz in Resources */,
 				B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */,

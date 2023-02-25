@@ -131,9 +131,7 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
         if currentIndex < pages.count - 1 {
             return pages[currentIndex + 1]  // go next
         } else {
-            if(pageControl.currentPage == pages.count - 1) {
-                didOnboard()
-            }
+            didOnboard()
             return nil
         }
     }

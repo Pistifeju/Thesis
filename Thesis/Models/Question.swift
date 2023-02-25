@@ -5,13 +5,13 @@
 //  Created by István Juhász on 2022. 11. 28..
 //
 
-enum QuestionType: String {
+enum QuestionType: String, Codable {
     case singleChoice = "SingleChoice"
     case multipleChoice = "MultipleChoice"
     case TrueFalse = "True/False"
 }
 
-class Question {
+class Question: Codable {
     var question: String
     var answers: [String]
     var correctAnswers: [String]
@@ -43,5 +43,9 @@ class AnsweredQuestion: Question {
     init(question: Question, userAnswers: [String]) {
         self.userAnswers = userAnswers
         super.init(question: question.question, answers: question.answers, correctAnswers: question.correctAnswers, type: question.type)
+    }
+    
+    required init(from decoder: Decoder) throws {
+        fatalError("init(from:) has not been implemented")
     }
 }

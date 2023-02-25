@@ -5,7 +5,7 @@
 //  Created by István Juhász on 2023. 01. 31..
 //
 
-struct Quiz {
+struct Quiz: Codable {
     var name: String
     var code: String
     var quizDescription: String
