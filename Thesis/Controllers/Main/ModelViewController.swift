@@ -20,7 +20,7 @@ class ModelViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .black
-        label.font = UIFont.preferredFont(forTextStyle: .body, compatibleWith: .none)
+        label.font = UIFont.systemFont(ofSize: 100)
         label.numberOfLines = 0
         label.text = "Error"
         label.textAlignment = .justified
@@ -79,14 +79,14 @@ class ModelViewController: UIViewController {
             createNewTestButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
             createNewTestButton.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
             
-            goToARLearningModeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            createNewTestButton.topAnchor.constraint(equalToSystemSpacingBelow: goToARLearningModeButton.bottomAnchor, multiplier: 1),
-            goToARLearningModeButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
-            
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: startTestButton.bottomAnchor, multiplier: 2),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: startTestButton.trailingAnchor, multiplier: 2),
             startTestButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
             startTestButton.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15),
+            
+            goToARLearningModeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            createNewTestButton.topAnchor.constraint(equalToSystemSpacingBelow: goToARLearningModeButton.bottomAnchor, multiplier: 2),
+            goToARLearningModeButton.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.08),
             
             modelInformationLabel.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 2),
             modelInformationLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),

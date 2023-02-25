@@ -18,6 +18,7 @@ protocol ModelInformationViewDelegate: AnyObject {
     func didTapFade()
     func didTapFadeOthers()
     func didTapIsolate()
+    func didWriteNote(note: String)
 }
 
 class ModelInformationView: UIView {
@@ -150,6 +151,7 @@ class ModelInformationView: UIView {
         nameToSpeechButton.addTarget(self, action: #selector(didTapNameToSpeechButton), for: .touchUpInside)
         notesButton.addTarget(self, action: #selector(didTapNotesButton), for: .touchUpInside)
         isolateButton.addTarget(self, action: #selector(didTapIsolateButton), for: .touchUpInside)
+        notesTextView.delegate = self
         
         configureUI()
     }
@@ -205,10 +207,10 @@ class ModelInformationView: UIView {
         ])
     }
     
-    func configure(nameLabel: String, textViewString: String) {
+    func configure(nameLabel: String, textViewString: String, notesTextViewString: String) {
         self.nameLabel.text = nameLabel
         self.informationTextView.text = textViewString
-        //TODO: - set latinNameLabel
+        self.notesTextView.text = notesTextViewString
     }
     
     func updateBottomButtons(entity: AREntity) {
@@ -296,5 +298,13 @@ class ModelInformationView: UIView {
         utterance.voice = AVSpeechSynthesisVoice(language: "en-US")
 
         synth.speak(utterance)
+    }
+}
+
+// MARK: - UITextViewDelegate
+
+extension ModelInformationView: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        delegate?.didWriteNote(note: textView.text)
     }
 }

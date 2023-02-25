@@ -8,6 +8,7 @@ import UIKit
 import RealityKit
 import ARKit
 import FocusEntity
+import FirebaseAuth
 
 class ARViewController: UIViewController, FocusEntityDelegate {
     
@@ -281,12 +282,40 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         colorModelEntities()
     }
     
+    private func saveNoteforEntity(entityName: String, note: String) {
+        let id = Auth.auth().currentUser?.uid
+        let defaults = UserDefaults.standard
+        
+        if let object = defaults.object(forKey: id!) as? [String: Any]{
+            var notes = object["notes"] as! [String: String]
+            
+            notes[entityName] = note
+            let user: [String: Any] = ["notes": notes]
+            defaults.set(user, forKey: id!)
+        }
+    }
+    
+    private func loadNoteForEntity(entityName: String) -> String {
+        let id = Auth.auth().currentUser?.uid
+        let defaults = UserDefaults.standard
+
+        if let object = defaults.object(forKey: id!) as? [String: Any]{
+            let notes = object["notes"] as! [String: String]
+            if let note = notes[entityName] {
+                return note
+            }
+        }
+        
+        return ""
+    }
+    
     private func loadEntities(from childrens: Entity.ChildCollection?) {
         for children in childrens! {
             let childModelEntity = children as! ModelEntity
             childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
             let informationText = self.model.subModels?[childModelEntity.name] ?? "Under Development"
-            let arEntity = AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false, informationText: informationText)
+            let notes = loadNoteForEntity(entityName: childModelEntity.name)
+            let arEntity = AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false, informationText: informationText, notes: notes)
             self.entities.append(arEntity)
         }
     }
@@ -423,7 +452,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         let entityForText = self.entities.first(where: { $0.entity.name == entity.name })
         
-        modelInformationView.configure(nameLabel: entity.name.replacingOccurrences(of: "_", with: " "), textViewString: entityForText?.informationText ?? "Error")
+        modelInformationView.configure(nameLabel: entity.name.replacingOccurrences(of: "_", with: " "), textViewString: entityForText?.informationText ?? "", notesTextViewString: entityForText?.notes ?? "")
         self.modelInformationView.updateBottomButtons(entity: self.selectedEntity)
     }
     
@@ -444,6 +473,10 @@ class ARViewController: UIViewController, FocusEntityDelegate {
 // MARK: - ModelInformationViewDelegate
 
 extension ARViewController: ModelInformationViewDelegate {
+    func didWriteNote(note: String) {
+        saveNoteforEntity(entityName: self.selectedEntity.entity.name, note: note)
+    }
+    
     func didTapIsolate() {
         if(self.selectedEntity.isIsolated) {
             self.selectedEntity.isolated = false

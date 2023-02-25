@@ -20,6 +20,7 @@ class AREntity {
     var originalMaterial: PhysicallyBasedMaterial
     var coloredMaterialColor: UIColor
     var informationText: String
+    var notes: String
     var isHidden: Bool
     var isFaded: Bool 
     var isFadedOthers: Bool
@@ -70,7 +71,7 @@ class AREntity {
         }
     }
     
-    init(entity: ModelEntity, state: EntityState, originalMaterial: PhysicallyBasedMaterial, isHidden: Bool, isFaded: Bool, informationText: String) {
+    init(entity: ModelEntity, state: EntityState, originalMaterial: PhysicallyBasedMaterial, isHidden: Bool, isFaded: Bool, informationText: String, notes: String) {
         self.coloredMaterialColor = UIColor.white
         self.entity = entity
         self.state = state
@@ -78,6 +79,7 @@ class AREntity {
         self.isHidden = isHidden
         self.isFaded = isFaded
         self.informationText = informationText
+        self.notes = notes
         self.isFadedOthers = false
         self.isolated = false
         self.isIsolated = false
@@ -89,6 +91,7 @@ class AREntity {
         self.state = .unselected
         self.originalMaterial = PhysicallyBasedMaterial()
         self.coloredMaterialColor = UIColor.white
+        self.notes = ""
         self.isHidden = false
         self.isFaded = false
         self.isFadedOthers = false
