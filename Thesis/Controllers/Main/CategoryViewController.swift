@@ -32,6 +32,8 @@ class CategoryViewController: UICollectionViewController {
         
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         view.backgroundColor = .white
         

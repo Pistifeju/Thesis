@@ -66,7 +66,7 @@ class MainTabController: UITabBarController {
         main.title = "Section"
         
         let profile = templateNavigationController(unselectedImage: UIImage(systemName: "person")!, selectedImage: UIImage(systemName: "person.fill")!, rootViewController: ProfileViewController(user: user))
-        profile.title = "Profile"
+        profile.tabBarItem.title = "Profile"
         
         viewControllers = [main, profile]
     }

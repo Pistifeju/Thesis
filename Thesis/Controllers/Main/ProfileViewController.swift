@@ -4,47 +4,39 @@
 //
 //  Created by István Juhász on 2023. 01. 30..
 //
+
 import UIKit
 
 class ProfileViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let user: User?
+    private let user: User
     
-    init(user: User?) {
+    // MARK: - LifeCycle
+    
+    init(user: User) {
         self.user = user
         super.init(nibName: nil, bundle: nil)
+        title = user.username
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - LifeCycle
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupUI()
+        
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
+        
+        configureUI()
     }
     
     // MARK: - Helpers
-    private func setupUI() {
-        view.backgroundColor = .white
-        
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.navigationBar.backgroundColor = .white
-        navigationController?.navigationBar.barTintColor = .white
-        
-        title = "Profile"
-        
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.isHidden = false
-        
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
-        
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
+    private func configureUI() {
+        view.backgroundColor = .systemBlue
         
         NSLayoutConstraint.activate([
             

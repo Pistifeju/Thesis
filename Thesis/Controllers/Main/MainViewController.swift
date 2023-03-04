@@ -41,14 +41,13 @@ class MainViewController: UICollectionViewController {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.backgroundColor = .white
         navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         view.backgroundColor = .white
         collectionView.backgroundColor = .white
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
-        
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(didPressLogout))
-        navigationItem.leftBarButtonItem?.tintColor = UIColor.black
         
         let cellSize = CGSize(width: view.frame.width - 50, height: view.frame.width / 2)
         
@@ -64,28 +63,6 @@ class MainViewController: UICollectionViewController {
     }
 
     // MARK: - Selectors
-    
-    @objc private func didPressLogout() {
-        let alert = UIAlertController(title: "Logout", message: "Are you sure you want to log out?", preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Logout", style: .destructive, handler: { _ in
-            AuthService.shared.signOut { [weak self] error in
-                guard let strongSelf = self else { return }
-                if let error = error {
-                    AlertManager.showLogoutErrorAlert(on: strongSelf, with: error)
-                    return
-                }
-                
-                if let sceneDelegate = strongSelf.view.window?.windowScene?.delegate as? SceneDelegate {
-                    sceneDelegate.checkAuthentication()
-                }
-            }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        
-        present(alert, animated: true, completion: nil)
-    }
 }
 
 // MARK: - UICollectionViewDataSource

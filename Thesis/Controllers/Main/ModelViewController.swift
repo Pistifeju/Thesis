@@ -61,6 +61,8 @@ class ModelViewController: UIViewController {
         
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.isHidden = false
+        navigationController?.navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = true
         
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         

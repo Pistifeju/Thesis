@@ -285,6 +285,7 @@
 		B7302F182911CF220018272C /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B7ABC3F329B3D29A002EEACE /* Profile */,
 				B7FDB44B2923B55000B8A17D /* MainViewCollectionViewCell.swift */,
 				B7FDB48B29244B9E00B8A17D /* CategoryViewCollectionViewCell.swift */,
 				B7EBEF5529870D2100FB401B /* Quiz */,
@@ -345,6 +346,13 @@
 				B77FCACA2911D3C800E45438 /* Vertebral_Column.usdz */,
 			);
 			path = Skeletial;
+			sourceTree = "<group>";
+		};
+		B7ABC3F329B3D29A002EEACE /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		B7EBEF412978B49B00FB401B /* AR */ = {
