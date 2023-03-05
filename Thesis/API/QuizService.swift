@@ -100,6 +100,55 @@ class QuizService {
         }
     }
     
+    public func fetchAllQuizzesForUser(completion: @escaping([Quiz]?, Error?) -> Void) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        var quizzes = [Quiz]()
+        
+        Firestore.firestore().collection("users").document(userUID).collection("quizCreated").getDocuments { snapshot, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            guard let snapshot = snapshot else { return }
+            
+            var documentIDs: [String] = []
+            
+            snapshot.documents.forEach { document in
+                let data = document.documentID
+                documentIDs.append(data)
+            }
+            
+            Firestore.firestore().collection("quizzes").whereField(FieldPath.documentID(), in: documentIDs).getDocuments { snapshot, error in
+                if let error = error {
+                    completion(nil, error)
+                    return
+                }
+                
+                guard let snapshot = snapshot else {
+                    completion(nil, nil)
+                    return
+                }
+                
+                snapshot.documents.forEach { document in
+                    
+                    let data = document.data()
+                    let settings = self.createSettings(data: data)
+                    
+                    let questionsAsData = data["questions"] as! [[String: Any]]
+                    let questions = self.createQuestions(questionsAsData: questionsAsData)
+                    
+                    let quiz = Quiz(settings: settings, questions: questions)
+                    
+                    quizzes.append(quiz)
+                }
+                
+                completion(quizzes, nil)
+                return
+            }
+        }
+    }
+    
     /// A method to fetch a quiz from firebase firestore.
     /// - Parameters:
     ///   - code: The code of the quiz which should be fetched.

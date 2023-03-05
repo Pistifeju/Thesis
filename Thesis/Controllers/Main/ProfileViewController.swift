@@ -11,14 +11,22 @@ class ProfileViewController: UIViewController {
     
     // MARK: - Properties
 
-    private lazy var refreshControl: UIRefreshControl = {
+    private var completedQuizzes: [CompletedQuiz]?
+    private var yourQuizzes: [Quiz]?
+    
+    private lazy var yourQuizzesRefreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.translatesAutoresizingMaskIntoConstraints = false
-        refreshControl.addTarget(self, action: #selector(didRefresh), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(didRefreshYourQuizzes), for: .valueChanged)
         return refreshControl
     }()
-    
-    private var completedQuizzes: [CompletedQuiz]?
+
+    private lazy var completedQuizzesRefreshControl: UIRefreshControl = {
+        let refreshControl = UIRefreshControl()
+        refreshControl.translatesAutoresizingMaskIntoConstraints = false
+        refreshControl.addTarget(self, action: #selector(didRefreshCompletedQuizzes), for: .valueChanged)
+        return refreshControl
+    }()
     
     private let spinner: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
@@ -27,13 +35,16 @@ class ProfileViewController: UIViewController {
         return spinner
     }()
     
-    private lazy var quizzesCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        let cellSize = CGSize(width: view.frame.width - 32, height: view.frame.width / 4.5)
-        layout.itemSize = cellSize
-        layout.scrollDirection = .vertical
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+    private let completedQuizzesCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
+    private let yourQuizzesCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.isHidden = true
         return collectionView
     }()
     
@@ -55,10 +66,10 @@ class ProfileViewController: UIViewController {
     init(user: User) {
         self.user = user
         self.spinner.startAnimating()
-        self.completedQuizzes = []
         super.init(nibName: nil, bundle: nil)
         title = user.username
         fetchCompletedQuizzes()
+        fetchYourQuizzes()
     }
     
     required init?(coder: NSCoder) {
@@ -70,13 +81,28 @@ class ProfileViewController: UIViewController {
         
         navigationController?.navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
-        
-        quizzesCollectionView.register(ProfileQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileQuizCollectionViewCell.identifier)
-        quizzesCollectionView.delegate = self
-        quizzesCollectionView.dataSource = self
-        quizzesCollectionView.refreshControl = refreshControl
-        
+       
+        quizzesSegmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
+        setupCollectionViews()
         configureUI()
+    }
+    
+    private func setupCollectionViews() {
+        let layout = UICollectionViewFlowLayout()
+        let cellSize = CGSize(width: view.frame.width - 32, height: view.frame.width / 4.5)
+        layout.itemSize = cellSize
+        layout.scrollDirection = .vertical
+        completedQuizzesCollectionView.setCollectionViewLayout(layout, animated: true)
+        completedQuizzesCollectionView.register(ProfileCompletedQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileCompletedQuizCollectionViewCell.identifier)
+        completedQuizzesCollectionView.delegate = self
+        completedQuizzesCollectionView.dataSource = self
+        completedQuizzesCollectionView.refreshControl = completedQuizzesRefreshControl
+        
+        yourQuizzesCollectionView.setCollectionViewLayout(layout, animated: true)
+        yourQuizzesCollectionView.register(ProfileYourQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileYourQuizCollectionViewCell.identifier)
+        yourQuizzesCollectionView.delegate = self
+        yourQuizzesCollectionView.dataSource = self
+        yourQuizzesCollectionView.refreshControl = yourQuizzesRefreshControl
     }
     
     private func fetchCompletedQuizzes() {
@@ -87,12 +113,30 @@ class ProfileViewController: UIViewController {
             }
             guard let completedQuizzes = completedQuiz else { return }
             
-            strongSelf.refreshControl.endRefreshing()
+            strongSelf.completedQuizzesRefreshControl.endRefreshing()
             strongSelf.completedQuizzes = completedQuizzes
             strongSelf.spinner.stopAnimating()
             
             DispatchQueue.main.async {
-                strongSelf.quizzesCollectionView.reloadData()
+                strongSelf.completedQuizzesCollectionView.reloadData()
+            }
+        }
+    }
+    
+    private func fetchYourQuizzes() {
+        QuizService.shared.fetchAllQuizzesForUser { [weak self] quizzes, error in
+            guard let strongSelf = self else { return }
+            
+            if let error = error {
+                print(String(describing: error))
+            }
+            
+            guard let quizzes = quizzes else { return }
+            
+            strongSelf.yourQuizzesRefreshControl.endRefreshing()
+            strongSelf.yourQuizzes = quizzes
+            DispatchQueue.main.async {
+                strongSelf.yourQuizzesCollectionView.reloadData()
             }
         }
     }
@@ -104,7 +148,8 @@ class ProfileViewController: UIViewController {
         view.addSubview(spinner)
         view.addSubview(quizzesSegmentedControl)
         quizzesSegmentedControl.selectedSegmentIndex = 0
-        view.addSubview(quizzesCollectionView)
+        view.addSubview(completedQuizzesCollectionView)
+        view.addSubview(yourQuizzesCollectionView)
         
         NSLayoutConstraint.activate([
             spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -113,42 +158,84 @@ class ProfileViewController: UIViewController {
             quizzesSegmentedControl.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 2),
             view.trailingAnchor.constraint(equalToSystemSpacingAfter: quizzesSegmentedControl.trailingAnchor, multiplier: 2),
             
-            quizzesCollectionView.topAnchor.constraint(equalToSystemSpacingBelow: quizzesSegmentedControl.bottomAnchor, multiplier: 2),
-            quizzesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            quizzesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            quizzesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            completedQuizzesCollectionView.topAnchor.constraint(equalToSystemSpacingBelow: quizzesSegmentedControl.bottomAnchor, multiplier: 2),
+            completedQuizzesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            completedQuizzesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            completedQuizzesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            yourQuizzesCollectionView.topAnchor.constraint(equalToSystemSpacingBelow: quizzesSegmentedControl.bottomAnchor, multiplier: 2),
+            yourQuizzesCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            yourQuizzesCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            yourQuizzesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
     
     // MARK: - Selectors
     
-    @objc private func didRefresh() {
-        refreshControl.beginRefreshing()
+    @objc private func didRefreshCompletedQuizzes() {
+        completedQuizzesRefreshControl.isHidden = false
+        completedQuizzesRefreshControl.beginRefreshing()
         fetchCompletedQuizzes()
+    }
+    
+    @objc private func didRefreshYourQuizzes() {
+        yourQuizzesRefreshControl.isHidden = false
+        yourQuizzesRefreshControl.beginRefreshing()
+        fetchYourQuizzes()
+    }
+    
+    @objc private func segmentChanged(_ sender: UISegmentedControl) {
+        if sender.selectedSegmentIndex == 0 {
+            yourQuizzesCollectionView.isHidden = true
+            completedQuizzesCollectionView.isHidden = false
+        } else {
+            yourQuizzesCollectionView.isHidden = false
+            completedQuizzesCollectionView.isHidden = true
+        }
     }
 }
 
 extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        guard let completedQuizzes = completedQuizzes else { return }
         
-        let vc = EndOfQuizController(completedQuiz: completedQuizzes[indexPath.row], user: user)
-        let nav = UINavigationController(rootViewController: vc)
-        nav.modalPresentationStyle = .fullScreen
-        present(nav, animated: true)
+        if collectionView == completedQuizzesCollectionView {
+            guard let completedQuizzes = completedQuizzes else { return }
+            let vc = EndOfQuizController(completedQuiz: completedQuizzes[indexPath.row], user: user)
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true)
+        } else {
+            
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let completedQuizzes = completedQuizzes else { return 0 }
-        return completedQuizzes.count
+        if collectionView == completedQuizzesCollectionView {
+            guard let completedQuizzes = completedQuizzes else { return 0 }
+            return completedQuizzes.count
+        } else {
+            guard let yourQuizzes = yourQuizzes else { return 0 }
+            return yourQuizzes.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileQuizCollectionViewCell.identifier, for: indexPath) as? ProfileQuizCollectionViewCell, let completedQuizzes = completedQuizzes else {
-            return UICollectionViewCell.init()
+        if collectionView == completedQuizzesCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileCompletedQuizCollectionViewCell.identifier, for: indexPath) as? ProfileCompletedQuizCollectionViewCell, let completedQuizzes = completedQuizzes else {
+                return UICollectionViewCell.init()
+            }
+            cell.configure(with: completedQuizzes[indexPath.row])
+            return cell
+        } else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileYourQuizCollectionViewCell.identifier, for: indexPath) as? ProfileYourQuizCollectionViewCell, let yourQuizzes = yourQuizzes else {
+                return UICollectionViewCell.init()
+            }
+            
+            cell.configure(with: yourQuizzes[indexPath.row])
+            return cell
         }
-        cell.configure(with: completedQuizzes[indexPath.row])
-        return cell
+        
+        
     }
 }
