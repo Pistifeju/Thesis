@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 private let reuseIdentifier = "systemCell"
 
@@ -52,7 +51,7 @@ class MainViewController: UICollectionViewController {
         let cellSize = CGSize(width: view.frame.width - 50, height: view.frame.width / 2)
         
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical //.horizontal
+        layout.scrollDirection = .vertical
         layout.itemSize = cellSize
         layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
         layout.minimumLineSpacing = 20.0

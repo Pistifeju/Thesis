@@ -27,14 +27,16 @@ struct Quiz: Codable {
     }
 }
 
-struct CompletedQuiz {
+struct CompletedQuiz: Codable {
     var name: String
+    var code: String
     var quizDescription: String
     var allowViewCompletedTest: Bool
     var answeredQuestions: [AnsweredQuestion]
     var timeToComplete: Int
+    var score: Float
     
-    var score: Float {
+    public func calculateScore() -> Float {
         var score: Float = 0
         
         for question in answeredQuestions {
@@ -84,5 +86,12 @@ struct CompletedQuiz {
         self.allowViewCompletedTest = settings["allowViewCompletedTest"] as! Bool
         self.answeredQuestions = answeredQuestions
         self.timeToComplete = settings["timeToComplete"] as! Int
+        self.code = settings["code"] as! String
+        if let score = settings["score"] {
+            self.score = score as! Float
+        } else {
+            self.score = -1
+        }
+        
     }
 }

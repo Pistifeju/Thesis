@@ -11,6 +11,11 @@ class QuizViewController: UIViewController {
     
     // MARK: - Properties
     var inReviewMode = false
+    var answeredQuestion: AnsweredQuestion? {
+        didSet {
+            selectUserAnswers()
+        }
+    }
     
     private var question: Question
     
@@ -95,6 +100,7 @@ class QuizViewController: UIViewController {
         super.viewWillAppear(animated)
         if inReviewMode {
             setUpViewControllerForViewMode()
+            selectUserAnswers()
         }
     }
     
@@ -158,6 +164,28 @@ class QuizViewController: UIViewController {
             trueFalseSelector.heightAnchor.constraint(equalTo: trueFalseSelector.widthAnchor, multiplier: 0.35),
         ])
         
+    }
+    
+    private func selectUserAnswers() {
+        guard let answeredQuestion = answeredQuestion else { return }
+        let buttons = [answer1Button, answer2Button, answer3Button, answer4Button]
+        for answer in answeredQuestion.userAnswers {
+            for button in buttons {
+                if button.titleLabel?.text == answer {
+                    button.isSelected = true
+                }
+            }
+        }
+        
+        if answeredQuestion.type == .TrueFalse {
+            if let answer = answeredQuestion.userAnswers.first {
+                if answer == "True" {
+                    trueFalseSelector.selectedSegmentIndex = 0
+                } else {
+                    trueFalseSelector.selectedSegmentIndex = 1
+                }
+            }
+        }
     }
     
     private func configure() {

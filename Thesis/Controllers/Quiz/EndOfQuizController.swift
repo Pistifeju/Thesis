@@ -12,6 +12,7 @@ class EndOfQuizController: UIViewController {
     // MARK: - Properties
     
     private let completedQuiz: CompletedQuiz
+    private let user: User
     
     // MARK: - Lifecycle
     
@@ -62,7 +63,8 @@ class EndOfQuizController: UIViewController {
     private var reviewQuizButton = QuizCustomNavigationButton(title: "Review Test")
     private var exitButton = QuizCustomNavigationButton(title: "Exit")
     
-    init(completedQuiz: CompletedQuiz) {
+    init(completedQuiz: CompletedQuiz, user: User) {
+        self.user = user
         self.completedQuiz = completedQuiz
         super.init(nibName: nil, bundle: nil)
     }
@@ -76,7 +78,7 @@ class EndOfQuizController: UIViewController {
         
         reviewQuizButton.addTarget(self, action: #selector(didTapReviewButton), for: .touchUpInside)
         exitButton.addTarget(self, action: #selector(didTapExit), for: .touchUpInside)
-                
+        
         configureUI()
     }
     
@@ -169,15 +171,25 @@ class EndOfQuizController: UIViewController {
     
     @objc private func didTapReviewButton() {
         if let _ = navigationController?.popViewController(animated: true) {
-            if let quizPageViewController = navigationController?.topViewController as? QuizPageViewController{
+            if let quizPageViewController = navigationController?.topViewController as? QuizPageViewController {
                 quizPageViewController.reviewMode = true
+            }
+        } else {
+            QuizService.shared.fetchQuiz(with: completedQuiz.code) { [weak self] quiz, quizID, error in
+                guard let strongSelf = self else { return }
+                guard error == nil, let quiz = quiz, let quizCode = quizID else {
+                    AlertManager.showQuizError(on: strongSelf, with: "Error happened", and: error?.localizedDescription ?? "Undefined error")
+                    return
+                }
+                
+                let vc = QuizPageViewController(quiz: quiz, user: strongSelf.user, quizCode: quizCode, completedQuiz: strongSelf.completedQuiz)
+                vc.reviewMode = true
+                strongSelf.navigationController?.pushViewController(vc, animated: true)
             }
         }
     }
     
     @objc private func didTapExit() {
-        if let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate {
-            sceneDelegate.checkAuthentication()
-        }
+        dismiss(animated: true)
     }
 }

@@ -129,6 +129,7 @@ class QuizService {
             let quiz = Quiz(settings: settings, questions: questions)
             
             completion(quiz, quizID, nil)
+            return
         }
     }
     
@@ -164,9 +165,11 @@ class QuizService {
             
             let completedQuizData: [String: Any] = [
                 "name": completedQuiz.name,
+                "code": completedQuiz.code,
                 "quizDescription": completedQuiz.quizDescription,
                 "allowViewCompletedTest": completedQuiz.allowViewCompletedTest,
                 "timeToComplete": completedQuiz.timeToComplete,
+                "score": completedQuiz.score,
                 "questions": questions
             ]
             
@@ -179,6 +182,52 @@ class QuizService {
                 completion(nil)
                 return
             }
+        }
+    }
+    
+    public func fetchCompletedQuizzes(completion: @escaping([CompletedQuiz]?, Error?) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        var completedQuizzes = [CompletedQuiz]()
+        
+        Firestore.firestore().collection("users").document(uid).collection("takenQuizzes").getDocuments { snapshot, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                completion(nil, nil)
+                return
+            }
+            
+            snapshot.documents.forEach { document in
+                let data = document.data()
+                let settings: [String: Any] = [
+                    "name": data["name"] as Any,
+                    "code": data["code"] as Any,
+                    "quizDescription": data["quizDescription"] as Any,
+                    "timeToComplete": data["timeToComplete"] as Any,
+                    "allowViewCompletedTest": data["allowViewCompletedTest"] as Any,
+                    "score": data["score"] as Any]
+                
+                let answers = data["questions"] as! [[String: Any]]
+                var answeredQuestions: [AnsweredQuestion] = []
+                for answer in answers {
+                    let answerSettings: [String: Any] = [
+                        "answers": answer["answers"] as Any,
+                        "correctAnswers": answer["correctAnswers"] as Any,
+                        "userAnswers": answer["userAnswers"] as Any,
+                        "type": answer["type"] as Any,
+                        "question": answer["question"] as Any
+                    ]
+                    let answeredQuestion = AnsweredQuestion(question: answerSettings["question"] as? String ?? "" , answers: answerSettings["answers"] as? [String] ?? [], correctAnswers: answerSettings["answers"] as? [String] ?? [], type: answerSettings["type"] as? QuestionType ?? QuestionType.TrueFalse, userAnswers: answerSettings["userAnswers"] as? [String] ?? [])
+                    answeredQuestions.append(answeredQuestion)
+                }
+                let completedQuiz = CompletedQuiz(settings: settings, answeredQuestions: answeredQuestions)
+                completedQuizzes.append(completedQuiz)
+            }
+            completion(completedQuizzes, nil)
+            return
         }
     }
 }

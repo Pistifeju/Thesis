@@ -13,8 +13,8 @@ class QuizPageViewController: UIPageViewController {
     
     private let initialPage = 0
     private var pages = [UIViewController]()
-    private let user: User
-    private let quizCode: String
+    private let user: User?
+    private let quizCode: String?
     private var completedQuiz: CompletedQuiz?
     
     public var reviewMode: Bool {
@@ -30,7 +30,7 @@ class QuizPageViewController: UIPageViewController {
         return pages.firstIndex(of: vc) ?? 0
     }
     
-    private var quiz: Quiz {
+    private var quiz: Quiz? {
         didSet {
             updateUI(with: 1)
         }
@@ -60,13 +60,15 @@ class QuizPageViewController: UIPageViewController {
     
     // MARK: - Lifecycle
     
-    init(quiz: Quiz, user: User, quizCode: String) {
+    init(quiz: Quiz, user: User, quizCode: String, completedQuiz: CompletedQuiz? = nil) {
         self.quiz = quiz
         self.user = user
         self.quizCode = quizCode
         self.reviewMode = false
+        self.completedQuiz = completedQuiz
         self.timerLabel = TimerBarButtonItem(secondsLeft: quiz.timeToComplete * 60)
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        self.createPages()
     }
     
     required init?(coder: NSCoder) {
@@ -84,7 +86,6 @@ class QuizPageViewController: UIPageViewController {
         submitButton.addTarget(self, action: #selector(didTapSubmit), for: .touchUpInside)
         navigationItem.leftBarButtonItem = timerLabel
 
-        createPages()
         configureUI()
     }
     
@@ -103,11 +104,13 @@ class QuizPageViewController: UIPageViewController {
             if page is QuizViewController {
                 let vc = page as! QuizViewController
                 vc.inReviewMode = true
+                vc.answeredQuestion = completedQuiz?.answeredQuestions[i]
             }
         }
     }
     
     private func createPages() {
+        guard let quiz = quiz else { return }
         for question in quiz.questions {
             let vc = QuizViewController(question: question, modelName: quiz.model)
             pages.append(vc)
@@ -119,6 +122,7 @@ class QuizPageViewController: UIPageViewController {
     }
     
     private func configureUI() {
+        guard let quiz = quiz else { return }
         title = quiz.name
         
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
@@ -164,15 +168,16 @@ class QuizPageViewController: UIPageViewController {
     }
     
     private func updateProgressView() {
+        guard let quiz = quiz else { return }
         UIView.animate(withDuration: 0.5) {
-            self.progressView.setProgress(Float(self.currentIndex + 1) / Float(self.quiz.questions.count), animated: true)
+            self.progressView.setProgress(Float(self.currentIndex + 1) / Float(quiz.questions.count), animated: true)
         }
     }
     
     private func createCompletedQuiz() -> CompletedQuiz {
-        let calculateTimeToComplete = quiz.timeToComplete - Int(timerLabel.secondsLeft / 60)
+        let calculateTimeToComplete = (quiz?.timeToComplete ?? 999) - Int(timerLabel.secondsLeft / 60)
         
-        let settings: [String: Any] = ["name": quiz.name, "quizDescription": quiz.quizDescription, "allowViewCompletedTest": quiz.allowViewCompletedTest, "timeToComplete": calculateTimeToComplete]
+        let settings: [String: Any] = ["name": quiz?.name ?? "Error", "code": quiz?.code ?? "error", "quizDescription" : quiz?.quizDescription ?? "Error", "allowViewCompletedTest": quiz?.allowViewCompletedTest ?? "Error", "timeToComplete": calculateTimeToComplete]
         var answeredQuestions = [AnsweredQuestion]()
         
         for page in pages {
@@ -182,21 +187,23 @@ class QuizPageViewController: UIPageViewController {
             }
         }
         
-        let completedQuiz = CompletedQuiz(settings: settings, answeredQuestions: answeredQuestions)
+        var completedQuiz = CompletedQuiz(settings: settings, answeredQuestions: answeredQuestions)
+        completedQuiz.score = completedQuiz.calculateScore()
         self.completedQuiz = completedQuiz
         return completedQuiz
     }
     
     private func submitQuiz(strongSelf: QuizPageViewController) {
+        guard let user = user, let quizCode = quizCode else { return }
         let completedQuiz = strongSelf.createCompletedQuiz()
         
-        QuizService.shared.uploadFinishingQuiz(user: strongSelf.user, quizID: strongSelf.quizCode, completedQuiz: completedQuiz) { error in
+        QuizService.shared.uploadFinishingQuiz(user: user, quizID: quizCode, completedQuiz: completedQuiz) { error in
             if let uploadError = error {
                 AlertManager.showQuizError(on: strongSelf, with: "Error submitting test", and: uploadError.localizedDescription)
                 return
             }
             
-            let vc = EndOfQuizController(completedQuiz: strongSelf.createCompletedQuiz())
+            let vc = EndOfQuizController(completedQuiz: completedQuiz, user: user)
             strongSelf.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -216,6 +223,7 @@ class QuizPageViewController: UIPageViewController {
     }
     
     @objc private func didTapGoToARMode() {
+        guard let quiz = quiz else { return }
         if let encoded = UserDefaults.standard.data(forKey: "skeletalModels"), let anatomyModels = try? JSONDecoder().decode([AnatomyModel].self, from: encoded) {
             
             let model = anatomyModels.first(where: {$0.name == quiz.model })
