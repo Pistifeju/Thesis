@@ -10,7 +10,7 @@ import UIKit
 class ProfileViewController: UIViewController {
     
     // MARK: - Properties
-
+    
     private var completedQuizzes: [CompletedQuiz]?
     private var yourQuizzes: [Quiz]?
     
@@ -20,7 +20,7 @@ class ProfileViewController: UIViewController {
         refreshControl.addTarget(self, action: #selector(didRefreshYourQuizzes), for: .valueChanged)
         return refreshControl
     }()
-
+    
     private lazy var completedQuizzesRefreshControl: UIRefreshControl = {
         let refreshControl = UIRefreshControl()
         refreshControl.translatesAutoresizingMaskIntoConstraints = false
@@ -81,67 +81,15 @@ class ProfileViewController: UIViewController {
         
         navigationController?.navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
-       
+        self.navigationController?.navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "rectangle.portrait.and.arrow.right"), style: .done, target: self, action: #selector(didTapSignOut))
+        
         quizzesSegmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
         setupCollectionViews()
         configureUI()
     }
     
-    private func setupCollectionViews() {
-        let layout = UICollectionViewFlowLayout()
-        let cellSize = CGSize(width: view.frame.width - 32, height: view.frame.width / 4.5)
-        layout.itemSize = cellSize
-        layout.scrollDirection = .vertical
-        completedQuizzesCollectionView.setCollectionViewLayout(layout, animated: true)
-        completedQuizzesCollectionView.register(ProfileCompletedQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileCompletedQuizCollectionViewCell.identifier)
-        completedQuizzesCollectionView.delegate = self
-        completedQuizzesCollectionView.dataSource = self
-        completedQuizzesCollectionView.refreshControl = completedQuizzesRefreshControl
-        
-        yourQuizzesCollectionView.setCollectionViewLayout(layout, animated: true)
-        yourQuizzesCollectionView.register(ProfileYourQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileYourQuizCollectionViewCell.identifier)
-        yourQuizzesCollectionView.delegate = self
-        yourQuizzesCollectionView.dataSource = self
-        yourQuizzesCollectionView.refreshControl = yourQuizzesRefreshControl
-    }
-    
-    private func fetchCompletedQuizzes() {
-        QuizService.shared.fetchCompletedQuizzes { [weak self] completedQuiz, error in
-            guard let strongSelf = self else { return }
-            if let error = error {
-                print(String(describing: error))
-            }
-            guard let completedQuizzes = completedQuiz else { return }
-            
-            strongSelf.completedQuizzesRefreshControl.endRefreshing()
-            strongSelf.completedQuizzes = completedQuizzes
-            strongSelf.spinner.stopAnimating()
-            
-            DispatchQueue.main.async {
-                strongSelf.completedQuizzesCollectionView.reloadData()
-            }
-        }
-    }
-    
-    private func fetchYourQuizzes() {
-        QuizService.shared.fetchAllQuizzesForUser { [weak self] quizzes, error in
-            guard let strongSelf = self else { return }
-            
-            if let error = error {
-                print(String(describing: error))
-            }
-            
-            guard let quizzes = quizzes else { return }
-            
-            strongSelf.yourQuizzesRefreshControl.endRefreshing()
-            strongSelf.yourQuizzes = quizzes
-            DispatchQueue.main.async {
-                strongSelf.yourQuizzesCollectionView.reloadData()
-            }
-        }
-    }
-    
     // MARK: - Helpers
+    
     private func configureUI() {
         view.backgroundColor = .systemBackground
         
@@ -170,6 +118,61 @@ class ProfileViewController: UIViewController {
         ])
     }
     
+    private func setupCollectionViews() {
+        let layout = UICollectionViewFlowLayout()
+        let cellSize = CGSize(width: view.frame.width - 32, height: view.frame.width / 4.5)
+        layout.itemSize = cellSize
+        layout.scrollDirection = .vertical
+        completedQuizzesCollectionView.setCollectionViewLayout(layout, animated: true)
+        completedQuizzesCollectionView.register(ProfileCompletedQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileCompletedQuizCollectionViewCell.identifier)
+        completedQuizzesCollectionView.delegate = self
+        completedQuizzesCollectionView.dataSource = self
+        completedQuizzesCollectionView.refreshControl = completedQuizzesRefreshControl
+        
+        yourQuizzesCollectionView.setCollectionViewLayout(layout, animated: true)
+        yourQuizzesCollectionView.register(ProfileYourQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileYourQuizCollectionViewCell.identifier)
+        yourQuizzesCollectionView.delegate = self
+        yourQuizzesCollectionView.dataSource = self
+        yourQuizzesCollectionView.refreshControl = yourQuizzesRefreshControl
+    }
+    
+    private func fetchCompletedQuizzes() {
+        QuizService.shared.fetchCompletedQuizzes { [weak self] completedQuiz, error in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                print(String(describing: error))
+            }
+            
+            strongSelf.completedQuizzesRefreshControl.endRefreshing()
+            guard let completedQuizzes = completedQuiz else { return }
+            
+            strongSelf.completedQuizzes = completedQuizzes
+            strongSelf.spinner.stopAnimating()
+            
+            DispatchQueue.main.async {
+                strongSelf.completedQuizzesCollectionView.reloadData()
+            }
+        }
+    }
+    
+    private func fetchYourQuizzes() {
+        QuizService.shared.fetchAllQuizzesForUser { [weak self] quizzes, error in
+            guard let strongSelf = self else { return }
+            
+            if let error = error {
+                print(String(describing: error))
+            }
+            
+            strongSelf.yourQuizzesRefreshControl.endRefreshing()
+            guard let quizzes = quizzes else { return }
+            
+            strongSelf.yourQuizzes = quizzes
+            DispatchQueue.main.async {
+                strongSelf.yourQuizzesCollectionView.reloadData()
+            }
+        }
+    }
+    
     // MARK: - Selectors
     
     @objc private func didRefreshCompletedQuizzes() {
@@ -192,6 +195,27 @@ class ProfileViewController: UIViewController {
             yourQuizzesCollectionView.isHidden = false
             completedQuizzesCollectionView.isHidden = true
         }
+    }
+    
+    @objc private func didTapSignOut() {
+        let alert = UIAlertController(title: "Log Out", message: "Are you sure you want to log out?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: { _ in
+            AuthService.shared.signOut { [weak self] error in
+                guard let strongSelf = self else { return }
+                if let error = error {
+                    AlertManager.showLogoutErrorAlert(on: strongSelf, with: error)
+                    return
+                }
+                
+                if let sceneDelegate = strongSelf.view.window?.windowScene?.delegate as? SceneDelegate {
+                    sceneDelegate.checkAuthentication()
+                }
+            }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        
+        present(alert, animated: true, completion: nil)
     }
 }
 

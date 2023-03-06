@@ -20,7 +20,6 @@ class ProfileYourQuizCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.black
         label.text = "Laryngel quiz 01"
-        label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .title1)
         return label
@@ -30,7 +29,6 @@ class ProfileYourQuizCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.black
         label.text = "Code: "
-        label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .title2)
         label.textAlignment = .center

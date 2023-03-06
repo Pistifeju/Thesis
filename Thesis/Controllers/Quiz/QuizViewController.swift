@@ -257,18 +257,28 @@ class QuizViewController: UIViewController {
         let buttons = [answer1Button, answer2Button, answer3Button, answer4Button]
         buttons.map({$0}).forEach({$0.isUserInteractionEnabled = false})
         trueFalseSelector.isUserInteractionEnabled = false
-                
-        for correctAnswer in question.correctAnswers {
-            for button in buttons {
-                if button.titleLabel?.text == correctAnswer {
-                    button.backgroundColor = .greenButton.withAlphaComponent(0.8)
-                } else {
-                    button.backgroundColor = .exitRed.withAlphaComponent(0.8)
+               
+        if question.type == .singleChoice {
+            for correctAnswer in question.correctAnswers {
+                for button in buttons {
+                    if button.currentTitle == correctAnswer {
+                        button.backgroundColor = .greenButton.withAlphaComponent(0.8)
+                    } else {
+                        button.backgroundColor = .exitRed.withAlphaComponent(0.8)
+                    }
                 }
             }
-        }
-        
-        if question.type == .TrueFalse {
+        } else if question.type == .multipleChoice {
+            for correctAnswer in question.correctAnswers {
+                for button in buttons {
+                    if button.currentTitle == correctAnswer {
+                        button.backgroundColor = .exitRed.withAlphaComponent(0.8)
+                    } else {
+                        button.backgroundColor = .greenButton.withAlphaComponent(0.8)
+                    }
+                }
+            }
+        } else {
             let correctAnswer = question.correctAnswers.first
             let selectedIndex = trueFalseSelector.selectedSegmentIndex
             if selectedIndex != -1 {

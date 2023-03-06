@@ -119,6 +119,11 @@ class QuizService {
                 documentIDs.append(data)
             }
             
+            if documentIDs.isEmpty {
+                completion(nil, nil)
+                return
+            }
+            
             Firestore.firestore().collection("quizzes").whereField(FieldPath.documentID(), in: documentIDs).getDocuments { snapshot, error in
                 if let error = error {
                     completion(nil, error)
