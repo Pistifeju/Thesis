@@ -49,6 +49,8 @@
 		B7AACAD529247125008A850B /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AACAD429247125008A850B /* Extensions.swift */; };
 		B7ABC3F929B3F727002EEACE /* ProfileCompletedQuizCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABC3F829B3F727002EEACE /* ProfileCompletedQuizCollectionViewCell.swift */; };
 		B7ABC3FB29B53098002EEACE /* ProfileYourQuizCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABC3FA29B53098002EEACE /* ProfileYourQuizCollectionViewCell.swift */; };
+		B7ABC3FD29B783A5002EEACE /* QuizStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABC3FC29B783A5002EEACE /* QuizStatsViewController.swift */; };
+		B7ABC3FF29B78ADA002EEACE /* CompletionStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABC3FE29B78ADA002EEACE /* CompletionStatsView.swift */; };
 		B7D05E24291FD51900439680 /* Skull.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E23291FD51900439680 /* Skull.usdz */; };
 		B7D05E26291FDA9400439680 /* Chest.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E25291FDA9400439680 /* Chest.usdz */; };
 		B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E27291FDA9E00439680 /* Laryngeal.usdz */; };
@@ -125,6 +127,8 @@
 		B7AACAD429247125008A850B /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		B7ABC3F829B3F727002EEACE /* ProfileCompletedQuizCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCompletedQuizCollectionViewCell.swift; sourceTree = "<group>"; };
 		B7ABC3FA29B53098002EEACE /* ProfileYourQuizCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileYourQuizCollectionViewCell.swift; sourceTree = "<group>"; };
+		B7ABC3FC29B783A5002EEACE /* QuizStatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStatsViewController.swift; sourceTree = "<group>"; };
+		B7ABC3FE29B78ADA002EEACE /* CompletionStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionStatsView.swift; sourceTree = "<group>"; };
 		B7D05E23291FD51900439680 /* Skull.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Skull.usdz; sourceTree = "<group>"; };
 		B7D05E25291FDA9400439680 /* Chest.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Chest.usdz; sourceTree = "<group>"; };
 		B7D05E27291FDA9E00439680 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
@@ -380,6 +384,7 @@
 				B7EBEF5629870F6800FB401B /* NewQuestionViewController.swift */,
 				B7EBEF5829883CCE00FB401B /* QuizSettingsViewController.swift */,
 				B7EBEF67298BFC0100FB401B /* QuizViewController.swift */,
+				B7ABC3FC29B783A5002EEACE /* QuizStatsViewController.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -403,6 +408,7 @@
 				B7EBEF65298B2E6C00FB401B /* QuizCustomNavigationButton.swift */,
 				B75137BD2994622600ACD3F7 /* EndOfQuizStatLabel.swift */,
 				B71F902E29AA3CA700A6F94E /* TimerBarButtonItem.swift */,
+				B7ABC3FE29B78ADA002EEACE /* CompletionStatsView.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -587,6 +593,7 @@
 				B74DF71C293B9ABF001C9643 /* CustomAnswerButton.swift in Sources */,
 				B71CFFD9293520F3005870E2 /* AnatomyModel.swift in Sources */,
 				B71CFFD729351CC0005870E2 /* Question.swift in Sources */,
+				B7ABC3FF29B78ADA002EEACE /* CompletionStatsView.swift in Sources */,
 				B707B374297755A8001DB1E8 /* CustomAuthButton.swift in Sources */,
 				B7EBEF66298B2E6C00FB401B /* QuizCustomNavigationButton.swift in Sources */,
 				B7EBEF602988862700FB401B /* QuizSettingsCustomLabel.swift in Sources */,
@@ -633,6 +640,7 @@
 				B7EBEF5929883CCE00FB401B /* QuizSettingsViewController.swift in Sources */,
 				B7EBEF5E29886A2800FB401B /* ProfileViewController.swift in Sources */,
 				B7ABC3FB29B53098002EEACE /* ProfileYourQuizCollectionViewCell.swift in Sources */,
+				B7ABC3FD29B783A5002EEACE /* QuizStatsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

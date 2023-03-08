@@ -230,7 +230,9 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true)
         } else {
-            
+            guard let yourQuizzes = yourQuizzes else { return }
+            let vc = QuizStatsViewController(quiz: yourQuizzes[indexPath.row])
+            navigationController?.pushViewController(vc, animated: true)
         }
     }
     

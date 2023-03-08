@@ -69,7 +69,7 @@ class ProfileYourQuizCollectionViewCell: UICollectionViewCell {
         contentView.layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
         contentView.layer.borderWidth = 1
         contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = .gray.withAlphaComponent(0.2)
+        contentView.backgroundColor = .lightCyan
         
         let stackView = UIStackView(arrangedSubviews: [quizLabel, codeLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -81,7 +81,7 @@ class ProfileYourQuizCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 2),
             stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            stackView.trailingAnchor.constraint(equalToSystemSpacingAfter: imageView.leadingAnchor, multiplier: 2),
+            stackView.trailingAnchor.constraint(equalToSystemSpacingAfter: imageView.leadingAnchor, multiplier: -2),
             
             contentView.trailingAnchor.constraint(equalToSystemSpacingAfter: imageView.trailingAnchor, multiplier: 2),
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),

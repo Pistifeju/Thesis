@@ -20,7 +20,6 @@ class ProfileCompletedQuizCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textColor = UIColor.black
         label.text = "Laryngel quiz 01"
-        label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.preferredFont(forTextStyle: .title1)
         return label
@@ -71,7 +70,7 @@ class ProfileCompletedQuizCollectionViewCell: UICollectionViewCell {
         contentView.layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
         contentView.layer.borderWidth = 1
         contentView.layer.cornerRadius = 8
-        contentView.backgroundColor = .gray.withAlphaComponent(0.2)
+        contentView.backgroundColor = .lightCyan
         contentView.addSubview(quizLabel)
         contentView.addSubview(scoreLabel)
         
@@ -85,7 +84,7 @@ class ProfileCompletedQuizCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalToSystemSpacingAfter: contentView.leadingAnchor, multiplier: 2),
             stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            stackView.trailingAnchor.constraint(equalToSystemSpacingAfter: imageView.leadingAnchor, multiplier: 2),
+            stackView.trailingAnchor.constraint(equalToSystemSpacingAfter: imageView.leadingAnchor, multiplier: -2),
             
             contentView.trailingAnchor.constraint(equalToSystemSpacingAfter: imageView.trailingAnchor, multiplier: 2),
             imageView.centerYAnchor.constraint(equalTo: centerYAnchor),
