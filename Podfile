@@ -6,7 +6,6 @@ target 'Thesis' do
   use_frameworks!
 
   # Pods for Thesis
-  pod 'RealmSwift', '~>10'  
   pod 'FirebaseCore'
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'

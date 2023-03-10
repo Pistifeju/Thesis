@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RealmSwift
 
 final class DatabaseManager {
     static func loadData() {

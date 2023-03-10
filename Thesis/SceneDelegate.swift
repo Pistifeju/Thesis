@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import RealmSwift
 import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
