@@ -38,6 +38,7 @@ class ProfileViewController: UIViewController {
     private let completedQuizzesCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .white
         return collectionView
     }()
     
@@ -45,6 +46,7 @@ class ProfileViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isHidden = true
+        collectionView.backgroundColor = .white
         return collectionView
     }()
     
@@ -67,6 +69,7 @@ class ProfileViewController: UIViewController {
         self.user = user
         self.spinner.startAnimating()
         super.init(nibName: nil, bundle: nil)
+        overrideUserInterfaceStyle = .light
         title = user.username
         fetchCompletedQuizzes()
         fetchYourQuizzes()
@@ -79,6 +82,10 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationController?.navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "rectangle.portrait.and.arrow.right"), style: .done, target: self, action: #selector(didTapSignOut))
@@ -91,7 +98,7 @@ class ProfileViewController: UIViewController {
     // MARK: - Helpers
     
     private func configureUI() {
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = .white
         
         view.addSubview(spinner)
         view.addSubview(quizzesSegmentedControl)
@@ -262,7 +269,5 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
             cell.configure(with: yourQuizzes[indexPath.row])
             return cell
         }
-        
-        
     }
 }

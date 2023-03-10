@@ -75,7 +75,10 @@ class QuizSettingsViewController: UIViewController {
         completionTimeTextField.leftViewMode = .never
         completionTimeTextField.textAlignment = .center
         completionTimeTextField.delegate = self
-        
+        navigationController?.navigationBar.tintColor = .black
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         createCheckBoxes()
         
         //Labels

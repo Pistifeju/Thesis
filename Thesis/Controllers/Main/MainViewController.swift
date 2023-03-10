@@ -21,7 +21,6 @@ class MainViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.register(MainViewCollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
         if let encoded = UserDefaults.standard.data(forKey: "skeletalModels"), let anatomyModels = try? JSONDecoder().decode([AnatomyModel].self, from: encoded) {
             // Use the retrieved anatomy models
             self.systems.append(anatomyModels)
@@ -42,11 +41,12 @@ class MainViewController: UICollectionViewController {
         navigationController?.navigationBar.barTintColor = .white
         navigationController?.navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         view.backgroundColor = .white
         collectionView.backgroundColor = .white
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         let cellSize = CGSize(width: view.frame.width - 50, height: view.frame.width / 2)
         
@@ -100,7 +100,6 @@ extension MainViewController {
         let vc = CategoryViewController(collectionViewLayout: UICollectionViewFlowLayout())
         vc.title = cell.categoryName.replacingOccurrences(of: "_", with: " ")
         vc.systems = cell.system
-        let nav = UINavigationController(rootViewController: vc)
         navigationController?.pushViewController(vc, animated: true)
     }
     

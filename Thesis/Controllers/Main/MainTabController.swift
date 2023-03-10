@@ -46,6 +46,9 @@ class MainTabController: UITabBarController {
         navigationController?.navigationBar.backgroundColor = .white
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.barTintColor = .white
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         tabBar.isHidden = false
         tabBar.isTranslucent = false

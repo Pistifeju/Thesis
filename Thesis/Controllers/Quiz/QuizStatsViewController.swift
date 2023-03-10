@@ -93,6 +93,9 @@ class QuizStatsViewController: UIViewController {
         dividerView.isHidden = true
         view.backgroundColor = .white
         
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true

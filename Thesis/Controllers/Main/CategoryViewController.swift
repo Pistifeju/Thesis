@@ -34,13 +34,14 @@ class CategoryViewController: UICollectionViewController {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationItem.largeTitleDisplayMode = .always
         navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .black
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         view.backgroundColor = .white
         
         collectionView.backgroundColor = .white
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
-        
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationItem.leftBarButtonItem?.tintColor = .black
     }
     

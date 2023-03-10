@@ -97,7 +97,12 @@ class EndOfQuizController: UIViewController {
         titleLabel.text = completedQuiz.name
         descriptionTextView.text = completedQuiz.quizDescription
         
+        navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.isHidden = false
+        
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         navigationItem.setHidesBackButton(true, animated: true)
         
@@ -170,7 +175,7 @@ class EndOfQuizController: UIViewController {
     // MARK: - Selectors
     
     @objc private func didTapReviewButton() {
-        if let _ = navigationController?.popViewController(animated: true) {
+        if navigationController?.popViewController(animated: true) != nil {
             if let quizPageViewController = navigationController?.topViewController as? QuizPageViewController {
                 quizPageViewController.reviewMode = true
             }

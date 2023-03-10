@@ -390,7 +390,6 @@
 				B7EBEF5829883CCE00FB401B /* QuizSettingsViewController.swift */,
 				B7EBEF67298BFC0100FB401B /* QuizViewController.swift */,
 				B7ABC3FC29B783A5002EEACE /* QuizStatsViewController.swift */,
-				B7ABC40229BBA2E6002EEACE /* CompletionsStatsUITableViewCell.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -407,6 +406,7 @@
 		B7EBEF5529870D2100FB401B /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
+				B7ABC40229BBA2E6002EEACE /* CompletionsStatsUITableViewCell.swift */,
 				B74DF719293ABBFA001C9643 /* QuestionView.swift */,
 				B7EBEF52298340B200FB401B /* NewQuestionCustomTextField.swift */,
 				B74DF71B293B9ABF001C9643 /* CustomAnswerButton.swift */,

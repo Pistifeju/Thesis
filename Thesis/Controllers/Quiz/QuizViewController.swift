@@ -86,7 +86,7 @@ class QuizViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        overrideUserInterfaceStyle = .light
         answer1Button.addTarget(self, action: #selector(didTapAnswerButton(_:)), for: .touchUpInside)
         answer2Button.addTarget(self, action: #selector(didTapAnswerButton(_:)), for: .touchUpInside)
         answer3Button.addTarget(self, action: #selector(didTapAnswerButton(_:)), for: .touchUpInside)
@@ -107,6 +107,9 @@ class QuizViewController: UIViewController {
     // MARK: - Helpers
     
     private func setupUI() {
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         view.backgroundColor = .white
         
         //Labels
@@ -324,14 +327,6 @@ class QuizViewController: UIViewController {
     
     @objc private func didTapAnswerButton(_ sender: UIButton) {
         let buttons = [answer1Button, answer2Button, answer3Button, answer4Button]
-        
-        var alreadySelected = false
-        for button in buttons {
-            if button.isSelected {
-                alreadySelected = true
-                break
-            }
-        }
         
         sender.isSelected.toggle()
         

@@ -65,10 +65,11 @@ class ModelViewController: UIViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
-        
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationItem.leftBarButtonItem?.tintColor = .black
         navigationItem.rightBarButtonItem?.tintColor = .black
+        navigationController?.navigationBar.tintColor = .black
         
         view.addSubview(modelInformationLabel)
         view.addSubview(goToARLearningModeButton)

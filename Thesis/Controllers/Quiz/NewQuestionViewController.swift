@@ -79,8 +79,13 @@ class NewQuestionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        overrideUserInterfaceStyle = .light
         questionTypeSelector.addTarget(self, action: #selector(handleTypeChange), for: .valueChanged)
         questionTypeSelector.selectedSegmentIndex = 0
+        navigationController?.navigationBar.tintColor = .black
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
         
         answer1CheckBox.addTarget(self, action: #selector(didTapCheckbox(_:)), for: .valueChanged)
         answer2CheckBox.addTarget(self, action: #selector(didTapCheckbox(_:)), for: .valueChanged)

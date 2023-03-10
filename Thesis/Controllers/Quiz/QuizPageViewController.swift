@@ -126,8 +126,9 @@ class QuizPageViewController: UIPageViewController {
         title = quiz.name
         
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
-        
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
         
         view.backgroundColor = .white
         navigationController?.navigationBar.isHidden = false

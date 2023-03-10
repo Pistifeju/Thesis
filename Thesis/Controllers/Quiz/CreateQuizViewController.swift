@@ -99,11 +99,12 @@ class CreateQuizViewController: UIPageViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Back", style: .plain, target: self, action: #selector(dismissVC))
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Finish", style: .plain, target: self, action: #selector(didTapFinishButton))
         
+        navigationController?.navigationBar.tintColor = .black
         navigationController?.navigationBar.isTranslucent = true
         navigationController?.navigationBar.isHidden = false
         
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
-        
+        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationItem.leftBarButtonItem?.tintColor = .black
         navigationItem.rightBarButtonItem?.tintColor = .black
