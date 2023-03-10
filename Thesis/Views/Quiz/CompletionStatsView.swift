@@ -97,6 +97,8 @@ class CompletionStatsView: UIView {
     // MARK: - Helpers
     
     private func configureUI() {
+        layer.borderColor = UIColor.black.withAlphaComponent(0.5).cgColor
+        layer.borderWidth = 1
         backgroundColor = .lightCyan
         layer.cornerRadius = 8
         let stackView = UIStackView(arrangedSubviews: [completionsLabel, averagePointLabel, averagePercentLabel])
@@ -122,6 +124,15 @@ class CompletionStatsView: UIView {
             percentNumberLabel.centerYAnchor.constraint(equalTo: completionsNumberLabel.centerYAnchor),
             percentNumberLabel.centerXAnchor.constraint(equalTo: averagePercentLabel.centerXAnchor),
         ])
+    }
+    
+    public func configure(stats: [QuizUserStat]) {
+        let percentages = stats.reduce(0) { $0 + $1.percent }
+        let points = stats.reduce(0) { $0 + $1.score }
+        
+        completionsNumberLabel.text = "\(stats.count)"
+        averagePointNumberLabel.text = "\(points/Float(stats.count))"
+        percentNumberLabel.text = "\(percentages/Float(stats.count)) %"
     }
     
     // MARK: - Selectors

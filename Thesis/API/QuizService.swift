@@ -284,6 +284,45 @@ class QuizService {
             return
         }
     }
+    
+    public func fetchUsersForQuiz(quizCode: String, completion: @escaping([QuizUserStat]?, Error?) -> Void) {
+        var stats: [QuizUserStat] = []
+        
+        Firestore.firestore().collection("quizzes").whereField("code", isEqualTo: quizCode).limit(to: 1).getDocuments { snapshot, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                completion(nil, nil)
+                return
+            }
+            
+            for document in snapshot.documents {
+                Firestore.firestore().collection("quizzes").document(document.documentID).collection("quizTakenBy").getDocuments { innerSnapshot, error in
+                    if let error = error {
+                        completion(nil, error)
+                        return
+                    }
+                    
+                    guard let innerSnapshot = innerSnapshot else {
+                        completion(nil, nil)
+                        return
+                    }
+                    
+                    for innerDocument in innerSnapshot.documents {
+                        let data = innerDocument.data()
+                        let stat = QuizUserStat(name: data["username"] as! String, score: data["score"] as! Float, percent: data["percent"] as! Float)
+                        stats.append(stat)
+                    }
+                    
+                    completion(stats, nil)
+                    return
+                }
+            }
+        }
+    }
 }
 
 extension QuizService {

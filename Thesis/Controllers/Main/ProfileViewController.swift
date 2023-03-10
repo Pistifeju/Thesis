@@ -140,17 +140,17 @@ class ProfileViewController: UIViewController {
         QuizService.shared.fetchCompletedQuizzes { [weak self] completedQuiz, error in
             guard let strongSelf = self else { return }
             if let error = error {
-                print(String(describing: error))
-            }
-            
-            strongSelf.completedQuizzesRefreshControl.endRefreshing()
-            guard let completedQuizzes = completedQuiz else { return }
-            
-            strongSelf.completedQuizzes = completedQuizzes
-            strongSelf.spinner.stopAnimating()
-            
-            DispatchQueue.main.async {
-                strongSelf.completedQuizzesCollectionView.reloadData()
+                AlertManager.showBasicErrorAlert(on: strongSelf, with: "Error happened.", and: error.localizedDescription)
+            } else {
+                strongSelf.completedQuizzesRefreshControl.endRefreshing()
+                guard let completedQuizzes = completedQuiz else { return }
+                
+                strongSelf.completedQuizzes = completedQuizzes
+                strongSelf.spinner.stopAnimating()
+                
+                DispatchQueue.main.async {
+                    strongSelf.completedQuizzesCollectionView.reloadData()
+                }
             }
         }
     }
@@ -160,15 +160,15 @@ class ProfileViewController: UIViewController {
             guard let strongSelf = self else { return }
             
             if let error = error {
-                print(String(describing: error))
-            }
-            
-            strongSelf.yourQuizzesRefreshControl.endRefreshing()
-            guard let quizzes = quizzes else { return }
-            
-            strongSelf.yourQuizzes = quizzes
-            DispatchQueue.main.async {
-                strongSelf.yourQuizzesCollectionView.reloadData()
+                AlertManager.showBasicErrorAlert(on: strongSelf, with: "Error happened.", and: error.localizedDescription)
+            } else {
+                strongSelf.yourQuizzesRefreshControl.endRefreshing()
+                guard let quizzes = quizzes else { return }
+                
+                strongSelf.yourQuizzes = quizzes
+                DispatchQueue.main.async {
+                    strongSelf.yourQuizzesCollectionView.reloadData()
+                }
             }
         }
     }
@@ -231,7 +231,8 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
             present(nav, animated: true)
         } else {
             guard let yourQuizzes = yourQuizzes else { return }
-            let vc = QuizStatsViewController(quiz: yourQuizzes[indexPath.row])
+            let quiz = yourQuizzes[indexPath.row]
+            let vc = QuizStatsViewController(quiz: quiz)
             navigationController?.pushViewController(vc, animated: true)
         }
     }

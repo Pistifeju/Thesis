@@ -51,6 +51,8 @@
 		B7ABC3FB29B53098002EEACE /* ProfileYourQuizCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABC3FA29B53098002EEACE /* ProfileYourQuizCollectionViewCell.swift */; };
 		B7ABC3FD29B783A5002EEACE /* QuizStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABC3FC29B783A5002EEACE /* QuizStatsViewController.swift */; };
 		B7ABC3FF29B78ADA002EEACE /* CompletionStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABC3FE29B78ADA002EEACE /* CompletionStatsView.swift */; };
+		B7ABC40129BB6039002EEACE /* QuizUserStat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABC40029BB6039002EEACE /* QuizUserStat.swift */; };
+		B7ABC40329BBA2E6002EEACE /* CompletionsStatsUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ABC40229BBA2E6002EEACE /* CompletionsStatsUITableViewCell.swift */; };
 		B7D05E24291FD51900439680 /* Skull.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E23291FD51900439680 /* Skull.usdz */; };
 		B7D05E26291FDA9400439680 /* Chest.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E25291FDA9400439680 /* Chest.usdz */; };
 		B7D05E28291FDA9E00439680 /* Laryngeal.usdz in Resources */ = {isa = PBXBuildFile; fileRef = B7D05E27291FDA9E00439680 /* Laryngeal.usdz */; };
@@ -129,6 +131,8 @@
 		B7ABC3FA29B53098002EEACE /* ProfileYourQuizCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileYourQuizCollectionViewCell.swift; sourceTree = "<group>"; };
 		B7ABC3FC29B783A5002EEACE /* QuizStatsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizStatsViewController.swift; sourceTree = "<group>"; };
 		B7ABC3FE29B78ADA002EEACE /* CompletionStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionStatsView.swift; sourceTree = "<group>"; };
+		B7ABC40029BB6039002EEACE /* QuizUserStat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizUserStat.swift; sourceTree = "<group>"; };
+		B7ABC40229BBA2E6002EEACE /* CompletionsStatsUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletionsStatsUITableViewCell.swift; sourceTree = "<group>"; };
 		B7D05E23291FD51900439680 /* Skull.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Skull.usdz; sourceTree = "<group>"; };
 		B7D05E25291FDA9400439680 /* Chest.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Chest.usdz; sourceTree = "<group>"; };
 		B7D05E27291FDA9E00439680 /* Laryngeal.usdz */ = {isa = PBXFileReference; lastKnownFileType = file.usdz; path = Laryngeal.usdz; sourceTree = "<group>"; };
@@ -234,6 +238,7 @@
 				B79DC3CA297760B300863A9A /* LoginUserRequest.swift */,
 				B79DC3CC2977619F00863A9A /* User.swift */,
 				B7EBEF6129897B8A00FB401B /* Quiz.swift */,
+				B7ABC40029BB6039002EEACE /* QuizUserStat.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -385,6 +390,7 @@
 				B7EBEF5829883CCE00FB401B /* QuizSettingsViewController.swift */,
 				B7EBEF67298BFC0100FB401B /* QuizViewController.swift */,
 				B7ABC3FC29B783A5002EEACE /* QuizStatsViewController.swift */,
+				B7ABC40229BBA2E6002EEACE /* CompletionsStatsUITableViewCell.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -631,7 +637,9 @@
 				B7EBEF68298BFC0100FB401B /* QuizViewController.swift in Sources */,
 				B73B6B8329564F3400195D50 /* ModelInformationButton.swift in Sources */,
 				B7AACAD529247125008A850B /* Extensions.swift in Sources */,
+				B7ABC40129BB6039002EEACE /* QuizUserStat.swift in Sources */,
 				B707B37D29775B83001DB1E8 /* AlertManager.swift in Sources */,
+				B7ABC40329BBA2E6002EEACE /* CompletionsStatsUITableViewCell.swift in Sources */,
 				B79DC3CB297760B300863A9A /* LoginUserRequest.swift in Sources */,
 				B707B3722977559F001DB1E8 /* AuthHeaderView.swift in Sources */,
 				B7F64F00291FFCCF00652A9E /* MainViewController.swift in Sources */,

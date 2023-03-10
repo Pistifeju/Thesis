@@ -127,7 +127,6 @@ class ModelViewController: UIViewController {
         let ac = UIAlertController(title: "Enter test code", message: "Enter the test code in order to start the test.", preferredStyle: .alert)
         ac.addTextField()
         ac.textFields![0].placeholder = "A678GH-76DFRT"
-        ac.textFields![0].text = "TNAX9C-G86ULA" //TODO: - This is for debugging, remove this later.
         
         let cancelAction = UIAlertAction(title: "Cancel", style: .destructive)
         let submitAction = UIAlertAction(title: "Start", style: .default) { [unowned ac] _ in
