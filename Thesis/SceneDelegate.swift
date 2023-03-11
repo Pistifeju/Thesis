@@ -31,7 +31,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.goToController(with: OnboardingPageViewController(), withNav: true)
         } else {
             self.goToController(with: OnboardingPageViewController(), withNav: true)
-//            self.goToController(with: MainTabController(), withNav: false)
         }
     }
     
