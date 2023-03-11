@@ -212,7 +212,7 @@ class NewQuestionViewController: UIViewController {
             correctAnswers.append(answers[box.tag])
         }
         
-        var question = Question(question: questionLabel, answers: answers, correctAnswers: correctAnswers, type: questionType)
+        let question = Question(question: questionLabel, answers: answers, correctAnswers: correctAnswers, type: questionType)
         
         if questionType == .TrueFalse {
             question.answers = []
