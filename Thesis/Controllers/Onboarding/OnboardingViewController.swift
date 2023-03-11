@@ -11,7 +11,7 @@ class OnboardingViewController: UIViewController {
     
     // MARK: - Properties
     
-    private let stackView: UIStackView = {
+    public let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -89,6 +89,13 @@ class OnboardingViewController: UIViewController {
         ])
         
         view.backgroundColor = .white
+    }
+    
+    public func hideEverything() {
+        stackView.isHidden = true
+        imageView.isHidden = true
+        subtitleLabel.isHidden = true
+        view.backgroundColor = .black
     }
     
     // MARK: - Selectors

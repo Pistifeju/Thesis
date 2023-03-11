@@ -66,14 +66,17 @@ class OnboardingPageViewController: UIPageViewController {
         let page3 = OnboardingViewController(imageName: "onboarding3",
                                              titleText: "Take Tests",
                                              subtitleText: "Tests are designed to consolidate the material covered, which allows you to test your knowledge.")
-        
-        // TODO: - Page3 onboarding image
+        let page4 = OnboardingViewController(imageName: "onboarding3",
+                                             titleText: "Take Tests",
+                                             subtitleText: "Tests are designed to consolidate the material covered, which allows you to test your knowledge.")
+        page4.hideEverything()
         
         pages.append(page1)
         pages.append(page2)
         pages.append(page3)
+        pages.append(page4)
         
-        pageControl.numberOfPages = pages.count
+        pageControl.numberOfPages = pages.count - 1
 
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
     }
@@ -130,10 +133,9 @@ extension OnboardingPageViewController: UIPageViewControllerDataSource {
        
         if currentIndex < pages.count - 1 {
             return pages[currentIndex + 1]  // go next
-        } else {
-            didOnboard()
-            return nil
         }
+        
+        return nil
     }
 }
 
@@ -147,6 +149,14 @@ extension OnboardingPageViewController: UIPageViewControllerDelegate {
         guard let currentIndex = pages.firstIndex(of: viewControllers[0]) else { return }
         
         pageControl.currentPage = currentIndex
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        guard let vc = pendingViewControllers.first as? OnboardingViewController else { return }
+        
+        if vc.stackView.isHidden {
+            didOnboard()
+        }
     }
 }
 
@@ -180,17 +190,12 @@ extension OnboardingPageViewController {
         guard let currentPage = viewControllers?[0] else { return }
         guard let nextPage = dataSource?.pageViewController(self, viewControllerAfter: currentPage) else { return }
         
-        setViewControllers([nextPage], direction: .forward, animated: animated, completion: completion)
-    }
-    
-    func goToPreviousPage(animated: Bool = true, completion: ((Bool) -> Void)? = nil) {
-        guard let currentPage = viewControllers?[0] else { return }
-        guard let prevPage = dataSource?.pageViewController(self, viewControllerBefore: currentPage) else { return }
+        if let vc = nextPage as? OnboardingViewController {
+            if vc.stackView.isHidden {
+                didOnboard()
+            }
+        }
         
-        setViewControllers([prevPage], direction: .forward, animated: animated, completion: completion)
-    }
-    
-    func goToSpecificPage(index: Int, ofViewControllers pages: [UIViewController]) {
-        setViewControllers([pages[index]], direction: .forward, animated: true, completion: nil)
+        setViewControllers([nextPage], direction: .forward, animated: animated, completion: completion)
     }
 }
