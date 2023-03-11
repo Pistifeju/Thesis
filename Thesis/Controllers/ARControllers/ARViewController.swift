@@ -41,13 +41,11 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         let arview = ARView()
         arview.translatesAutoresizingMaskIntoConstraints = false
         arview.isUserInteractionEnabled = true
-        arview.addCoaching()
         arview.debugOptions = [.none]
-        
         return arview
     }()
     
-    private lazy var placeButton: UIButton = {
+    public lazy var placeButton: UIButton = {
         let button = UIButton(type: .system)
         
         let viewWidth = view.frame.size.width
@@ -58,6 +56,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         button.setImage(largeImage, for: .normal)
         button.addTarget(self, action: #selector(placeObject), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = true
+        button.alpha = 0.0
         
         return button
     }()
@@ -135,6 +135,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         
         configureUI()
         setupARView()
+        addCoaching()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -171,8 +172,8 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         ])
         
         NSLayoutConstraint.activate([
-            placeButton.widthAnchor.constraint(equalToConstant: viewWidth / 7),
-            placeButton.heightAnchor.constraint(equalToConstant: viewWidth / 7),
+            placeButton.widthAnchor.constraint(equalToConstant: viewWidth / 7.5),
+            placeButton.heightAnchor.constraint(equalToConstant: viewWidth / 7.5),
             placeButton.centerXAnchor.constraint(equalTo: arView.centerXAnchor),
             view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: placeButton.bottomAnchor, multiplier: 2),
         ])
@@ -222,8 +223,6 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         arView.automaticallyConfigureSession = false
         
         let configuration = ARWorldTrackingConfiguration()
-        configuration.frameSemantics.insert(.personSegmentationWithDepth)
-        configuration.frameSemantics.insert(.personSegmentation)
         arView.environment.sceneUnderstanding.options = .collision
         configuration.planeDetection = [.horizontal]
         configuration.environmentTexturing = .automatic
@@ -594,7 +593,7 @@ extension ARViewController: ModelInformationViewDelegate {
 
 // MARK: - ARCoachingOverlayViewDelegate
 
-extension ARView: ARCoachingOverlayViewDelegate {
+extension ARViewController: ARCoachingOverlayViewDelegate {
     func addCoaching() {
         // Create a ARCoachingOverlayView object
         let coachingOverlay = ARCoachingOverlayView()
@@ -602,21 +601,22 @@ extension ARView: ARCoachingOverlayViewDelegate {
         coachingOverlay.autoresizingMask = [
             .flexibleWidth, .flexibleHeight
         ]
-        self.addSubview(coachingOverlay)
+        
+        view.addSubview(coachingOverlay)
         
         coachingOverlay.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            coachingOverlay.centerXAnchor.constraint(equalTo: centerXAnchor),
-            coachingOverlay.centerYAnchor.constraint(equalTo: centerYAnchor),
-            coachingOverlay.topAnchor.constraint(equalTo: self.topAnchor),
-            coachingOverlay.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            coachingOverlay.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            coachingOverlay.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            coachingOverlay.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            coachingOverlay.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            coachingOverlay.topAnchor.constraint(equalTo: view.topAnchor),
+            coachingOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            coachingOverlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            coachingOverlay.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
         // Set the Augmented Reality goal
         coachingOverlay.goal = .horizontalPlane
         // Set the ARSession
-        coachingOverlay.session = self.session
+        coachingOverlay.session = arView.session
         // Set the delegate for any callbacks
         coachingOverlay.delegate = self
     }
@@ -624,6 +624,11 @@ extension ARView: ARCoachingOverlayViewDelegate {
     // Example callback for the delegate object
     public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
         coachingOverlayView.activatesAutomatically = false
+        
+        placeButton.isHidden = false
+        UIView.animate(withDuration: 0.3) {
+            self.placeButton.alpha = 1
+        }
     }
 }
 
