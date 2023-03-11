@@ -9,6 +9,7 @@ import RealityKit
 import ARKit
 import FocusEntity
 import FirebaseAuth
+import simd
 
 class ARViewController: UIViewController, FocusEntityDelegate {
     
@@ -141,6 +142,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         arView.scene.removeAnchor(modelAnchor)
+        arView.scene.anchors.removeAll()
         entities = [AREntity]()
         selectedEntity = AREntity()
         navigationController?.navigationBar.isHidden = false
@@ -226,7 +228,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         arView.environment.sceneUnderstanding.options = .collision
         configuration.planeDetection = [.horizontal]
         configuration.environmentTexturing = .automatic
-        arView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        arView.session.run(configuration, options: [.stopTrackedRaycasts, .removeExistingAnchors, .resetSceneReconstruction, .resetTracking])
         
         arView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:))))
         arView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(sender:))))
@@ -623,12 +625,17 @@ extension ARViewController: ARCoachingOverlayViewDelegate {
     
     // Example callback for the delegate object
     public func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
-        coachingOverlayView.activatesAutomatically = false
+        coachingOverlayView.activatesAutomatically = true
         
         placeButton.isHidden = false
         UIView.animate(withDuration: 0.3) {
             self.placeButton.alpha = 1
         }
+    }
+    
+    func coachingOverlayViewWillActivate(_ coachingOverlayView: ARCoachingOverlayView) {
+        placeButton.isHidden = true
+        self.placeButton.alpha = 0
     }
 }
 
