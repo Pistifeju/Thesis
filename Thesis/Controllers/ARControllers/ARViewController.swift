@@ -171,10 +171,10 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         ])
         
         NSLayoutConstraint.activate([
-            placeButton.widthAnchor.constraint(equalToConstant: viewWidth / 9),
-            placeButton.heightAnchor.constraint(equalToConstant: viewWidth / 9),
+            placeButton.widthAnchor.constraint(equalToConstant: viewWidth / 7),
+            placeButton.heightAnchor.constraint(equalToConstant: viewWidth / 7),
             placeButton.centerXAnchor.constraint(equalTo: arView.centerXAnchor),
-            placeButton.bottomAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.bottomAnchor, multiplier: 2),
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalToSystemSpacingBelow: placeButton.bottomAnchor, multiplier: 2),
         ])
         
         modelInformationView.translatesAutoresizingMaskIntoConstraints = false
@@ -282,15 +282,65 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         colorModelEntities()
     }
     
+    private func saveColorForEntity(entityName: String, color: UIColor?) {
+        let id = Auth.auth().currentUser?.uid
+        let defaults = UserDefaults.standard
+                
+        if let object = defaults.object(forKey: id!) as? [String: Any] {
+            let notes = object["notes"] as! [String: String]
+            var colors = object["colors"] as! [String: String]
+            var colorRawValue = ""
+            
+            if let color {
+                if color == UIColor.red {
+                    colorRawValue = "red"
+                } else if color == UIColor.green {
+                    colorRawValue = "green"
+                } else if color == UIColor.orange {
+                    colorRawValue = "orange"
+                }
+                
+                colors[entityName] = colorRawValue
+                
+            } else {
+                colors[entityName] = nil
+            }
+            
+            let user: [String: Any] = ["notes": notes, "colors": colors]
+            defaults.set(user, forKey: id!)
+        }
+    }
+    
+    private func loadColorForEntity(entityName: String) -> UIColor? {
+        let id = Auth.auth().currentUser?.uid
+        let defaults = UserDefaults.standard
+        
+        if let object = defaults.object(forKey: id!) as? [String: Any] {
+            let colors = object["colors"] as! [String: String]
+            if let color = colors[entityName] {
+                if color == "red" {
+                    return UIColor.red
+                } else if color == "green" {
+                    return UIColor.green
+                } else if color == "orange" {
+                    return UIColor.orange
+                }
+            }
+        }
+        
+        return nil
+    }
+    
     private func saveNoteforEntity(entityName: String, note: String) {
         let id = Auth.auth().currentUser?.uid
         let defaults = UserDefaults.standard
         
-        if let object = defaults.object(forKey: id!) as? [String: Any]{
+        if let object = defaults.object(forKey: id!) as? [String: Any] {
             var notes = object["notes"] as! [String: String]
-            
+            let colors = object["colors"] as! [String: String]
+
             notes[entityName] = note
-            let user: [String: Any] = ["notes": notes]
+            let user: [String: Any] = ["notes": notes, "colors": colors]
             defaults.set(user, forKey: id!)
         }
     }
@@ -299,7 +349,7 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         let id = Auth.auth().currentUser?.uid
         let defaults = UserDefaults.standard
 
-        if let object = defaults.object(forKey: id!) as? [String: Any]{
+        if let object = defaults.object(forKey: id!) as? [String: Any] {
             let notes = object["notes"] as! [String: String]
             if let note = notes[entityName] {
                 return note
@@ -315,8 +365,15 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             childModelEntity.collision = CollisionComponent(shapes: [ShapeResource.generateConvex(from: childModelEntity.model!.mesh)])
             let informationText = self.model.subModels?[childModelEntity.name] ?? "Under Development"
             let notes = loadNoteForEntity(entityName: childModelEntity.name)
+            let color = loadColorForEntity(entityName: childModelEntity.name)
             let arEntity = AREntity(entity: childModelEntity, state: .unselected, originalMaterial: childModelEntity.model!.materials[0] as! PhysicallyBasedMaterial, isHidden: false, isFaded: false, informationText: informationText, notes: notes)
+            if let color {
+                arEntity.coloredMaterialColor = color
+                arEntity.state = .colored
+            }
+            
             self.entities.append(arEntity)
+            self.colorModelEntities()
         }
     }
     
@@ -344,7 +401,10 @@ class ARViewController: UIViewController, FocusEntityDelegate {
     
     @objc private func resetModel() {
         let alert = UIAlertController(title: "Do you want to reset your model?", message: "", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
+        alert.addAction(UIAlertAction(title: "No", style: .default, handler: { action in
+            
+        }))
+        alert.addAction(UIAlertAction(title: "Yes", style: .destructive, handler: { [weak self] action in
             guard let strongSelf = self else { return }
             //Reset
             strongSelf.arView.scene.removeAnchor(strongSelf.modelAnchor)
@@ -355,15 +415,12 @@ class ARViewController: UIViewController, FocusEntityDelegate {
             strongSelf.modelInformationView.isHidden = true
             strongSelf.colourButton.isHidden = true
         }))
-        alert.addAction(UIAlertAction(title: "No", style: .destructive, handler: { action in
-            
-        }))
         
         self.present(alert, animated: true)
     }
     
     @objc private func placeObject() {
-        let modelName = self.model.name ?? "" //Skull, Chest better hitbox
+        let modelName = self.model.name ?? ""
         
         let entity = try! Entity.load(named: modelName)
         
@@ -408,11 +465,13 @@ class ARViewController: UIViewController, FocusEntityDelegate {
         for index in 0..<entities.count {
             if(entities[index].entity.name == entity.name) {
                 selectedModelEntity = entities[index]
-                if let selectedColor = self.selectedColor{
-                    selectedModelEntity.state = .colored
+                if let selectedColor = self.selectedColor {
                     selectedModelEntity.coloredMaterialColor = selectedColor
+                    selectedModelEntity.state = .colored
+                    saveColorForEntity(entityName: selectedModelEntity.entity.name, color: selectedColor)
                 } else {
                     selectedModelEntity.state = .unselected
+                    saveColorForEntity(entityName: selectedModelEntity.entity.name, color: nil)
                 }
                 entities[index] = selectedModelEntity
                 break

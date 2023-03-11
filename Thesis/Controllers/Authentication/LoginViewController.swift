@@ -92,7 +92,7 @@ class LoginViewController: UIViewController {
         let id = Auth.auth().currentUser?.uid
         
         if defaults.object(forKey: id!) == nil {
-            let user: [String: Any] = ["notes": [:]]
+            let user: [String: Any] = ["notes": [:], "colors": [:]]
             defaults.set(user, forKey: id!)
         }
     }

@@ -100,7 +100,7 @@ class RegistrationViewController: UIViewController {
     private func createNewUserFieldToUserDefaults() {
         let defaults = UserDefaults.standard
         let id = Auth.auth().currentUser?.uid
-        let user: [String: Any] = ["notes": [:]]
+        let user: [String: Any] = ["notes": [:], "colors": [:]]
         defaults.set(user, forKey: id!)
     }
     
