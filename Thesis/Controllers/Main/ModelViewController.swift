@@ -99,24 +99,38 @@ class ModelViewController: UIViewController {
     }
     
     private func startTestCompletion(with code: String) {
-        QuizService.shared.fetchQuiz(with: code) { [weak self] quiz, quizCode, error in
+        QuizService.shared.fetchIfUserAlreadyCompletedQuiz(quizCode: code) { [weak self] completed, error in
             guard let strongSelf = self else { return }
             if let error = error {
                 AlertManager.showQuizError(on: strongSelf, with: "Error Starting Test", and: error.localizedDescription)
                 return
             }
             
-            guard let quiz = quiz, let quizCode = quizCode else {
-                AlertManager.showQuizError(on: strongSelf, with: "Wrong Code", and: "Sorry, we couldn't find a test with that code.")
-                return
-            }
+            guard let completed = completed else { return }
             
-            if let customTabBarController = strongSelf.tabBarController as? MainTabController {
-                if let user = customTabBarController.user {
-                    let vc = QuizPageViewController(quiz: quiz, user: user, quizCode: quizCode)
-                    let nav = UINavigationController(rootViewController: vc)
-                    nav.modalPresentationStyle = .fullScreen
-                    strongSelf.present(nav, animated: true)
+            if completed {
+                AlertManager.showQuizError(on: strongSelf, with: "Test already completed", and: "You have already completed this test.")
+                return
+            } else {
+                QuizService.shared.fetchQuiz(with: code) { [weak self] quiz, quizCode, error in
+                    if let error = error {
+                        AlertManager.showQuizError(on: strongSelf, with: "Error Starting Test", and: error.localizedDescription)
+                        return
+                    }
+                    
+                    guard let quiz = quiz, let quizCode = quizCode else {
+                        AlertManager.showQuizError(on: strongSelf, with: "Wrong Code", and: "Sorry, we couldn't find a test with that code.")
+                        return
+                    }
+                    
+                    if let customTabBarController = strongSelf.tabBarController as? MainTabController {
+                        if let user = customTabBarController.user {
+                            let vc = QuizPageViewController(quiz: quiz, user: user, quizCode: quizCode)
+                            let nav = UINavigationController(rootViewController: vc)
+                            nav.modalPresentationStyle = .fullScreen
+                            strongSelf.present(nav, animated: true)
+                        }
+                    }
                 }
             }
         }

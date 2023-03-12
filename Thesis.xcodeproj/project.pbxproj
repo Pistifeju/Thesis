@@ -489,8 +489,6 @@
 			mainGroup = B7302EF62911CEBC0018272C;
 			packageReferences = (
 				B7136B692911D4FB00C6D54E /* XCRemoteSwiftPackageReference "FocusEntity" */,
-				B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum" */,
-				B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD" */,
 			);
 			productRefGroup = B7302F002911CEBC0018272C /* Products */;
 			projectDirPath = "";
@@ -880,22 +878,6 @@
 			requirement = {
 				branch = main;
 				kind = branch;
-			};
-		};
-		B7136B6C2911D52A00C6D54E /* XCRemoteSwiftPackageReference "LoremSwiftum" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/lukaskubanek/LoremSwiftum.git";
-			requirement = {
-				branch = master;
-				kind = branch;
-			};
-		};
-		B7AACAD12924711C008A850B /* XCRemoteSwiftPackageReference "JGProgressHUD" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/JonasGessner/JGProgressHUD.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

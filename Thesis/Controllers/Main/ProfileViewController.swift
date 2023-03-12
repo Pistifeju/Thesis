@@ -35,18 +35,24 @@ class ProfileViewController: UIViewController {
         return spinner
     }()
     
-    private let completedQuizzesCollectionView: UICollectionView = {
+    private lazy var completedQuizzesCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
+        let layout = createLayout()
+        collectionView.setCollectionViewLayout(layout, animated: true)
+        collectionView.register(ProfileCompletedQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileCompletedQuizCollectionViewCell.identifier)
         return collectionView
     }()
     
-    private let yourQuizzesCollectionView: UICollectionView = {
+    private lazy var yourQuizzesCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isHidden = true
         collectionView.backgroundColor = .white
+        let layout = createLayout()
+        collectionView.setCollectionViewLayout(layout, animated: true)
+        collectionView.register(ProfileYourQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileYourQuizCollectionViewCell.identifier)
         return collectionView
     }()
     
@@ -71,8 +77,6 @@ class ProfileViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         overrideUserInterfaceStyle = .light
         title = user.username
-        fetchCompletedQuizzes()
-        fetchYourQuizzes()
     }
     
     required init?(coder: NSCoder) {
@@ -81,6 +85,14 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        yourQuizzesCollectionView.delegate = self
+        yourQuizzesCollectionView.dataSource = self
+        yourQuizzesCollectionView.refreshControl = yourQuizzesRefreshControl
+        
+        completedQuizzesCollectionView.delegate = self
+        completedQuizzesCollectionView.dataSource = self
+        completedQuizzesCollectionView.refreshControl = completedQuizzesRefreshControl
         
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.black]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
@@ -91,8 +103,11 @@ class ProfileViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "rectangle.portrait.and.arrow.right"), style: .done, target: self, action: #selector(didTapSignOut))
         
         quizzesSegmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
-        setupCollectionViews()
+        
         configureUI()
+        
+        fetchCompletedQuizzes()
+        fetchYourQuizzes()
     }
     
     // MARK: - Helpers
@@ -125,39 +140,29 @@ class ProfileViewController: UIViewController {
         ])
     }
     
-    private func setupCollectionViews() {
+    private func createLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         let cellSize = CGSize(width: view.frame.width - 32, height: view.frame.width / 4.5)
         layout.itemSize = cellSize
         layout.scrollDirection = .vertical
-        completedQuizzesCollectionView.setCollectionViewLayout(layout, animated: true)
-        completedQuizzesCollectionView.register(ProfileCompletedQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileCompletedQuizCollectionViewCell.identifier)
-        completedQuizzesCollectionView.delegate = self
-        completedQuizzesCollectionView.dataSource = self
-        completedQuizzesCollectionView.refreshControl = completedQuizzesRefreshControl
-        
-        yourQuizzesCollectionView.setCollectionViewLayout(layout, animated: true)
-        yourQuizzesCollectionView.register(ProfileYourQuizCollectionViewCell.self, forCellWithReuseIdentifier: ProfileYourQuizCollectionViewCell.identifier)
-        yourQuizzesCollectionView.delegate = self
-        yourQuizzesCollectionView.dataSource = self
-        yourQuizzesCollectionView.refreshControl = yourQuizzesRefreshControl
+        return layout
     }
     
     private func fetchCompletedQuizzes() {
-        QuizService.shared.fetchCompletedQuizzes { [weak self] completedQuiz, error in
+        QuizService.shared.fetchCompletedQuizzes { [weak self] completions, error in
             guard let strongSelf = self else { return }
             if let error = error {
                 AlertManager.showBasicErrorAlert(on: strongSelf, with: "Error happened.", and: error.localizedDescription)
-            } else {
-                strongSelf.completedQuizzesRefreshControl.endRefreshing()
-                guard let completedQuizzes = completedQuiz else { return }
-                
-                strongSelf.completedQuizzes = completedQuizzes
-                strongSelf.spinner.stopAnimating()
-                
-                DispatchQueue.main.async {
-                    strongSelf.completedQuizzesCollectionView.reloadData()
-                }
+                return
+            }
+            
+            strongSelf.completedQuizzesRefreshControl.endRefreshing()
+            strongSelf.spinner.stopAnimating()
+            
+            strongSelf.completedQuizzes = completions
+                        
+            DispatchQueue.main.async {
+                strongSelf.completedQuizzesCollectionView.reloadData()
             }
         }
     }
@@ -168,14 +173,14 @@ class ProfileViewController: UIViewController {
             
             if let error = error {
                 AlertManager.showBasicErrorAlert(on: strongSelf, with: "Error happened.", and: error.localizedDescription)
-            } else {
-                strongSelf.yourQuizzesRefreshControl.endRefreshing()
-                guard let quizzes = quizzes else { return }
-                
-                strongSelf.yourQuizzes = quizzes
-                DispatchQueue.main.async {
-                    strongSelf.yourQuizzesCollectionView.reloadData()
-                }
+                return
+            }
+            
+            strongSelf.yourQuizzesRefreshControl.endRefreshing()
+            strongSelf.yourQuizzes = quizzes
+            
+            DispatchQueue.main.async {
+                strongSelf.yourQuizzesCollectionView.reloadData()
             }
         }
     }
@@ -227,6 +232,10 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         
@@ -253,7 +262,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
             return yourQuizzes.count
         }
     }
-    
+        
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == completedQuizzesCollectionView {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileCompletedQuizCollectionViewCell.identifier, for: indexPath) as? ProfileCompletedQuizCollectionViewCell, let completedQuizzes = completedQuizzes else {
@@ -265,7 +274,7 @@ extension ProfileViewController: UICollectionViewDelegate, UICollectionViewDataS
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileYourQuizCollectionViewCell.identifier, for: indexPath) as? ProfileYourQuizCollectionViewCell, let yourQuizzes = yourQuizzes else {
                 return UICollectionViewCell.init()
             }
-            
+
             cell.configure(with: yourQuizzes[indexPath.row])
             return cell
         }

@@ -323,6 +323,28 @@ class QuizService {
             }
         }
     }
+    
+    public func fetchIfUserAlreadyCompletedQuiz(quizCode: String, completion: @escaping(Bool?, Error?) -> Void) {
+        guard let id = Auth.auth().currentUser?.uid else { return }
+        
+        Firestore.firestore().collection("users").document(id).collection("takenQuizzes").whereField("code", isEqualTo: quizCode).getDocuments { snapshot, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            
+            guard let snapshot = snapshot else {
+                completion(nil, nil)
+                return
+            }
+            
+            if snapshot.isEmpty {
+                completion(false, nil)
+            } else {
+                completion(true, nil)
+            }
+        }
+    }
 }
 
 extension QuizService {
