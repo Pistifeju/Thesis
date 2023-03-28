@@ -286,7 +286,6 @@
 			children = (
 				B7EBEF5C2988699E00FB401B /* Main */,
 				B7EBEF44297F40CA00FB401B /* Quiz */,
-				B707B369297754B1001DB1E8 /* Authentication */,
 				B71CFFD22934DCD6005870E2 /* ARControllers */,
 				B7F64EF6291FF85900652A9E /* Onboarding */,
 			);
@@ -387,6 +386,7 @@
 				B7EBEF5629870F6800FB401B /* NewQuestionViewController.swift */,
 				B7EBEF5829883CCE00FB401B /* QuizSettingsViewController.swift */,
 				B7EBEF67298BFC0100FB401B /* QuizViewController.swift */,
+				B707B369297754B1001DB1E8 /* Authentication */,
 				B7ABC3FC29B783A5002EEACE /* QuizStatsViewController.swift */,
 			);
 			path = Quiz;
