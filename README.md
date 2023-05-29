@@ -1,4 +1,4 @@
-# Thesis (Under Development)
+# Thesis
 
 My thesis is an iOS mobile learning application that helps students learn about human anatomy in a fun and interactive way. With the use of Augmented Reality technology, students can now visualize and explore the human body. In addition, students can also create and take quizzes to test their knowledge. Quizzes make it a powerful tool for anyone looking to improve their understanding of human anatomy.
 
@@ -35,7 +35,7 @@ My thesis is an iOS mobile learning application that helps students learn about 
 
 ## How to setup the project
 
-Please follow the steps outlined in this README file to set the application, as this is not a finished project yet. The project may not function properly without completing these steps, and you may encounter errors or issues if you attempt to run the project without configuring.
+Please follow the steps outlined in this README file to set the application. The project may not function properly without completing these steps, and you may encounter errors or issues if you attempt to run the project without configuring.
 
 ### 1. Clone the project
 Clone the project from GitHub by running the following command in your terminal:
